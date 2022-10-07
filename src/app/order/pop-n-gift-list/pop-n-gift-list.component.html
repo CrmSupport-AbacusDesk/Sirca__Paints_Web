@@ -1,0 +1,248 @@
+<div class="main-container pb0" >
+  <div class="middle-container mb0" style="padding-right: 0px;">
+    <div class="page-heading">
+      <img src="assets/img/order_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Pop And Gifts Orders</h2>
+      </div>
+      <!-- <div class="left-auto ml10">
+        <div class="from-fields cs-flex">
+          <div class="control-field mr10">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="picker1" placeholder="From" name="date_from" [(ngModel)]="search_val.date_from">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="control-field mr10">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="pickers" placeholder="To" name="date_to" [(ngModel)]="search_val.date_to">
+              <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+              <mat-datepicker #pickers></mat-datepicker>
+            </mat-form-field>
+          </div>
+          
+            
+        </div>
+        
+        <div class="action-menu">
+          <button mat-raised-button [matMenuTriggerFor]="menu" color="accent" >
+            Action
+          </button>
+          <mat-menu #menu="matMenu" class="drop-down-menu">
+            <button mat-menu-item (click)="submit('item_wise')">
+              <span>Download itemwise Excel</span>
+            </button>
+            <button mat-menu-item (click)="submit('whole_wise')">
+              <span>Download Whole Excel</span>
+            </button>
+          </mat-menu>
+        </div>
+        
+      </div> -->
+    
+    </div>
+    
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button matTooltip="Refresh" (click)="poporderList('refresh')"><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; poporderList()" [disabled]="pagenumber <= 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; poporderList()" [(ngModel)]="pagenumber"  min="1" max={{total_page}} >
+          </li>
+          
+          <li>
+            <button mat-button class="right-btn" (click)="start=start+page_limit; poporderList()" [disabled]="pagenumber >= total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="exp_loader">
+      <mat-spinner class="loader">
+        <div><p>Loading....</p></div>
+      </mat-spinner>
+    </div>
+  </div>
+
+  
+  <div class="cs-table cs-table-scroll">
+    <div class="stickyTableHead" style="width: fit-content;">
+      <div class="tab-space">
+        <div class="tabs">
+          <ul>
+            <li><a [ngClass]="{'active': view_tab=='all'}" (click)="filter_order_data('all')">All</a></li>
+            <li><a [ngClass]="{'active': view_tab=='Pending'}" (click)="filter_order_data('Pending')">Pending</a></li>
+            <li><a [ngClass]="{'active': view_tab=='Approved'}" (click)="filter_order_data('Approved')">Approved </a></li>
+            <li><a [ngClass]="{'active': view_tab=='PDispatch'}" (click)="filter_order_data('PDispatch')"> Partially Dispatched </a></li>
+            <li><a [ngClass]="{'active': view_tab=='Dispatch'}" (click)="filter_order_data('Dispatch')">Complete Dispatch</a></li> 
+            <li><a [ngClass]="{'active': view_tab=='Reject'}" (click)="filter_order_data('Reject')">Reject </a></li>
+            <li><a [ngClass]="{'active': view_tab=='Hold'}" (click)="filter_order_data('Hold')">Hold</a></li>
+            <!-- <li><a [ngClass]="{'active': view_tab=='readyToDispatch'}" (click)="filter_order_data('readyToDispatch')">Ready to Dispatch</a></li>
+              <li><a [ngClass]="{'active': view_tab=='Pre Close'}" (click)="filter_order_data('Pre Close')">Pre Closed</a></li> -->
+            </ul>
+          </div>
+        </div>
+        <div class="table-head">
+          <table>
+            <tr>
+              <th class="w150">Date</th>
+              <th >Created By</th>
+              <th class="w200">Type</th>
+              <th class="w120">Order ID</th>
+              <!-- <th class="w200">Company Name</th> -->
+              <th  class="w90 text-center">Total Item</th>
+              <th text-center *ngIf="view_tab=='all'" class="w90 text-center">Status</th>
+              <th class="w120 text-center">Order Points</th>
+            </tr>
+          </table>
+        </div>
+        <div class="table-head bdrt" >
+          <table class="sno-border">
+            <tr>
+              <th class="w150">
+                <div class="th-search-acmt">
+                  <mat-form-field class="cs-input date-column infix-bodr">
+                    <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" (click)="picker.open()" [(ngModel)]="search_val.date_created" (dateChange)="onDate($event)" readonly>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </th>
+              <th>
+                <div class="th-search-acmt">
+                  <mat-form-field class="example-full-width cs-input select-input">
+                    <input matInput placeholder="Created By. . ." name="created_by" [(ngModel)]="search_val.created_by" (keyup.enter)="poporderList()">
+                  </mat-form-field>
+                </div>
+              </th>
+              <th class="w200">
+                <div class="th-search-acmt">
+                  <mat-form-field class="cs-input">
+                    <mat-label>Select Type</mat-label>
+                    <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="search_val.type" (ngModelChange)="poporderList()">
+                      <mat-option disabled="">Select Type</mat-option>
+                      <mat-option value="3">Retail Partner</mat-option>
+                      <mat-option value="1">Channel Partner</mat-option>
+                      <mat-option value="7">Direct Dealer</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </th>
+              <th class="w120">
+                <div class="th-search-acmt">
+                  <mat-form-field class="example-full-width cs-input select-input">
+                    <input matInput placeholder="Order Id. . ." (keyup.enter)="poporderList()" [(ngModel)]="search_val.order_id" >
+                  </mat-form-field>
+                </div>
+              </th>
+              <th class="w90"></th>
+              <th class="w90" *ngIf="view_tab=='all'"></th>
+              <th class="w120"></th>
+              
+            </tr>
+          </table>
+        </div>
+      </div>
+      
+      <div class="table-container mb60">
+        <div class="table-content" style="width: fit-content;">
+          <table>
+            <tr *ngFor="let list of pop_order_list;let i=index;">
+              
+              <td  class="w150">{{list.date_created | date : 'd MMM ,y, hh:mm aa'}}</td> 
+              <td>{{list.created_by_name}}</td>
+              
+              <td class="w200" *ngIf="list.type == '1'">Channel Partner</td>
+              <td class="w200" *ngIf="list.type == '3'">Retail Partner</td>
+              <td class="w200" *ngIf="list.type == '7'">Direct Dealer</td>
+              
+              <td class="w120"><a *ngIf="view_edit" class="link-btn" mat-button routerLink="/pop-n-gift-detail/{{list.id}}" routerLinkActive="active">{{list.order_no}}</a> {{!view_edit?list.order_no:''}}</td>
+              <!-- <td class="w130">Channel Partner</td> -->
+              <!-- <td class="w200">Gada Electronics</td> -->
+              <td class="w90 text-center">{{list.order_total_item}}</td>
+              <td  class="w90 text-center" *ngIf="view_tab=='all'">{{list.order_status && list.order_status!= ''? (list.order_status == 'PDispatch'? 'Partial Dispatch' : list.order_status) :'--' }}</td>
+              <td  class="w120 text-center">{{list.order_total_points}}</td>
+              
+            </tr>
+            
+            <ng-container *ngFor="let lead of skelton">
+              <tr class="sk-loading"  *ngIf="loader">
+                <td class="w150"><div>&nbsp;</div></td>
+                <td><div>&nbsp;</div></td>
+                <td class="w200"><div>&nbsp;</div></td>
+                <td class="w120"><div>&nbsp;</div></td>
+                <!-- <th class="w130">Type</th> -->
+                <!-- <th class="w200">Company Name</th> -->
+                <td  class="w90"><div>&nbsp;</div></td>
+                <td text-center *ngIf="view_tab=='all'" class="w90 text-center"><div>&nbsp;</div></td>
+                <td class="w120"><div>&nbsp;</div></td>
+              </tr>
+            </ng-container>
+            
+          </table>
+          
+        </div>
+      </div>
+      <!-- <div
+        class="search-results"
+        data-infinite-scroll
+        debounce
+        [infiniteScrollDistance]="1"
+        [infiniteScrollUpDistance]="2"
+        [infiniteScrollThrottle]="10"
+        (scrolled)="orderList()"
+        >
+      </div> -->
+    </div>
+    
+    
+    
+    
+    <div class="data-not-available" *ngIf="data_not_found==true">
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            <div class="description">
+              <div class="cs-heading">
+                <h2>Order List</h2>
+              </div>
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>data not Found</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- <div class="no-data" *ngIf="data_not_found==true">
+      <img src="assets/img/no-data.gif" alt="">
+      <p>Data not <span>available !</span></p>
+    </div> -->
+    
+    
+    <!-- <div class="fix-btn">
+      <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+    </div> -->
+  </div>
+  

@@ -1,0 +1,113 @@
+
+<div class="edit-modal" *ngIf="value.type !='discount'">
+    <form #update_basic="ngForm" name="update_basic" (ngSubmit)="(update_basic.valid && update_basic.submitted)?update_user():''" validate>
+        <div mat-dialog-content>
+    <div mat-dialog-content>
+    <p class="heading">Update Address</p>
+    <div class="from-fields">
+        
+        <div class="col s8 pr0">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="Address" name="street" #street="ngModel" value={{data.street}} [(ngModel)]="data.street" [ngClass]="{'has-error' : street.invalid } " ></textarea>
+                <!-- <div class="alert alert-danger" *ngIf="!street.valid && update_basic.submitted">
+                    Address is required....
+                </div> -->
+              </mat-form-field>
+            </div>
+          </div>
+
+        <div class="row">
+          <div class="col s4 pl0">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="permanent_address_state" placeholder="State" #permanent_address_state="ngModel" [(ngModel)]="data.permanent_address_state" [ngClass]="{'has-error' : permanent_address_state.invalid } " required >
+                  <mat-option disabled="">Select State</mat-option>
+                  <mat-option *ngFor="let state_name of state_list"(click)="getDistrict(1)" (keyup.enter)="getDistrict(1)" value="{{state_name}}" >{{state_name}}</mat-option>
+                </mat-select>
+                <div class="alert alert-danger" *ngIf="!permanent_address_state.valid && update_basic.submitted">
+                    State is required....
+                </div>
+              </mat-form-field>
+            </div>                  
+          </div>
+          
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="district_name" placeholder="District" #district_name="ngModel" [(ngModel)]="data.district_name" [ngClass]="{'has-error' : district_name.invalid } ">
+                    <mat-option disabled="">Select District</mat-option>
+                  <mat-option *ngFor="let district_name of district_list"(click)="getCityList(1)" (keyup.enter)="getCityList(1)"value="{{district_name}}">{{district_name}}</mat-option>
+                </mat-select>
+                <!-- <div class="alert alert-danger" *ngIf="!district_name.valid && update_basic.submitted">
+                    District is required....
+                </div> -->
+              </mat-form-field>
+            </div>                  
+          </div>
+          
+          <div class="col s4 pr0">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="city" placeholder="City" #city="ngModel" [(ngModel)]="data.city" [ngClass]="{'has-error' : city.invalid } ">
+                    <mat-option disabled="">Select City</mat-option>
+                  <mat-option *ngFor="let city of city_list"(click)="getPinCodeList(1)"(keyup.enter)="getPinCodeList(1)" value="{{city}}">{{city}}</mat-option>
+                </mat-select>
+                <!-- <div class="alert alert-danger" *ngIf="!city.valid && update_basic.submitted">
+                    City is required....
+                </div> -->
+              </mat-form-field>
+            </div>                  
+          </div>
+      </div>
+      
+      <div class="row mb20">
+          <div class="col s4 pl0">
+              <div class="control-field">
+                <mat-form-field class="cs-input">
+                  <mat-select name="pincode" placeholder="Pincode" #pincode="ngModel"[(ngModel)]="data.pincode" [ngClass]="{'has-error' : pincode.invalid } " >
+                      <mat-option disabled="">Select Pincode</mat-option>
+                    <mat-option *ngFor="let pincode of pinCode_list"value="{{pincode}}">{{pincode}}</mat-option>
+                  </mat-select>
+                  <!-- <div class="alert alert-danger" *ngIf="!pincode.valid && update_basic.submitted">
+                      Pincode is required....
+                  </div> -->
+                </mat-form-field>
+              </div>                  
+            </div>
+
+        <div class="col s4 empty"></div>
+      </div>
+     
+    </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button [mat-dialog-close]="false">Cancel</button>
+      <button mat-button >Save</button>
+    </div>
+    </div>
+
+    <div class="edit-modal" *ngIf="value.type=='discount'">
+        <p class="heading">Update Discount</p>
+        <div mat-dialog-content>
+            
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput placeholder="" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } " required>
+                <div class="alert alert-danger" *ngIf="!user.valid && user.touched">
+                    field is required....
+                </div>
+            </mat-form-field>
+            <mat-form-field class="example-full-width wp100 cs-field">
+                    <input matInput placeholder="" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } " required>
+                    <div class="alert alert-danger" *ngIf="!user.valid && user.touched">
+                        field is required....
+                    </div>
+             </mat-form-field>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div *ngIf="user.valid">
+                <button mat-button (click)="update_user()">Save</button>
+            </div>
+        </div>
+    </div>

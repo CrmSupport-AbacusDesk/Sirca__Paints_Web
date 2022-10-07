@@ -1,0 +1,9 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<!-- <app-login></app-login> -->
+
+<app-header  *ngIf="serve.can_active"></app-header>
+<app-navigation *ngIf="serve.can_active"></app-navigation>
+<app-footer  *ngIf="serve.can_active"></app-footer>
+<!--<app-printpage></app-printpage>-->
+
+<router-outlet ></router-outlet>

@@ -1,0 +1,128 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>Production Plan List</h2>
+      </div>
+    </div>
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="production_plan_list('refresh')"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; production_plan_list()" [disabled]="pagenumber == 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; production_plan_list()" [(ngModel)]="pagenumber"  min="1" max={{total_page}}>
+          </li>
+          
+          <li>
+            <button mat-button class="right-btn"  (click)="start=start+page_limit; production_plan_list()" [disabled]="pagenumber == total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="container-outer padding0">
+    <div class="container">
+      <div class="cs-table cs-table-scroll">
+        <div class="stickyTableHead" style="width: fit-content;">
+          <div class="table-head">
+            <table>
+              <tr>
+                <th class="w20">S.No.</th>
+                <th class="w150">Product Description</th>
+                <th class="w150 text-center">Stock Quantity</th>
+                <th class="w150 text-center">Order Quantity</th>
+                <th class="w130 text-center">Balance Quantity</th>
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+            <table>
+              <tr>
+                <th class="w20"></th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Category / Sub Category / Product Name / Code. . ." name="product_name" [(ngModel)]="search_data.product_name" (keyup.enter)="production_plan_list()">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150"></th>
+                <th class="w150"></th>
+                <th class="w130"></th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <div class="table-container" style="width: fit-content;">
+          <div class="table-content">
+            <table>
+              <tr *ngFor="let product_data of production_plan_product_list; let i = index">
+                <td class="w20">{{i+1}}</td>
+                <td class="w150">{{product_data.category+' - '+product_data.sub_category+' - '+product_data.product_name+' - '+product_data.product_code}}</td>
+                <td class="w150 text-center">{{product_data.total_stock_product_qty}}</td>
+                <td class="w150 text-center">{{product_data.total_order_item_qty}}</td>
+                <td class="w130 text-center">{{product_data.total_balance_qty}}</td>
+              </tr>
+              
+              <ng-container *ngFor="let lead of skelton">
+                <tr class="sk-loading"  *ngIf="loader">
+                  <td class="w20"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w130"><div>&nbsp;</div></td>
+                </tr>
+              </ng-container>
+              
+            </table>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="data-not-available"  *ngIf="data_not_found">
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            
+            <div class="description">
+              <div class="cs-heading">
+                <h2>Production Plan</h2>
+              </div>
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>Data Not Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+</div>

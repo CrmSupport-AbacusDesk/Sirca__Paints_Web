@@ -1,0 +1,633 @@
+<div class="main-container dashboard pt80" ng-init="order_dashboard()">
+    <div class="container-outer">
+        <div class="container">
+            <div class="row top-info">
+                <figure class="col s12 m3">
+                    <div class="box">
+                        <h1>Channel Partner</h1>
+                        <div class="bxe">
+                            <div class="outer">
+                                <div class="inner">
+                                    <h2>
+                                        <a routerLink="/distribution-list">{{count.dist}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bt-bg">
+                            <img src="assets/img/icon-lead.png" alt="" style="width: 150px;">
+                        </div>
+                    </div>
+                </figure>
+                
+                <figure class="col s12 m3">
+                    <div class="box">
+                        <h1>Direct Dealer</h1>
+                        <div class="bxe">
+                            <div class="outer">
+                                <div class="inner">
+                                    <h2>
+                                        <a routerLink="/direct-dealer">{{count.direct_dealer}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bt-bg">
+                            <img src="assets/img/icon-distributer.png" alt="" style="width: 150px;">
+                        </div>
+                    </div>
+                </figure>
+                
+                <figure class="col s12 m2">
+                    <div class="box">
+                        <h1>Check-In (Last 30 Days)</h1>
+                        
+                        
+                        
+                        <div class="bxe">
+                            <div class="outer">
+                                <div class="inner">
+                                    <h2>
+                                        <a routerLink="/checkin">{{count.checkins}}</a>
+                                    </h2>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bt-bg">
+                            <img src="assets/img/icon-retailer.png" alt="" style="width: 150px;">
+                        </div>
+                    </div>
+                </figure>
+                
+                <figure class="col s12 m2">
+                    <div class="box">
+                        <h1>Primary Order </h1>
+                        <div class="bxe">
+                            <div class="outer">
+                                <div class="inner">
+                                    <h2>
+                                        <a routerLink="/order-list">{{count.primary_order}}</a>
+                                        <a routerLink="/order-list"> &#x20B9; {{count.primary_order_total}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bt-bg">
+                            <img src="assets/img/icon-order.png" alt="" style="width: 150px;">
+                        </div>
+                    </div>
+                </figure>
+                
+                <figure class="col s12 m2">
+                    <div class="box">
+                        <h1>Secondary Order </h1>
+                        <div class="bxe">
+                            <div class="outer">
+                                <div class="inner">
+                                    <h2>
+                                        <a routerLink="/secondary-order-list">{{count.secondary_order}}</a>
+                                        <a routerLink="/secondary-order-list"> &#x20B9; {{count.secondary_order_total}}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bt-bg">
+                            <img src="assets/img/icon-order.png" alt="" style="width: 150px;">
+                        </div>
+                    </div>
+                </figure>
+                
+                
+                
+                
+                <div class="col s12" style="display: none;">
+                    <div class="dashboard-counter mt15">
+                        <div class="ds-count" style="background: #fe0000;">
+                            <p> Retail Partner Leads</p>
+                            <ul>
+                                <li>{{count.dealer_lead}}</li>
+                                
+                            </ul>
+                            <!-- <a class="next-content"><i class="material-icons">chevron_right</i></a> -->
+                        </div>
+                        
+                        <div class="ds-count" style="background: #d6621e;">
+                            <p> Plumber Leads</p>
+                            <ul>
+                                <li>{{count.plumber}}</li>
+                            </ul>
+                            <!-- <a class="next-content"><i class="material-icons">chevron_right</i></a> -->
+                        </div>
+                        
+                        <div class="ds-count"  >
+                            <p> Consumer Leads</p>
+                            <ul>
+                                <li>{{count.consumer}}</li>
+                            </ul>
+                            <!-- <a class="next-content"><i class="material-icons">chevron_right</i></a> -->
+                        </div>
+                        
+                        <div class="ds-count" style="background: #d6621e;">
+                            <p> Channel Partner Leads</p>
+                            <ul>
+                                <li>{{count.dr_lead}}</li>
+                            </ul>
+                            <!-- <a class="next-content"><i class="material-icons">chevron_right</i></a> -->
+                        </div>
+                        
+                        <div class="ds-count" style="background: #0063e5;">
+                            <p>Check In</p>
+                            <ul>
+                                <li>{{count.checkins}}</li>
+                            </ul>
+                            <!-- <a class="next-content"><i class="material-icons">chevron_right</i></a> -->
+                        </div>
+                        
+                    </div>
+                    <div class="dashboard-counter mt15">
+                        
+                        <div class="ds-count" style="background: #0063e5;">
+                            <p> Distributors</p>
+                            <ul>
+                                <li>{{count.dist}}</li>
+                                
+                            </ul>
+                            <!-- <a class="next-content"><i class="material-icons">chevron_right</i></a> -->
+                        </div>
+                        
+                        <div class="ds-count" style="background: #ff9104;">
+                            <p> Direct Dealers</p>
+                            <ul>
+                                <li>{{count.direct_dealer}}</li>
+                            </ul>
+                            <!-- <a class="next-content"><i class="material-icons">chevron_right</i></a> -->
+                        </div>
+                        
+                        <div class="ds-count" style="background: #fe0000;" >
+                            <p> Retail Partner</p>
+                            <ul>
+                                <li>{{count.dealer}}</li>
+                            </ul>
+                        </div>
+                        
+                        
+                        <div class="ds-count" style="background: #0063e5;">
+                            <p> Primary Orders</p>
+                            <ul>
+                                <li>{{count.primary_order}}</li>
+                            </ul>
+                            
+                        </div>
+                        
+                        <div class="ds-count" style="background: #ff9104;">
+                            <p> Secondary Orders</p>
+                            <ul>
+                                <li>{{count.secondary_order}}</li>
+                            </ul>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="row mt-15 graph-info">
+                <div class="col s12 figure">
+                    <div style="display: block">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                
+                <div class="col s6">
+                    <div class="ds-box theme-bg h400">
+                        <div class="ds-head">
+                            Area Target & Achievemnt Log
+                        </div>
+                        <div class="">
+                            <div class="row">
+                                <div class="col s12 pt10 pr20 pl20">
+                                    <div class="ds-box green h180">
+                                        <div class="ds-head"> Area Log </div>
+                                        <div class="ds-body">
+                                            <div class="cs-table horizontal-scroll">
+                                                <div class="table-head">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w110"></th>
+                                                            <th class="w150">Count</th>
+                                                            <th class="w130">Value</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr style="cursor: pointer;" (click)="open_targt_vs_achievement_model('total')">
+                                                                <td class="w110">Total Area</td>
+                                                                <td class="w150">{{total_area_detail_data.total_area_count}}</td>
+                                                                <td class="w130">&#8377; {{total_area_detail_data.total_area_value}}</td> 
+                                                            </tr>
+                                                            <tr style="cursor: pointer;" (click)="open_targt_vs_achievement_model('assigned')">
+                                                                <td class="w110">Assigned Area</td>
+                                                                <td class="w150">{{assign_area_detail_data.total_assign_area_count}}</td>
+                                                                <td class="w130">&#8377; {{assign_area_detail_data.total_area_assign_value}}</td> 
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 pl20 pr20">
+                                    <div class="ds-box green h150">
+                                        <div class="ds-head"> Target Vs Achievement ({{overall_target_vs_achievemnt_data.month}} - {{overall_target_vs_achievemnt_data.year}}) </div>
+                                        <div class="ds-body">
+                                            <div class="cs-table horizontal-scroll">
+                                                <div class="table-head">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w110">Target</th>
+                                                            <th class="w150">Achievement</th>
+                                                            <th class="w130">Percentage</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr>
+                                                                <td class="w110">₹ {{overall_target_vs_achievemnt_data.total_dr_assign_target}}</td>
+                                                                <td class="w150">₹ {{overall_target_vs_achievemnt_data.total_dr_assign_achievement}}</td>
+                                                                <td class="w130">{{overall_target_vs_achievemnt_data.total_dr_assign_achievement_in_percentage +' %'}}</td> 
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- <div class="col s4">
+                    <div class=" theme-bg">
+                       
+                        <div class="">
+                            <div class="row">
+                                <div class="col s12">
+                                    <div class="ds-box green h180">
+                                        <div class="ds-head"> Area Target Log </div>
+                                        <div class="ds-body">
+                                            <div class="cs-table horizontal-scroll">
+                                                <div class="table-head">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w110"></th>
+                                                            <th class="w150">Count</th>
+                                                            <th class="w130">Value</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr>
+                                                                <td class="w110">Total Area</td>
+                                                                <td class="w150">{{total_area_detail_data.total_area_count}}</td>
+                                                                <td class="w130">&#8377; {{total_area_detail_data.total_area_value}}</td> 
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="w110">Assigned Area</td>
+                                                                <td class="w150">{{assign_area_detail_data.total_assign_area_count}}</td>
+                                                                <td class="w130">&#8377; {{assign_area_detail_data.total_area_assign_value}}</td> 
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                                <div class="col s12 mt20">
+                                    <div class="ds-box green h150">
+                                        <div class="ds-head"> Target Vs Achievement ({{overall_target_vs_achievemnt_data.month}} - {{overall_target_vs_achievemnt_data.year}}) </div>
+                                        <div class="ds-body">
+                                            <div class="cs-table horizontal-scroll">
+                                                <div class="table-head">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w110">Target</th>
+                                                            <th class="w150">Achievemnt</th>
+                                                            <th class="w130">Percentage</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr>
+                                                                <td class="w110">₹ {{overall_target_vs_achievemnt_data.total_dr_assign_target}}</td>
+                                                                <td class="w150">₹ {{overall_target_vs_achievemnt_data.total_dr_assign_achievement}}</td>
+                                                                <td class="w130">{{overall_target_vs_achievemnt_data.total_dr_assign_achievement_in_percentage +' %'}}</td> 
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                
+                <div class="col s6">
+                    <div class="ds-box theme-bg h400">
+                        <div class="ds-head">
+                            Last 3 day's orders
+                        </div>
+                        <div class="">
+                            <div class="row">
+                                <div class="col s12 m6">
+                                    <div class="ds-box light-pink">
+                                        <div class="ds-head">
+                                            Primary Order
+                                        </div>
+                                        <div class="ds-body h235">
+                                            <div class="cs-information">
+                                                <div class="cs-border" >
+                                                    <div class="cs-order-count">
+                                                        <div class="left-content">
+                                                            <td>{{primary_today_count}}</td>
+                                                            <p>Today's Order</p>
+                                                        </div>
+                                                        <div class="left-content">
+                                                            <td>{{primary_today_sum?primary_today_sum:0}}</td>
+                                                            <p>Amount</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="cs-information">
+                                                <div class="cs-border" >
+                                                    <div class="cs-order-count">
+                                                        <div class="left-content" >
+                                                            <td>{{primary_yesterday_count}}</td>
+                                                            <p>Yesterday's  Order</p>
+                                                        </div>
+                                                        <div class="left-content">
+                                                            <td>{{primary_yesterday_sum?primary_yesterday_sum:0}}</td>
+                                                            <p>Amount</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="cs-information">
+                                                <div class="cs-border" >
+                                                    <div class="cs-order-count">
+                                                        <div class="left-content">
+                                                            <td>{{primary_daybeforeyesterday_count}}</td>
+                                                            <p>Day Before Yesterday's Order</p>
+                                                        </div>
+                                                        <div class="left-content">
+                                                            <td>{{primary_daybeforeyesterday_sum?primary_daybeforeyesterday_sum:0}}</td>
+                                                            <p>Amount</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s12 m6">
+                                    <div class="ds-box purple">
+                                        <div class="ds-head">
+                                            Secondary Order
+                                        </div>
+                                        <div class="ds-body h235">
+                                            <div class="cs-information">
+                                                <div class="cs-border" >
+                                                    <div class="cs-order-count">
+                                                        <div class="left-content">
+                                                            <td>{{secondry_today_count}}</td>
+                                                            <p>Today's Order</p>
+                                                        </div>
+                                                        <div class="left-content">
+                                                            <td>{{secondry_today_sum?secondry_today_sum:0}}</td>
+                                                            <p>Amount</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cs-information">
+                                                <div class="cs-border" >
+                                                    <div class="cs-order-count">
+                                                        <div class="left-content">
+                                                            <td>{{secondry_yesterday_count}}</td>
+                                                            <p>Yesterday'sOrder</p>
+                                                        </div>
+                                                        <div class="left-content">
+                                                            <td>{{secondry_yesterday_sum?secondry_yesterday_sum:0}}</td>
+                                                            
+                                                            <p>Amount</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cs-information">
+                                                <div class="cs-border" >
+                                                    <div class="cs-order-count">
+                                                        <div class="left-content">
+                                                            <td>{{secondry_daybeforeyesterday_count}}</td>
+                                                            <p>Day Before Yesterday's Order</p>
+                                                        </div>
+                                                        <div class="left-content">
+                                                            <td>{{secondry_daybeforeyesterday_sum?secondry_daybeforeyesterday_sum:0}}</td>
+                                                            <p>Amount</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m4">
+                    <div class="ds-box pink">
+                        <div class="ds-head">
+                            Latest Checkin
+                        </div>
+                        <div class="ds-body">
+                            <div class="cs-information">
+                                <div class="cs-border" *ngFor="let row of count.checkin_row">
+                                    <div class="top-srip">
+                                        <ul>
+                                            <li><p><span>Date :</span> {{row.visit_start | date: 'dd/MMM/yy' }}</p></li>
+                                            <li><p><span>Start :</span>{{row.visit_start | date: 'h:mm a' }}</p></li>
+                                            <li *ngIf="row.visit_end!='0000-00-00 00:00:00'"><p><span>End :</span> {{row.visit_end | date: 'h:mm a' }}</p></li>
+                                            <li  *ngIf="row.visit_end=='0000-00-00 00:00:00'"><p><span>End :</span> N.A.</p></li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex-content">
+                                        <div class="alfa-digit" *ngIf="row.d_name!=''">{{row.d_name.charAt(0).toUpperCase()}}</div>
+                                        <div class="content">
+                                            <p ng-click="dr_detail(row.dr_id,row.dr_type)">{{row.d_name}}</p>
+                                            <span>Executive : {{row.user_name}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="remark">
+                                        <strong>Remark : </strong>{{row.remark ? row.remark : 'N.A.'}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <div class="ds-box green">
+                        <div class="ds-head">
+                            Latest Order
+                        </div>
+                        <div class="ds-body">
+                            <div class="heighligt-order">
+                                <p><span class="primary"></span> Primary</p>
+                                <p><span class="secondary"></span>Secondary</p>
+                            </div>
+                            <div class="cs-information">
+                                <div class="cs-border" *ngFor="let row of count.secondaryorder" [ngClass]="row.type == '3' ? 'secondary' : 'primary'">
+                                    <div class="top-srip">
+                                        <ul>
+                                            <li><p><span>Date :</span> {{row.date_created | date: 'MMM d, y'}}</p></li>
+                                            <li class="amount"><p><span>Amount :</span> &#x20B9; {{row.order_total}}</p></li>
+                                        </ul>
+                                    </div>
+                                    <div class="flex-content" style="margin-bottom: 0px;">
+                                        <div class="alfa-digit">{{row.user_name.charAt(0).toUpperCase()}}</div>
+                                        <div class="content">
+                                            <p> {{row.user_name}}</p>
+                                            <p *ngIf="row.type == 3"> Retail Partner : {{row.dr_name}}</p>
+                                            <p *ngIf="row.type == 1"> Distributor : {{row.dr_name}}</p>
+                                            <p *ngIf="row.type == 7"> Direct Dealer : {{row.dr_name}}</p>
+                                            <a routerLink="/order-detail/{{row.id}}"  style="color: #2f00ec;">{{row.order_no}}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m4">
+                    <div class="ds-box orange">
+                        <div class="ds-head">
+                            Executive Information ( {{today_date}} )
+                        </div>
+                        <!-- <div class="ds-body">
+                            <table>
+                                <tr>
+                                    <th class="text-left">Name</th>
+                                    <th class="w80">Check In</th>
+                                    <th class="w50">P.O.</th>
+                                    <th class="w50">S.O.</th>
+                                </tr>
+                                <tr *ngFor="let row of user_list">
+                                    <td>
+                                        <p>{{row.name}}</p>
+                                        <div class="time" *ngIf="row.attendance">
+                                            <p> {{row.attendance.start_time}}</p>
+                                            <p *ngIf="row.attendance.stop_time != '00:00:00'"> - {{row.attendance.stop_time}}</p>
+                                        </div>
+                                        
+                                        <div class="time" *ngIf="row.attendance">
+                                            <p> {{row.attendance}}</p>
+                                        </div>
+                                        
+                                    </td>
+                                    <td class="w80 text-center"><span class="count blue-bg">{{row.check_in}}</span></td>
+                                    <td class="w50 text-center"><span class="count primary-bg">{{row.p_order}}</span></td>
+                                    <td class="w50 text-center"><span class="count secondary-bg">{{row.order}}</span></td>
+                                </tr>
+                            </table>
+                        </div> -->
+                        
+                        
+                        <div class="dss-body">
+                            <div class="dss-body-1" *ngFor="let row of count.user_data">
+                                <div class="dss-head">
+                                    <h3>{{row.name}}</h3>
+                                    <p>{{row.attendance}} days</p>
+                                </div>
+                                
+                                <div class="detail">
+                                    <ul>
+                                        <li>
+                                            <h3>Check In</h3>
+                                            <p><span>{{row.check_in}}</span></p>
+                                        </li>
+                                        
+                                        <li>
+                                            <h3>Primary Order</h3>
+                                            <p><span>{{row.p_order}}</span>  ₹ {{row.pri_order_value}}</p>
+                                        </li>
+                                        
+                                        <li>
+                                            <h3>Secondary Order</h3>
+                                            <p><span>{{row.order}}</span>  ₹ {{row.sec_order_value}}</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col s4">
+                    <div class="side-content">
+                        <div class="heading">
+                            Latest Primary Order
+                        </div>
+                        
+                        <div class="data-item">
+                            <ul>
+                                <li *ngFor="let row of count.primaryorder">#order{{row.id}} || Created By : {{row.user_name}} || Company Name{{row.dr_name}} || Amount : {{row.order_total}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+            </div> -->
+        </div>
+    </div>
+    
+    <div class="h50"></div>    
+</div>

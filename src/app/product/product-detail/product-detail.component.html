@@ -1,0 +1,355 @@
+
+<div class="main-container" >
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/product-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{productDetail.product_name}}</h2>
+        <p class="light">{{productDetail.category}}</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s8 pr10">
+          <div class="sprate-box ">
+            <div class="cs-heading">
+              <h2>PRODUCT DETAIL</h2>
+            </div>
+            <a class="edit-item" (click)="editCategoryDialog('category')"><i class="material-icons">create</i></a>
+            <mat-divider class="left-right-15 mt10"></mat-divider>
+            <div class="details-thumbnail">
+              <div class="row">
+                <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Category</span>
+                    <p>{{productDetail.category}}</p>
+                    <!-- <a matTooltip="Edit Detail" (click)="editCategoryDialog('category')"><i class="material-icons"> create </i></a> -->
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="detail-field">
+                    <span>Sub Category</span>
+                    <p>{{productDetail.sub_category}}</p>
+                    <!-- <a matTooltip="Edit Detail" (click)="editCategoryDialog('category')"><i class="material-icons"> create </i></a> -->
+                  </div>
+                </div>
+                <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Product Code</span>
+                    <p>{{productDetail.cat_no}}</p>
+                    <!-- <a matTooltip="Edit Detail"(click)="openEditDialog(productDetail.cat_no,'cat_no')"><i class="material-icons"> create </i></a> -->
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Product Name</span>
+                    <p>{{productDetail.product_name}}</p>
+                    <!-- <a matTooltip="Edit Detail" (click)="openEditDialog(productDetail.product_name,'product_name')" ><i class="material-icons"> create </i></a> -->
+                  </div>
+                </div>
+                <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Channel Partner Net Price</span>
+                    <p *ngIf="productDetail.cn_net_price"> &#8377;  {{productDetail.cn_net_price}}</p>
+                    <p *ngIf="!productDetail.cn_net_price"> N/A</p>
+                    <!-- <a matTooltip="Edit Detail"(click)="openEditDialog(productDetail.cn_net_price,'Channel Partner Net Price')"><i class="material-icons"> create </i></a> -->
+                  </div>
+                </div>
+                <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Direct Dealer Net Price</span>
+                    <p *ngIf="!productDetail.dd_net_price">   N/A</p>
+                    <p *ngIf="productDetail.dd_net_price"> &#8377;  {{productDetail.dd_net_price}}</p>
+                    <!-- <a matTooltip="Edit Detail"(click)="openEditDialog(productDetail.dd_net_price,'Direct Dealer Net Price')"><i class="material-icons"> create </i></a> -->
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <!-- <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Coupon Value</span>
+                    <p *ngIf="!productDetail.coupon_value">   N/A</p>
+                    <p *ngIf="productDetail.coupon_value"> {{productDetail.coupon_value}}</p>
+                    <a matTooltip="Edit Detail"(click)="openEditDialog(productDetail.coupon_value,'coupon_value')"><i class="material-icons"> create </i></a>
+                  </div>
+                </div> -->
+                
+                <div class="col s3 ">
+                  <div class="detail-field">
+                    <span> Master Packing</span>
+                    <p>{{productDetail.master_packing ? productDetail.master_packing : 'N A'}}</p>
+                  </div>
+                </div>
+                
+                <div class="col s3 ">
+                  <div class="detail-field">
+                    <span>Small Packing</span>
+                    <p>{{productDetail.secondary_packing ? productDetail.secondary_packing : 'N A'}}</p>
+                  </div>
+                </div>
+                
+                <div class="col s3 " *ngIf="(productDetail.last_updated != '0000-00-00 00:00:00')">
+                  <div class="detail-field">
+                    <span>Last Update Date</span>
+                    <p>{{productDetail.last_updated != '0000-00-00 00:00:00'?(productDetail.last_updated | date : 'MMM d, y') :'Not Yet Updated' }}</p>
+                  </div>
+                </div>
+                
+                <div class="col s3 " *ngIf="(productDetail.last_updated_by_name)">
+                  <div class="detail-field">
+                    <span>Last Update By</span>
+                    <p>{{productDetail.last_updated_by_name ? productDetail.last_updated_by_name : 'N A'}}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row" >
+                <div class="col s4 ">
+                  <div class="detail-field">
+                    <span>Price</span>
+                    <p>{{productDetail.price}}</p>
+                  </div>
+                </div>
+                <div class="col s4 " *ngIf="productDetail.stock_status != ''">
+                  <div class="detail-field">
+                    <span>Stock Status</span>
+                    <p>{{productDetail.stock_status}}</p>
+                  </div>
+                </div>
+                <div class="col s4" *ngIf="productDetail.stock_status == 'Out Of Stock'">
+                  <div class="detail-field">
+                    <span>Stock Available Date</span>
+                    <p>in {{productDetail.stock_incoming_days}} Days</p>
+                  </div>
+                </div>
+                
+              </div>
+
+              <div class="row">
+                <div class="col s4" *ngIf="productDetail.stock_status == 'Out Of Stock'">
+                  <div class="detail-field">
+                    <span>Stock Status Updated On</span>
+                    <p>{{productDetail.stock_status_updated_on | date:'dd-MM-yyyy' }}</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="col s4">
+          <div class="sprate-box">
+            <div class="cs-logs">
+              <div class="cs-heading">
+                <h2>PRODUCT IMAGES  </h2>
+                <label>
+                  <input type="file" (change)="insertImage($event)" style="display: none;">
+                  Add New
+                </label>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="logs-outer padding0">
+                <div class="cs-image">
+                  <div class="vertical-img" *ngIf="productDetail?.image_array?.length==1">
+                    <div class="sm-img">
+                      <ul>
+                        <li class="overlay-content" *ngFor="let img of productDetail?.image_array;let i=index">
+                          <img src="{{img.image}}">
+                          <p>{{img.image}}</p>
+                          <a class="close" matRipple matTooltip="Delete" (click)="deleteImage(img.id,i)"><i class="material-icons">delete_sweep</i></a>
+                          <div class="overlay">
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="vertical-img double-img" *ngIf="productDetail?.image_array?.length==2">
+                    <div class="sm-img">
+                      <ul>
+                        <li class="overlay-content" *ngFor="let img of productDetail.image_array;let i=index">
+                          <img src="{{img.image}}">
+                          <p>{{img.image}}</p>
+                          <a class="close" matRipple matTooltip="Delete" (click)="deleteImage(img.id,i)"><i class="material-icons">delete_sweep</i></a>
+                          <div class="overlay">
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="vertical-img multiple-img" *ngIf="productDetail?.image_array?.length > 2">
+                    <div class="sm-img">
+                      <ul>
+                        <li class="overlay-content" *ngFor="let img of productDetail.image_array;let i=index">
+                          <img src="{{img.image}}">
+                          <p>{{img.image}}</p>
+                          <a class="close" matRipple matTooltip="Delete" (click)="deleteImage(img.id,i)"><i class="material-icons">delete_sweep</i></a>
+                          <div class="overlay">
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row" >
+        <!-- <div class="col s8" >
+          <div class="collaps">
+            <div class="collaps-area">
+              <mat-accordion>
+                <mat-expansion-panel *ngFor="let reg of product_state_price">
+                  <mat-expansion-panel-header >
+                    <mat-panel-title>
+                      {{reg.region_name}}
+                      <span class="counter">{{reg.region_data.length}}</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div class="cs-table left-right-20">
+                    <div class="table-head">
+                      <table>
+                        <tr>
+                          <th>State Name</th>
+                          <th class="w200">Price
+                            <div class="place-input" [ngClass]="{'active': reg.isActive}">
+                              <a class="edit" ><i class="material-icons" (click)="reg.isActive=true">create</i></a>
+                              <input type="text" class="fill-value" placeholder="Region Price"(keyup.enter)="update_region_value(reg.region_name,reg.region_price);reg.isActive=false" (keypress)="MobileNumber($event)" value="{{reg.region_price}}" name="region_price" #region_price [(ngModel)]="reg.region_price">
+                              <ul class="action-save">
+                                <li><a><i class="material-icons green-clr" (click)="update_region_value(reg.region_name,reg.region_price);reg.isActive=false">save</i></a></li>
+                                <li><a><i class="material-icons red-clr" (click)="reg.isActive=false">close</i></a></li>
+                              </ul>
+                            </div>
+                          </th>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="table-container">
+                      <div class="table-content">
+                        <table>
+                          <tr *ngFor="let data5 of reg.region_data;let i=index">
+                            <td>{{i+1}} - {{data5.state_name}}</td>
+                            <td class="w200">{{data5.price}}
+                              <div class="place-input" [ngClass]="{'active': data5.isActive}">
+                                <a class="edit" ><i class="material-icons" (click)="data5.isActive=true">create</i></a>
+                                <input type="text" class="fill-value" placeholder="Enter Value"(keyup.enter)="update_product_value(i,data5.state_name,data5.price);data5.isActive=false" (keypress)="MobileNumber($event)" value="{{data5.price}}" name="price" #price [(ngModel)]="data5.price">
+                                <ul class="action-save">
+                                  <li><a><i class="material-icons green-clr" (click)="update_product_value(i,data5.state_name,data5.price);data5.isActive=false">save</i></a></li>
+                                  <li><a><i class="material-icons red-clr" (click)="data5.isActive=false">close</i></a></li>
+                                </ul>
+                              </div>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </div>
+        </div> -->
+        
+        <!-- <div class="col s4">
+          <div class="sprate-box">
+            <div class="cs-logs">
+              <div class="cs-heading">
+                <h2>CHANGE STATUS & ADD COUPON POINTS</h2>
+                <label>
+                  <input (click)="change_scheme_status()" style="display: none;">
+                  EDIT
+                </label>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="status">
+                <ul>
+                  <li>
+                    <h4>Coupon Point</h4>
+                    <p>{{productDetail.scheme_value_points}}</p>
+                  </li>
+                  
+                  <li class="status-{{productDetail.scheme_status}}" >
+                    <h4>Status</h4>
+                    <p>{{productDetail.scheme_status ? productDetail.scheme_status : 'N A'}}</p>
+                  </li>
+                </ul>
+                
+                
+              </div>
+            </div>
+          </div>
+        </div> -->
+        <!-- </div> -->
+        <div class="row">
+          
+          <div class="col s6">
+            <div class="cs-description" style="position: relative;">
+              <h2 style="right: 20px;margin-left: 20px;">description</h2>
+              <a matTooltip="Edit Detail" (click)="openEditDialog(productDetail.description,'description')" style="position: absolute; right: 10px; top: 10px; cursor: pointer"><i class="material-icons"> create </i></a>
+              <p>{{productDetail.desc}}</p>
+            </div>
+          </div>
+          
+        </div>
+        <div class="row mt15">
+          <div class="col s4">
+            <div class="territory-info">
+              <div class="head" [ngClass]="{'active':active.branch==true}">
+                <h2>BRANDS</h2>
+                <!-- <mat-checkbox class="fix-check">&nbsp;</mat-checkbox>
+                  <i class="material-icons search-icon" (click)="toggleterritory('branch','open')"  matRipple>search</i>
+                  <input type="text" placeholder="search..." class="fix-search">
+                  <i class="material-icons close-icon" (click)="toggleterritory('branch','close')" matRipple>clear</i> -->
+                </div>
+                <div class="cs-checkbox">
+                  <div class="checkbox-outer">
+                    <section class="checkbox-inner"  >
+                      <ng-container *ngFor="let list of brandList;let index=index"  >
+                        <mat-checkbox class="check-list" [checked]="list.check" (change)="product_Brand(list.brand_name,index,$event)" value="{{list.brand_name}}">{{list.brand_name}}</mat-checkbox>
+                      </ng-container>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col s4" *ngIf="colorList.length">
+              <div class="territory-info">
+                <div class="head" [ngClass]="{'active':active.color==true}">
+                  <h2>COLORS</h2>
+                  
+                </div>
+                <div class="cs-checkbox">
+                  <div class="checkbox-outer">
+                    <section class="checkbox-inner" >
+                      <ng-container *ngFor="let list of colorList;let index=index">
+                        <mat-checkbox class="check-list" [checked]="list.check" (change)="product_Color(list.color_name,index,$event)" value="{{list.color_name}}">{{list.color_name}}</mat-checkbox>
+                      </ng-container>
+                    </section>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="h50"></div>
+    
+    

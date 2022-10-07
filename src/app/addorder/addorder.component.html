@@ -1,0 +1,616 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button><i class="material-icons"> arrow_right_alt </i></a>
+        </div>
+        <h2>Add Order</h2>
+      </div>
+
+    </div>
+  </div>
+  <div class="container-outer">
+    <div *ngIf="loader">
+      <mat-spinner class="loader">
+        <div>
+          <p>Loading....</p>
+        </div>
+      </mat-spinner>
+    </div>
+    <div class="container">
+      <div class="sprate-box ">
+        <div class="cs-heading">
+          <h2>BASIC INFORMATION</h2>
+          <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+        </div>
+        <mat-divider class="left-right-15 mt10"></mat-divider>
+        <div class="from-fields">
+          <div class="row">
+
+            <div class="col s6">
+              <div class="control-field">
+                <mat-form-field class="cs-input" *ngIf="adddMoreItem">
+                  <mat-label>Select Type</mat-label>
+                  <mat-select name="dr_type" #dr_type="ngModel" [(ngModel)]="search.dr_type" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'"
+                    (ngModelChange)="get_distributor_list(search.dr_type); quotationData = []; data = {}; totalQty = 0; sub_total = 0; dis_amt = 0; net_total=0; grand_total = 0; ">
+                    <mat-option disabled="">Select Type</mat-option>
+                    <mat-option value="1">Channel Partner</mat-option>
+                    <mat-option value="3">Retail Partner</mat-option>
+                    <mat-option value="7">Direct Dealer</mat-option>
+
+
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="cs-input" *ngIf="!adddMoreItem">
+                  <mat-label>Select Type</mat-label>
+                  <mat-select name="dr_type" #dr_type="ngModel" [(ngModel)]="search.dr_type" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'"
+                    (ngModelChange)="get_distributor_list(search.dr_type) ; search.company_name='' ;quotationData=[];data = {}; totalQty = 0; sub_total = 0; dis_amt = 0; net_total=0; grand_total = 0; ">
+                    <mat-option disabled="">Select Type</mat-option>
+                    <mat-option value="1">Channel Partner</mat-option>
+                    <mat-option value="3">Retail Partner</mat-option>
+                    <mat-option value="7">Direct Dealer</mat-option>
+
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+
+            <div class="col s6" *ngIf="search.dr_type">
+              <div class="control-field">
+                <mat-form-field class="cs-input">
+                  <mat-label *ngIf="!search.dr_type">Company Name</mat-label>
+                  <mat-label *ngIf="search.dr_type == '1'">Channel Partner</mat-label>
+                  <mat-label *ngIf="search.dr_type == '3'">Retail Partner</mat-label>
+
+                  <mat-label *ngIf="search.dr_type == '7'">Direct Dealer</mat-label>
+                  <ng-container *ngIf="search.dr_type != '3'">
+
+                    <mat-select name="company_name" #company_name="ngModel" [(ngModel)]="search.company_name" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'">
+                      <div class="search-block">
+                        <input #searchdistributorlist type="text" name="Company_namee" placeholder="Search.."
+                          (ngModelChange)="searchDistributorList($event)" #Company_namee="ngModel"
+                          [(ngModel)]="filter.company_namee">
+                        <!--  -->
+                      </div>
+                      <mat-option *ngFor="let leadData of dr_list"
+                        (click)="get_category(leadData.id);  quotationData = []; data = {}; totalQty = 0; sub_total = 0; dis_amt = 0; net_total=0; grand_total = 0;"
+                        value="{{leadData.id}}">
+                        {{leadData.company_name}}</mat-option>
+                    </mat-select>
+
+                  </ng-container>
+
+                  <ng-container *ngIf="search.dr_type == '3'">
+                    <mat-select name="company_name" #company_name="ngModel" [(ngModel)]="search.company_name" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'"
+                      (ngModelChange)="search.dr_type == '3' ? is_order_exist($event) : openCategory()">
+                      <div class="search-block">
+                        <input type="text" name="Company_namee" placeholder="Search.."
+                          (ngModelChange)="searchDistributorList($event)" #Company_namee="ngModel"
+                          [(ngModel)]="filter.company_namee">
+                        <!--  -->
+                      </div>
+                      <mat-option *ngFor="let leadData of dr_list"
+                        (click)="get_category(leadData.id);  quotationData = []; data = {}; totalQty = 0; sub_total = 0; dis_amt = 0; net_total=0; grand_total = 0;"
+                        value="{{leadData.id}}">
+                        {{leadData.company_name}}</mat-option>
+                    </mat-select>
+
+                  </ng-container>
+
+
+                </mat-form-field>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="row">
+            <div class="col s6" *ngIf="search.dr_type == '3'">
+              <div class="control-field">
+                <mat-form-field class="cs-input">
+
+                  <mat-label>Select Channel Partner</mat-label>
+                  <mat-select name="distributor_id" #distributor_id="ngModel" [(ngModel)]="data.distributor_id" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'">
+                    <div class="search-block">
+                      <input type="text" name="channel_partner" placeholder="Search.."
+                        (input)="get_distributormoreItem(search.company_name);" #channel_partner="ngModel"
+                        [(ngModel)]="filter.channel_partner">
+                      <!--  -->
+                    </div>
+                    <mat-option *ngFor="let leadData of dealer_channel_partner"
+                      (click)="get_category(leadData.id,search.dr_type);  quotationData = []; data = {}; totalQty = 0; sub_total = 0; dis_amt = 0; net_total=0; grand_total = 0;"
+                      value="{{leadData.id}}">
+                      {{leadData.company_name}}</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+            </div>
+            <!-- <div class="row">
+            
+            <div class="col s6" *ngIf="is_dealer_order_exist == true || discount_updated == true">
+              <div class="control-field">
+                <mat-form-field class="cs-input">
+               
+                  <mat-label *ngIf="search.dr_type == '3'">Select Channel Partne</mat-label>
+                  <mat-select name="company_name" #company_name="ngModel" [(ngModel)]="search.company_name">
+                    <div class="search-block">
+                      <input type="text" name="Company_namee" placeholder="Search.." (input)="filter_dr(company_namee)"
+                        #Company_namee="ngModel" [(ngModel)]="company_namee">
+                    </div>
+                    <mat-option *ngFor="let leadData of distributor_list" (click)="get_category(leadData.id)"
+                      value="{{leadData.id}}">
+                      {{leadData.company_name}}</mat-option>
+
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+
+            </div>
+          </div> -->
+          </div>
+
+          <div class="sprate-box pb0 mt10" *ngIf="search.dr_type && search.company_name">
+            <div class="cs-heading">
+              <h2>PRODUCT INFORMATION</h2>
+              <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+            </div>
+            <mat-divider class="left-right-15 mt10"></mat-divider>
+            <div class="from-fields">
+              <div class="row">
+
+                <div class="col s4" *ngIf="search.dr_type">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Category</mat-label>
+                      <mat-select name="Category" #Category="ngModel" [(ngModel)]="data.category">
+                        <div class="search-block">
+                          <input type="text" name="category" placeholder="Search.." #category="ngModel"
+                            (input)="get_category()" [(ngModel)]="filter.category">
+                        </div>
+                        <mat-option *ngIf='!noProduct' disabled="">Select Category</mat-option>
+                        <mat-option *ngIf='noProduct' disabled="">No data Found</mat-option>
+                        <mat-option *ngFor="let productData of productlist"
+                          (click)="get_subcategory(); data.subcategory='Select Sub Category'; product_item_array=[]; show_add_to_list_button=false;  data.product_code=''; data.carton_qty=''; data.qty=''; filter.sub_category=''; data.price='';data.discount='';data.subtotal_discounted='';data.carton_packing='';data.box_packing='';data.unit='';" value="{{productData.category}}">
+                          {{productData.category}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                  </div>
+
+
+                </div>
+
+                <div class="col s4" *ngIf="data.category">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label> Sub Category</mat-label>
+                      <mat-select name="subcategory" placeholder="subcategory" #subcategory="ngModel"
+                        [(ngModel)]="data.subcategory">
+                        <div class="search-block">
+                          <input type="text" name="sub_category" placeholder="Search.." (input)="get_subcategory()"
+                            #sub_category="ngModel" [(ngModel)]="filter.sub_category">
+                        </div>
+                        <mat-option *ngIf='!noSize' disabled="">Select Sub Category</mat-option>
+                        
+                        <mat-option *ngIf='noSize' disabled="">No data Found</mat-option>
+                        <mat-option *ngFor="let sizeData of size_List"
+                          (click)="data.qty = '0';get_product_code(sizeData.id); data.item = ''"
+                          value="{{sizeData.subcategory}}">{{sizeData.sub_category}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+
+
+                </div>
+                <div class="col s4" *ngIf="data.category">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Select Item</mat-label>
+                      <mat-select name="item" #item="ngModel" [(ngModel)]="data.item">
+                        <div class="search-block">
+                          
+                          <!-- <input type="text" name="items" placeholder="Search.." (input)="get_product_code()"
+                            #items="ngModel" [(ngModel)]="filter.items"> -->
+                            <input type="text" name="items" placeholder="Search.." (input)="getProductCodeSearch(filter.items)"
+                            #items="ngModel" [(ngModel)]="filter.items">
+                        </div>
+                        <mat-option *ngIf='!noProduct' disabled="">Select item</mat-option>
+                        <mat-option *ngIf='noProduct' disabled="">No data Found</mat-option>
+                        <mat-option *ngFor="let productData of product_item_array"
+                          (click)="get_product_data(productData);data.qty = '0'; data.carton_qty = '';data.subtotal_discounted = '0.00' ;show_add_list()"
+                          value="{{productData.id}}">{{productData.product_name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+
+                  </div>
+
+
+                </div>
+              </div>
+
+
+              <div class="row" *ngIf="data.item">
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label> Product Code</mat-label>
+                      <input matInput type="text" placeholder="Type Here ..." name="product_code"
+                        #product_code="ngModel" [(ngModel)]="data.product_code" readonly>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col s4">
+
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Carton QTY</mat-label>
+                      <input style="background-color: #fbe0ea;" matInput type="number" (keyup)="calculate_amt('cartoon_qty');show_add_list()"
+                        onkeypress="return event.charCode>=48 && event.charCode<=57 || event.charCode == 46"
+                        placeholder="Type Here..." name="carton_qty" #carton_qty="ngModel"
+                        [(ngModel)]="data.carton_qty">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- (ngModelChange)="data.amount=conInt(data.qty)*conFloat(data.price); data.gst = (conInt(data.amount) * conInt(data.gstPercentage) / 100)"  -->
+
+                </div>
+                
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>QTY</mat-label>
+                      <input style="background-color:#fbe0ea;" matInput type="number" (keyup)="data.carton_qty = ''; calculate_amt('qty');show_add_list()" 
+                        placeholder="Type Here ..." name="qty" #qty="ngModel" [(ngModel)]="data.qty">
+                    </mat-form-field>
+                  </div>
+
+
+
+                </div>
+              </div>
+
+              <div class="row" *ngIf="data.item">
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Price</mat-label>
+                      <input matInput type="text"
+                        onkeypress="return event.charCode>=48 && event.charCode<=57 || event.charCode == 46"
+                        placeholder="Type Here ..." name="price" #price="ngModel" [(ngModel)]="data.price" readonly>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Discount in Price List (%)</mat-label>
+                      <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57"
+                        placeholder="Type Here ..." name="discount" #discount="ngModel" [(ngModel)]="data.discount"
+                        required readonly>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="col s4">
+                  <div class="control-field">
+                    <div class="df">
+                      <div class="wp100">
+                        <mat-form-field class="cs-input">
+                          <mat-label>Amount</mat-label>
+                          <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57 "
+                            placeholder="Type Here ..." name="subtotal_discounted" #subtotal_discounted="ngModel"
+                            [(ngModel)]="data.subtotal_discounted" readonly>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+
+              <div class="row" *ngIf="data.item">
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Unit</mat-label>
+                      <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57"
+                        placeholder="Type Here ..." name="unit" #unit="ngModel" [(ngModel)]="data.unit" required
+                        readonly>
+                    </mat-form-field>
+                  </div>
+
+
+
+                </div>
+
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Box Packing</mat-label>
+                      <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57"
+                        placeholder="Type Here ..." name="box_packing" #box_packing="ngModel"
+                        [(ngModel)]="data.box_packing" required readonly>
+                    </mat-form-field>
+                  </div>
+
+
+
+                </div>
+                <div class="col s4">
+                  <div class="control-field">
+                    <div class="df">
+                      <div class="wp100">
+                        <mat-form-field class="cs-input">
+                          <mat-label>Carton Packing</mat-label>
+                          <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57 "
+                            placeholder="Type Here ..." name="carton_packing" #carton_packing="ngModel"
+                            [(ngModel)]="data.carton_packing" readonly>
+
+                        </mat-form-field>
+                      </div>
+
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+
+
+
+              <div class="row">
+                <div class="col s10"></div>
+                <div class="col s2 mt50">
+                  <button mat-raised-button class="add-item ml9"
+                    *ngIf="show_add_to_list_button && (data.qty > 0 || data.carton_qty > 0)"
+                    style="display: flex;color: white;background: green;" (click)="addToList(data.qty)"
+                    type="submit">Add to list</button>
+                </div>
+
+
+              </div>
+
+
+
+
+
+            </div>
+          </div>
+
+          <div class="sprate-box pb0 mt10" *ngIf="quotationData.length>0">
+            <div class="cs-heading">
+              <h2>Order Payment Information</h2>
+              <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+            </div>
+            <mat-divider class="left-right-15 mt10"></mat-divider>
+            <div class="from-fields">
+
+              <div class="row" *ngIf="quotationData.length>0">
+                <div class="col s4">
+                  <div class="control-field">
+                    <mat-form-field class="cs-input">
+                      <mat-label>Payment Status</mat-label>
+                      <mat-select name="payment" #payment="ngModel" [(ngModel)]="userDetail.payment" required>
+                        <mat-option disabled="">Select Payment Type</mat-option>
+                        <mat-option value="Advance Payment">Advance Payment</mat-option>
+                        <mat-option value="After 10 days of dispatch">After dispatch</mat-option>
+                        <mat-option value="After 30 days of dispatch at the time of add order">After 30 days of
+                          dispatch
+                          at the time of add order</mat-option>
+
+
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+
+                </div>
+
+                <div class="col s8">
+                  <div class="from-fields">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <textarea style="height: 50px;" matInput placeholder="Remark" name="order_remark"
+                          #order_remark="ngModel" [(ngModel)]="userDetail.order_remark"></textarea>
+                      </mat-form-field>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-table left-right-10 mt10" *ngIf="quotationData.length>0 ">
+            <div class="sticky-head">
+              <div class="table-head border-top">
+                <table>
+                  <tr>
+                    <th class="w50 text-center">S. No</th>
+                    <th class="">Product Description</th>
+                    <!-- <th class="w100">Product Code</th> -->
+                    <th class="w50 text-center">Qty</th>
+                    <th class="w120 text-right">Box Packing</th>
+                    <th class="w120 text-right">Cartoon Packing</th>
+                    <th class="w100 text-right">Price</th>
+                    <th class="w100 text-right">Discount Price List (%)</th>
+                    <th class="w100 text-right">Price After Disc.</th>
+
+                    <th class="w50 text-center">Action</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let QData of quotationData ; let i = index">
+                    <td class="w50 text-center">{{i+1}}</td>
+                    <td class="">{{QData.category}}/{{QData.product_code}}/{{QData.productName}}</td>
+                    <!-- <td class="w100">{{QData.product_code}}</td> -->
+                    <td class="w50 text-center">{{QData.qty}}</td>
+                    <td class="w120 text-right">{{QData.box_packing}} </td>
+                    <td class="w120 text-right">{{QData.carton_packing}}</td>
+                    <td class="w100 text-right">&#x20B9; {{QData.price |number:'1.2-2'}} /-</td>
+                    <td class="w100 text-right">&#x20B9; {{QData.discount_amount |number:'1.2-2'}} /- ({{QData.discount_percent}}%)</td>
+                    <td class="w100 text-right">&#x20B9; {{QData.discountedAmount |number:'1.2-2'}} /-</td>
+
+                    <!-- <td class="w120 text-right">&#x20B9; {{QData.total_amount |number:'1.2-2'}} /-</td> -->
+                    <td class="w50 text-center">
+                      <button mat-button class="delete-mat"><i class="material-icons red-clr"
+                          (click)="deleteQuotationDetail(i,QData.qty)">delete_sweep</i></button>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pd-left-right16" *ngIf=" data.stock_status=='Out Of Stock' && data.stock_incoming_days && data.stock_incoming_days!='' && data.stock_incoming_days!='0000-00-00'">
+          <div class="mt10">
+            <div class="three_boxes">
+              <div class="stock-alert" ngClass="{{data.stock_status == 'Out Of Stock' ? 'red' : 'green'}}"
+                *ngIf="data.stock_status=='Out Of Stock'">
+                <p>STOCK AVAILABLE : {{'on '+ data.stock_incoming_days | date:' d MMM , y'}}
+                  {{date_diff(today_date,data.stock_incoming_days) != -1 ?
+                  '('+date_diff(today_date,data.stock_incoming_days)+' Days)' :''}}</p>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sprate-box pb0 mt10" *ngIf="quotationData.length>0 ">
+          <div class="cs-heading">
+            <h2>TRANSPORT INFORMATION</h2>
+            <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+          </div>
+          <mat-divider class="left-right-15 mt10"></mat-divider>
+          <div class="from-fields">
+            <div class="row">
+              <div class="col s4">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-label>Private Marks</mat-label>
+                    <input matInput type="text" placeholder="private marka...." name="private_marka"
+                      #private_marka="ngModel" [(ngModel)]="userDetail.private_marka">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-label>Transport Name</mat-label>
+                    <input matInput type="text" placeholder="transport name..." name="transport_name"
+                      #transport_name="ngModel" [(ngModel)]="userDetail.transport_name">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-label>Where to book</mat-label>
+                    <input matInput type="text" placeholder="Where to book ..." name="where_to_book"
+                      #where_to_book="ngModel" [(ngModel)]="userDetail.where_to_book">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-label>Transport Mobile</mat-label>
+                    <input matInput type="text" min="0" maxlength="10" minlength="10"
+                      onkeypress="return event.charCode>=48 && event.charCode<=57 || event.charCode == 46"
+                      placeholder="Mobile No...." name="transport_mobile" #transport_mobile="ngModel"
+                      [(ngModel)]="userDetail.transport_mobile">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col s4">
+                <div class="control-field">
+                  <mat-form-field class="cs-input">
+                    <mat-label>Transport Address</mat-label>
+                    <input matInput type="text" placeholder="Transport Address...." name="transport_address"
+                      #transport_address="ngModel" [(ngModel)]="userDetail.transport_address">
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+
+
+
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="left-auto mr30" *ngIf="quotationData.length>0 ">
+          <div class="row">
+            <div class="col s8"></div>
+            <div class="col s4">
+              <div class="invoice-table">
+
+                <div class="summary summary mt35 pl45">
+                  <table>
+                    <tr>
+                      <td>Total Qty</td>
+                      <td class="text-center"><strong>:</strong></td>
+                      <td class="text-right"><strong>{{totalQty}}</strong></td>
+                    </tr>
+                    <!-- <tr>
+                <td>Total Gst Amount</td>
+                <td class="text-center"><strong>:</strong></td>
+                <td class="text-right"><strong>&#x20B9; {{totalGST_total}}/-</strong></td>
+              </tr> -->
+                    <tr>
+                      <td>Sub Total</td>
+                      <td class="text-center"><strong>:</strong></td>
+                      <td class="text-right"><strong>&#x20B9; {{sub_total | number : '1.2-2'}}/-</strong></td>
+                    </tr>
+                    <tr>
+                      <td>Discount in Price List</td>
+                      <td class="text-center"><strong>:</strong></td>
+                      <td class="text-right"><strong>&#x20B9; {{dis_amt | number : '1.2-2'}}/-</strong></td>
+                    </tr>
+
+                    <tr>
+                      <td>Net Total</td>
+                      <td class="text-center"><strong>:</strong></td>
+                      <td class="text-right"><strong>&#x20B9; {{net_total | number : '1.2-2'}}/-</strong></td>
+                    </tr>
+                    <tr>
+                      <td>Grand Total</td>
+                      <td class="text-center"><strong>:</strong></td>
+                      <td class="text-right"><strong>&#x20B9; {{grand_total| number : '1.2-2'}}/-</strong></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <div class="cs-btn fixedd mt32 text-right">
+                    <div class="in-btn">
+                      <button mat-raised-button color="accent" type="button" [disabled]="quotationData.length == 0"
+                        (click)="(quotationData.length == 0)?'': save_orderalert('submit'); userDetail.order_status = 'Pending'">Save</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

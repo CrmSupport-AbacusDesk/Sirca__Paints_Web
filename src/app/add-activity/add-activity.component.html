@@ -1,0 +1,465 @@
+<div class="main-container">
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+        <div>
+            <p>Loading....</p>
+        </div>
+    </mat-spinner>
+</div>
+  <div class="middle-container">
+    <div class="page-heading">
+
+      <!-- <img src="assets/img/leads_icon.svg" class="h-icon"> -->
+      <div class="heading-text">
+        <div class="back-btn">
+          <a mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2 style="margin-left:30px">Activity</h2>
+        <p style="margin-left:30px">Add New Activity</p>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container-outer">
+    <div class="container tab-container">
+      <div class="row">
+        <form name="detail" #f="ngForm" (ngSubmit)=" f.valid && submitDetail()">
+          <div class="col s12">
+            <div class="sprate-box">
+              <div class="cs-heading">
+                <!-- <h2>{{data.user_type}}</h2> -->
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <p>Add Activity</p>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+
+
+              <div class="row mb20">
+                <!-- <div class="col">
+                  <div class="from-fields">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select name="dr_network_type" placeholder="Network type" [(ngModel)]="data.dr_network_type"
+                          #dr_network_type="ngModel" [ngClass]="{'has-error' : dr_network_type.invalid } "
+                          required=true>
+                          <mat-option disabled value="">Select Network Type</mat-option>
+                          <mat-option value="Dr">Distributor Network</mat-option>
+
+                          <mat-option value="Lead">Lead Network</mat-option>
+                        </mat-select>
+                        <div class="alert alert-danger" *ngIf="!dr_network_type.valid && f.submitted">
+                          Network Type is required...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div> -->
+
+
+                <div class="col">
+                  <div class="from-fields">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select name="activity_type" placeholder="Activity type" [(ngModel)]="data.activity_type"
+                          (ngModelChange)="get_disposition_type()" #activity_type="ngModel"
+                          [ngClass]="{'has-error' : activity_type.invalid } " required=true>
+                          <mat-option disabled value="">Activity Type</mat-option>
+                          <mat-option value="Mail">Mail</mat-option>
+                          <mat-option value="Call">Call</mat-option>
+                          <mat-option value="SMS">SMS</mat-option>
+
+                        </mat-select>
+                        <div class="alert alert-danger" *ngIf="!activity_type.valid && f.submitted">
+                          Activity Type is required...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col" *ngIf="data.activity_type == 'Call'">
+                  <div class="from-fields">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select name="disposition_type" placeholder="Diposition type"
+                          [(ngModel)]="data.disposition_type" #disposition_type="ngModel"
+                          (ngModelChange)="get_disposition_type_name()"
+                          [ngClass]="{'has-error' : disposition_type.invalid } " required=true>
+                          <mat-option disabled value="">Select Disposition Type<strong>*</strong></mat-option>
+                          <mat-option *ngFor="let type of disposition_types" value="{{type.disposition_type}}">
+                            {{type.disposition_type_value}}</mat-option>
+
+
+                        </mat-select>
+                        <div class="alert alert-danger" *ngIf="!disposition_type.valid && f.submitted">
+                          Disposition Type is required...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="from-fields" *ngIf="data.disposition_type && data.activity_type == 'Call'">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select name="disposition_name" placeholder="Diposition Name"
+                          [(ngModel)]="data.disposition_name" #disposition_name="ngModel"
+                          [ngClass]="{'has-error' : disposition_name.invalid } " required=true>
+                          <mat-option disabled value="">Select Disposition Name<strong>*</strong></mat-option>
+                          <mat-option *ngFor="let name of disposition_names" value="{{name.disposition_name}}">
+                            {{name.disposition_name}}</mat-option>
+
+
+                        </mat-select>
+                        <div class="alert alert-danger" *ngIf="!disposition_name.valid && f.submitted">
+                          Disposition Name is required...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+
+
+              </div>
+
+              <ng-container *ngIf="dr_type && comes_from == 'dr_detail_page'">
+                <div class="row mb0">
+                  <div class="col s3">
+                    <div class="from-fields">
+  
+                      <div class="control-field">
+                        <mat-form-field class="cs-input" [ngClass]="{'has-error' : product_quality.invalid } ">
+                          <input matInput placeholder="Product Quality" name="product_quality" #product_quality="ngModel"
+                            [(ngModel)]="data.product_quality">
+                          <!-- <div class="alert alert-danger" *ngIf="!product_quality.valid && f.submitted">
+                            Product Quality is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col s3">
+                    <div class="from-fields">
+  
+                      <div class="control-field">
+                        <mat-form-field class="cs-input" [ngClass]="{'has-error' : working_tenure.invalid } ">
+                          <input matInput placeholder="Working Tenure" name="working_tenure" #working_tenure="ngModel"
+                            [(ngModel)]="data.working_tenure" >
+                          <!-- <div class="alert alert-danger" *ngIf="!working_tenure.valid && f.submitted">
+                            Working Tenure is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col s3">
+                    <div class="from-fields">
+  
+                      <div class="control-field">
+                        <mat-form-field class="cs-input" [ngClass]="{'has-error' : purchase_frequency.invalid } ">
+                          <input matInput placeholder="Purchase Frequency" name="purchase_frequency"
+                            #purchase_frequency="ngModel" [(ngModel)]="data.purchase_frequency" >
+                          <!-- <div class="alert alert-danger" *ngIf="!purchase_frequency.valid && f.submitted">
+                            Purchase Frequency is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col s3">
+                    <div class="from-fields">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input" [ngClass]="{'has-error' : purchase_frequency.invalid } ">
+                          <input matInput placeholder="Segments in Gravity" name="segments_in_gravity"
+                            #segments_in_gravity="ngModel" [(ngModel)]="data.segments_in_gravity" >
+                          <!-- <div class="alert alert-danger" *ngIf="!segments_in_gravity.valid && f.submitted">
+                            Segments in Gravity is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row mb0">
+                  <div class="col s3">
+                    <div class="from-fields">
+  
+                      <div class="control-field">
+                        <mat-form-field class="cs-input" [ngClass]="{'has-error' : why_not_all_segments_of_gravity.invalid } ">
+                          <input matInput placeholder="Why not all segments of Gravity" name="why_not_all_segments_of_gravity" #why_not_all_segments_of_gravity="ngModel"
+                            [(ngModel)]="data.why_not_all_segments_of_gravity" >
+                          <!-- <div class="alert alert-danger" *ngIf="!why_not_all_segments_of_gravity.valid && f.submitted">
+                            Why not all segments of Gravity is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col s3">
+                    <div class="from-fields">
+  
+                      <div class="control-field">
+                        <mat-form-field class="cs-input" [ngClass]="{'has-error' : dealing_in_how_many_brands.invalid } ">
+                          <input matInput placeholder="Dealing in how many brands" name="dealing_in_how_many_brands" #dealing_in_how_many_brands="ngModel"
+                            [(ngModel)]="data.dealing_in_how_many_brands" >
+                          <!-- <div class="alert alert-danger" *ngIf="!dealing_in_how_many_brands.valid && f.submitted">
+                            Dealing in how many brands is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col s3">
+                    <div class="from-fields">
+  
+                      <div class="control-field">
+                        <mat-form-field class="cs-input" [ngClass]="{'has-error' : most_selling_brands.invalid } ">
+                          <input matInput placeholder="Most Selling Brands" name="most_selling_brands"
+                            #most_selling_brands="ngModel" [(ngModel)]="data.most_selling_brands" >
+                          <!-- <div class="alert alert-danger" *ngIf="!most_selling_brands.valid && f.submitted">
+                            Most Selling Brands is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col s3">
+                    <div class="from-fields">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input">
+                          <mat-select name="status" placeholder="Status" [(ngModel)]="data.status" #status="ngModel" [ngClass]="{'has-error' : status.invalid } " >
+                            <mat-option disabled value="">Select Status</mat-option>
+                            <mat-option value="satisfied">Satisfied</mat-option>
+                            <mat-option value="unsatisfied">Unstatisfied</mat-option>
+                            
+  
+                          </mat-select>
+                          <!-- <div class="alert alert-danger" *ngIf="!activity_type.valid && f.submitted">
+                            Status is required...
+                          </div> -->
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+            
+
+              <div class="row">
+                <div class="col s12">
+                  <div class="from-fields">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <textarea style="height: 100px;" matInput placeholder="Description" name="description"
+                          #description="ngModel" [(ngModel)]="data.description"
+                          [ngClass]="{'has-error' : description.invalid } " required></textarea>
+                      </mat-form-field>
+                      <div class="alert alert-danger" *ngIf="!description.valid && f.submitted">
+                        Description is required.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <mat-divider class="left-right-15 mt10 mb10"></mat-divider>
+              <div class="cs-heading">
+                <h2>
+                  <mat-checkbox class="select-check" (change)="show_fileds($event)">Do You Want To Create Follow Up ?
+                  </mat-checkbox>
+
+                </h2>
+                <!-- <h2>BASIC INFORMATION</h2> -->
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <ng-container>
+                <div class="from-fields">
+
+
+
+
+                </div>
+                <!-- <div class="row">
+  
+                    <div class="col s6 ">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input">
+                          <textarea matInput placeholder="Address" name="address" #address="ngModel"
+                            [(ngModel)]="data.address" class="h100"></textarea>
+                        
+                        </mat-form-field>
+                      </div>
+                    </div>
+  
+                    <div class="col s6">
+                      <div class="row mb0">
+                        <div class="col s6">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input">
+                              <mat-select name="state" placeholder="State" #state="ngModel" [(ngModel)]="data.state"
+                                [ngClass]="{'has-error' : state.invalid } "
+                                [required]="data.user_type && data.user_type !='' && data.user_type != 'Ware House'">
+  
+                                <mat-option disabled="">Select State</mat-option>
+                                <mat-option *ngFor="let state of state_list" (keyup.enter)="getDistrict()"
+                                  (click)="getDistrict()" value="{{state}}">{{state}}</mat-option>
+  
+                              </mat-select>
+                              <div class="alert alert-danger" *ngIf="!state.valid && f.submitted">
+                                State is required...
+                              </div>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="col s6">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input">
+                              <mat-select name="district" placeholder="District" #distric="ngModel"
+                                [(ngModel)]="data.district" [ngClass]="{'has-error' : distric.invalid } "
+                                [required]="data.user_type && data.user_type !='' && data.user_type != 'Ware House'">
+                         
+                                <mat-option disabled="">Select District</mat-option>
+                                <mat-option *ngFor="let district of district_list" (keyup.enter)="getCityList()"
+                                  (click)="getCityList()" value="{{district}}">{{district}}</mat-option>
+  
+                              </mat-select>
+                              <div class="alert alert-danger" *ngIf="!distric.valid && f.submitted">
+                                District is required...
+                              </div>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div class="row mb0">
+  
+                        <div class="col s6 pr0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input">
+                              <mat-select name="city" placeholder="City" #city="ngModel" [(ngModel)]="data.city"
+                                [ngClass]="{'has-error' : city.invalid } "
+                                [required]="data.user_type && data.user_type !='' && data.user_type != 'Ware House'">
+                              
+                                <mat-option disabled="">Select City</mat-option>
+                                <mat-option *ngFor="let city of city_list" value="{{city}}">{{city}}</mat-option>
+  
+                              </mat-select>
+                              <div class="alert alert-danger" *ngIf="!city.valid && f.submitted">
+                                City is required...
+                              </div>
+                            </mat-form-field>
+                          </div>
+                        </div>
+  
+                        <div class="col s6 pl0">
+                          <div class="control-field">
+                            <mat-form-field class="cs-input" [ngClass]="{'has-error' : product_quality.invalid } ">
+                              <input matInput name="pincode" placeholder="Pincode" #pincode="ngModel" maxlength="6"
+                                [(ngModel)]="data.pincode">
+                              <div class="alert alert-danger" *ngIf="!pincode.valid && f.submitted">
+                                Pincode is required...
+                              </div>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> -->
+
+              </ng-container>
+              <ng-container
+                *ngIf="data.activity_type && data.activity_type == 'Call' && data.disposition_type && showFileds ">
+                <div class="from-fields cs-flex">
+                  <div class="control-field mt10 mr10">
+                    <mat-form-field class="cs-input date-column infix-bodr">
+                      <input matInput [matDatepicker]="picker1" placeholder="Follow Up Date" name="followup_date"
+                        [(ngModel)]="data.followup_date">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="control-field mr10">
+                    <mat-form-field class="cs-input">
+                      <mat-select name="followup_type" placeholder="Followup Type" [(ngModel)]="data.followup_type"
+                        #followup_type="ngModel" [ngClass]="{'has-error' : followup_type.invalid } " required=true>
+                        <mat-option disabled value="">Follow Up Type<strong>*</strong></mat-option>
+                        <mat-option value="Call">Call</mat-option>
+
+
+                      </mat-select>
+                      <div class="alert alert-danger" *ngIf="!followup_type.valid && f.submitted">
+                        Follow Up Type is required...
+                      </div>
+                    </mat-form-field>
+                  </div>
+                  <div class="control-field mr10">
+
+
+                    <!-- <button mat-button (click)="open()">Time</button> -->
+                    <input atp-time-picker type="time" value={{data.followup_time}} [(ngModel)]="data.followup_time" #followup_time="ngModel" style="width: 200px; height: 40px; margin-top: 20px;" name="followup_time" />
+
+                  </div>
+
+
+                </div>
+
+
+
+
+              </ng-container>
+              <ng-container *ngIf=" data.activity_type != 'Call' && showFileds">
+                <div class="from-fields cs-flex">
+                  <div class="control-field mt10 mr10">
+                    <mat-form-field class="cs-input date-column infix-bodr">
+                      <input matInput [matDatepicker]="picker1" placeholder="Follow Up Date" name="followup_date"
+                        [(ngModel)]="data.followup_date">
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                  <div class="control-field mr10">
+                    <mat-form-field class="cs-input">
+                      <mat-select name="followup_type" placeholder="Followup Type" [(ngModel)]="data.followup_type"
+                        #followup_type="ngModel" [ngClass]="{'has-error' : followup_type.invalid } " required=true>
+                        <mat-option disabled value="">Follow Up Type<strong>*</strong></mat-option>
+                        <mat-option value="Call">Call</mat-option>
+
+
+                      </mat-select>
+                      <div class="alert alert-danger" *ngIf="!followup_type.valid && f.submitted">
+                        Follow Up Type is required...
+                      </div>
+                    </mat-form-field>
+                  </div>
+                  <div class="control-field mr10">
+
+                    <!-- <button mat-button (click)="open()">Time</button> -->
+                    <input atp-time-picker value={{data.followup_time}} type="time" [(ngModel)]="data.followup_time"
+                      #followup_time="ngModel" style="width: 200px; height: 40px; margin-top: 20px;"
+                      name="followup_time" />
+                  </div>
+
+                </div>
+
+
+
+
+              </ng-container>
+            </div>
+
+            <div class="col s12">
+              <div class="cs-btn fixedd mt32 text-right">
+                <div class="in-btn">
+
+                  <button mat-raised-button color="accent">Save</button>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>

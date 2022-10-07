@@ -1,0 +1,105 @@
+
+<div class="main-container" >
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>Add Pop Scheme</h2>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+  <form #f="ngForm" (ngSubmit)=" f.valid && submit_pop_scheme()" >
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s2 empty"> </div>
+          <div class="col s8">
+            <div class="sprate-box">
+              <div class="cs-heading">
+                <h2>ADD SCHEME DETAILS</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="from-fields">
+                <div class="row">
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="scheme_data.type" [ngClass]="{'has-error' : type.invalid } " required [disabled]="this.scheme_id != '0'">
+                          <mat-option disabled="">Select Type</mat-option>
+                          <mat-option value="3">Retail Partner</mat-option>
+                          <mat-option value="1">Channel Partner</mat-option>
+                          <mat-option value="7">Direct Dealer</mat-option>
+                          
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Gift Scheme ( %)" onkeypress="return event.charCode>=48 && event.charCode<=57 || event.charCode == 46"  name="scheme_percentage" #scheme_percentage="ngModel" [(ngModel)]="scheme_data.scheme_percentage" [ngClass]="{'has-error' : scheme_percentage.invalid } " required>
+                        <mat-autocomplete #auto="matAutocomplete">
+                        </mat-autocomplete>
+                      </mat-form-field>
+                    </div>
+                  </div> 
+                </div>
+
+                <div class="row">
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <!-- <mat-form-field class="cs-input">
+                        <input  type="date" name="start_scheme_date"  matInput placeholder="Scheme Start Date" #start_scheme_date="ngModel" [min]="today" [(ngModel)]="scheme_data.start_scheme_date" [ngClass]="{'has-error' : start_scheme_date.invalid } " required >
+                    </mat-form-field> -->
+
+                    <mat-form-field class="cs-input date-column infix-bodr">
+                      <input matInput [matDatepicker]="picker" placeholder="Scheme Start Date" name="start_scheme_date" #start_scheme_date="ngModel" [min]="today" (click)="picker.open()"  [(ngModel)]="scheme_data.start_scheme_date" (dateChange)="onDate($event,'start_scheme_date');scheme_data.end_scheme_date = ''" [ngClass]="{'has-error' : start_scheme_date.invalid } " required readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    
+                    </div>
+                  </div>
+                  <div class="col s6 pl0">
+                    <div class="control-field">
+                      <!-- <mat-form-field class="cs-input">
+                        <input type="date"  name="end_scheme_date"  matInput placeholder="Scheme End Date" #end_scheme_date="ngModel" [min]="scheme_data.start_scheme_date" [(ngModel)]="scheme_data.end_scheme_date" [ngClass]="{'has-error' : end_scheme_date.invalid } " required >
+                    </mat-form-field> -->
+
+                    <mat-form-field class="cs-input date-column infix-bodr">
+                      <input matInput [matDatepicker]="picker2" placeholder="Scheme End Date" name="end_scheme_date" #end_scheme_date="ngModel" [min]="scheme_data.start_scheme_date" (click)="picker2.open()" [(ngModel)]="scheme_data.end_scheme_date" (dateChange)="onDate($event,'end_scheme_date')" [ngClass]="{'has-error' : end_scheme_date.invalid } " required readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                      <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+
+
+                    </div>
+                  </div> 
+                </div>
+
+              </div>
+            </div>
+            <div class="cs-btn fixedd mt32 text-right">
+              <div class="in-btn mr25">
+                <button *ngIf="this.scheme_id == '0'" mat-raised-button color="accent">Save</button>
+                <button *ngIf="this.scheme_id != '0'" mat-raised-button color="accent">Update</button>
+              </div>
+            </div>
+          </div>
+          <div class="col s2 empty"> </div>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</div>

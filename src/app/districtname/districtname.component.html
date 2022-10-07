@@ -1,0 +1,125 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button ><i
+           (click)="goback()" class="material-icons">arrow_right_alt</i></a>
+          </div>
+          <img src="assets/img/report.svg" class="h-icon h20">
+          <span> ( {{state}} )</span>
+          
+          <h2>District Wise Report</h2>
+          
+        </div>
+      </div>
+      <div class="left-auto">
+        <div class="from-fields cs-flex">
+          <div class="control-field mr15">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="pickers" placeholder="From" name="date_from" [(ngModel)]="data.date_from" [max]="today" (ngModelChange)="date_flag = true">
+              <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+              <mat-datepicker #pickers></mat-datepicker>
+            </mat-form-field>
+          </div>
+          
+          <div class="control-field mr15">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="picker" placeholder="To" name="date_to" [(ngModel)]="data.date_to" [min]="data.date_from" [max]="today" readonly (ngModelChange)="date_flag = true">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          
+          
+          
+          <select  class="select-filter" name="data_type" [(ngModel)]="data.data_type">
+            <option value="undefined"  disabled hidden>Data Type</option>
+            <option  value="total_item">Total Item</option>
+            <option  value="total_qty">Total Quantity</option>
+            <option  value="dispatch_qty"> Dispatch Quantity</option>
+            <option  value="order_val">Order Value</option>
+            <option  value="dispatch_val">Dispatch Value</option>
+            <!-- <option  value="pending_val">Pending Order Value</option> -->
+          </select>
+          <select  class="select-filter" name="user_type" [(ngModel)]="data.user_type">
+            <option  value="undefined" disabled hidden> Party Type</option>
+            <option _ngcontent-c1 value="1">Channel Partner</option>
+            <option _ngcontent-c1 value="3">Direct Dealer</option>
+            <option _ngcontent-c1 value="7">Retail Partner</option>
+          </select>
+        </div>
+        
+        <div class="cs-btn mt5">
+          <div class="in-btn">
+            <button mat-raised-button color="accent"  [disabled]="((!data.date_from)||(!data.date_to))"  (click)="get_report_data()">Go</button>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div class="container-outer">
+      <mat-spinner class="loader" *ngIf="loader">
+        <div><p>Loading....</p></div>
+      </mat-spinner>
+      <div class="container">
+        <div class="row">
+          <div class="col s12">
+            <div class="excel-table page-scroll">
+              <div class="cs-table">
+                <div class="stickyHead">
+                  <div class="table-head">
+                    <table>
+                      <tr>
+                        <th class="w40"> Sr.No</th>
+                        <th class="w200">District</th>
+                        <th  class="w100" *ngFor= "let data of allMonthsInPeriod"> {{data}}</th>
+                        <th class="w80">Grand Total</th>
+                      </tr>
+                    </table>
+                  </div>
+                  
+                  
+                </div>
+                
+                <div class="table-container">
+                  <div class="table-content">
+                    <table>
+                      <tr *ngFor= "let list of report_data;let i=index;">
+                        <td class="w40">{{i+1}}</td>
+                        <!-- <td class="w250" (click)="goTo(data.date_from,data.date_to,list.city)">{{list.city}}</td> -->
+                        <td class="w200">
+                          <div class="one-line">
+                            <a mat-button class="link-btn " (click)="goTo(data.date_from,data.date_to,list.state,list.district)">{{list.district}}</a>
+                          </div>
+                        </td>
+                        <td class="w100" *ngFor="let data of allMonthsInPeriod">
+                          <div *ngFor="let column of list | keyvalue "> 
+                            <div *ngIf= " column.key == data">{{column.value}} </div>
+                          </div>
+                        </td>
+                        <td class="w80">{{list.total?list.total:0}}</td>
+                        
+                      </tr>
+                   
+                    </table>
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- <div class="suggestion-box" *ngIf="report_data.length == 0">
+        <img src="assets/img/click-here1.jpg">
+      </div> -->
+    </div>
+  </div>
+  <div class="fix-btn" >
+    <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+  </div>
+  <div class="h50"></div>

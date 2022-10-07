@@ -1,0 +1,93 @@
+  <div class="main-container" >
+    <div class="middle-container">
+      <div class="page-heading">
+        <img src="assets/img/discount.svg" class="h-icon">
+        <div class="heading-text">
+          <h2>Special Discount</h2>
+        </div>
+      </div>
+    </div>
+    
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box">
+              <div class="cs-heading">
+                <h2>UPDATE SPECIAL DISCOUNT</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="from-fields">
+                <div class="row mb0">
+                  <div class="col s4 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Type"  name="type" [(ngModel)]="discount.type" #type="ngModel" required>
+                          <mat-option  value="Discount">Discount</mat-option>
+                          <mat-option value="Premium">Premium</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    
+                  </div>
+                  <div class="col s4">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Distributor {{discount.type}}" maxlength="5"   decimals="2" name="distributor_discount" [(ngModel)]="discount.distributor_discount" required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s4 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Dealer {{discount.type}}" maxlength="5"   decimals="2" name="dealer_discount" [(ngModel)]="discount.dealer_discount" required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb0">
+                  <div class="col s4 ">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input placeholder="Start Date" [(ngModel)]="discount.start_date" (click)="openDatePicker(picker)"  name="date" matInput  [matDatepicker]="picker" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s4">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input placeholder="End Date" [(ngModel)]="discount.end_date" (click)="openDatePicker2(picker2)"  name="date" matInput  [matDatepicker]="picker2" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div class="row">
+          <div class="col s12">
+            <div class="cs-btn fixedd text-right">
+              <div class="in-btn">
+                <button mat-raised-button color="accent" (click)="update_details()">Save</button>
+                <!-- [disabled]="!f.valid" -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div class="h50"></div>
+  
+  
+  
+  

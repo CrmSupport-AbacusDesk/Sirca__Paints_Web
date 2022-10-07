@@ -1,0 +1,146 @@
+<div class="main-container" >
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/discount.svg" class="h-icon h20">
+      <div class="heading-text">
+        <h2>Discount</h2>
+        <p>Total Discount {{discountList.length}}</p>
+      </div>
+    </div>
+
+
+    <div class="left-auto">
+      <div class="update-block" *ngIf="selected_category_list.length">
+        <p>{{selected_category_list.length && selected_list_dr_type != ''? selected_list_dr_type+' Discount'  : ''}}</p>
+
+        <select name="discount_type" placeholder="Select Discount Type"  [(ngModel)]="discount_type" (ngModelChange)="updated_discount = '0'">
+          <option disabled="">Select Discount Type</option>
+          <option value="Increment">INCREMENT</option>
+          <option value="Decrement">DECREMENT</option>
+        </select>
+
+
+        <input type="tel"  name="updated_discount" [(ngModel)]="updated_discount">
+        <button mat-raised-button color="primary" [disabled]="!(discount_type != 'not_select_anything' && updated_discount != '0')" (click)="update_selected_category_discount(); updated_discount='0';discount_type = 'not_select_anything'">Update</button>
+      </div>
+      <div class="top-pagination">
+        <div class="top-search">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container-outer">
+    <app-master-tab-list></app-master-tab-list>
+    <div *ngIf="spinner_loader">
+      <mat-spinner class="loader">
+        <div><p>Loading....</p></div>
+      </mat-spinner>
+    </div>
+    <div class="container tab-container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <!-- <th class="w30">&nbsp;</th> -->
+                    <th>Category</th>
+                    <th class="w250 text-center">Channel Partner (%)</th>
+                    <th class="w250 text-center">Direct Dealer(%)</th>
+                    <th class="w250 text-center">Retail Partner(%)</th>
+                    <th class="w80 text-center">GST (%)</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt" >
+                <table>
+                  <tr>
+                    <th >
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Category. . ." (keyup.enter)="getItemsList()" #search="ngModel" [(ngModel)]="value.search">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w250" >
+                      <span *ngIf="view_edit">
+                      <div class="th-search-acmt" *ngIf="!selected_category_list.length || selected_list_dr_type == 'Channel Partner'">
+                        <mat-form-field class="cs-input">
+                          <mat-label>Select Category</mat-label>
+                          <mat-select name="selected_category_distributor" [formControl]="lists" multiple>
+                            <mat-option *ngFor="let category of discountList " placeholder="Select Category" (click)="selected_category('Channel Partner')" [value]="category.id">{{category.category}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      </span>
+                    </th>
+                    <th class="w250" >
+                      <span *ngIf="view_edit">
+                      <div class="th-search-acmt" *ngIf="!selected_category_list.length || selected_list_dr_type == 'Direct Dealer'">
+                        <mat-form-field class="cs-input">
+                          <mat-label>Select Category</mat-label>
+                          <mat-select name="selected_category_direct_dealer" [formControl]="lists" multiple>
+                            <mat-option *ngFor="let category of discountList " placeholder="Select Category" (click)="selected_category('Direct Dealer')" [value]="category.id">{{category.category}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      </span>
+                    </th>
+                    <th class="w250" >
+                      <span *ngIf="view_edit">
+                      <div class="th-search-acmt" *ngIf="!selected_category_list.length || selected_list_dr_type == 'Dealer'">
+                        <mat-form-field class="cs-input">
+                          <mat-label>Select Category</mat-label>
+                          <mat-select name="selected_category_dealer" [formControl]="lists" multiple>
+                            <mat-option *ngFor="let category of discountList " placeholder="Select Category" (click)="selected_category('Dealer')" [value]="category.id">{{category.category}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      </span>
+                    </th>
+                    <th class="w80" ></th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let dicount of discountList;let i = index">
+                    <td>{{dicount.category}}</td>
+                    <td class="w250 text-center purple-shade-1">{{dicount.distributor}}</td>
+                    <td class="w250 text-center purple-shade-2">{{dicount.direct_retailer}}</td>
+                    <td class="w250 text-center purple-shade-3">{{dicount.dealer}}</td>
+                    <td class="w80 text-center purple-shade-4">{{dicount.gst}}
+                      <div class="action-btns">
+                        <a *ngIf="view_edit" mat-button class="view" (click)="discountDetail(dicount.id)"><i class="material-icons">remove_red_eye</i>Edit</a>
+                        <button *ngIf="view_delete" mat-button class="delete" (click)="deletediscount(dicount.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <ng-container *ngFor="let lead of skelton">
+                    <tr class="sk-loading"  *ngIf="loader">
+                      <td><div>&nbsp;</div></td>
+                      <td class="w250"><div>&nbsp;</div></td>
+                      <td class="w250"><div>&nbsp;</div></td>
+                      <td class="w250"><div>&nbsp;</div></td>
+                      <td class="w80"><div>&nbsp;</div></td>
+                    </tr>
+                  </ng-container>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="h70"></div>

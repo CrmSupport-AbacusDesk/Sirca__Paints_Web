@@ -1,0 +1,211 @@
+<div class="main-container" >
+	<div class="middle-container mb0">
+		<div class="page-heading">
+			<div class="heading-text">
+				<h2>Allowances</h2>
+			</div>
+
+			<!-- <div *ngIf="backButton" class="heading-text bc-space">
+				<div class="back-btn" (click)="back()">
+					<a mat-button ><i class="material-icons">west</i></a>
+				</div>
+				<h2>Allowances</h2>
+			</div> -->
+
+			
+
+		</div>
+		
+		<div class="left-auto">
+			<ul>
+				<li class="refresh-area mr0 after-none">
+				  <a class="refresh-btn" mat-raised-button (click)="get_sales_user()" matTooltip="Refresh"><i
+					  class="material-icons"> refresh</i></a>
+				</li>
+			  </ul>
+			<div class="click-btn ml15" >
+				<button *ngIf="view_edit" mat-button (click)="updateAllowance()" >Update Allowances</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container-outer padding0">
+		<app-master-tab-list></app-master-tab-list>
+		<div class="container tab-container" >
+			<div *ngIf="loader">
+				<mat-spinner class="loader">
+					<div><p>Loading....</p></div>
+				</mat-spinner>
+			</div>
+			
+			<div class="hr-table">
+				<table>
+					<tr>
+						<th class="first-head">
+							<div class="table-head bg-head" style="border-top: 1px solid #dcdbdb;">
+								<table>
+									<tr>
+										<th class="w250 no-padding sticky-th">
+											<table>
+												<tr>	
+													<th class="w50">S.No.</th>
+													<th class="w200" style="border-right: 1px solid #dcdbdb;">User Name</th>
+												</tr>
+											</table>
+										</th>
+										<th class="w470 text-center">Travel Entitlement</th>
+										<th class="w400 text-center">Local Conveyance</th>
+										<th class="w100">Hotel Expense</th>
+										<th class="w100">Food Expense</th>
+									</tr>
+								</table>
+							</div>
+							<div class="table-head  bg-head">
+								<table>
+									<tr>
+										<th class="w250 no-padding sticky-th">
+											<table>
+												<tr>
+													<th class="w50">&nbsp;</th>
+													<th class="w200">
+														<div class="th-search-acmt">
+															<mat-form-field >
+															  <input matInput class="input-field-text" placeholder="  Name. . ."  type="text" name="Name" (keyup.enter)="get_sales_user();" [(ngModel)]="search_val.name" >
+															</mat-form-field>
+														  </div>
+													</th>
+												</tr>
+											</table>
+										</th>
+										<th class="w470 no-padding text-center">
+											<table>
+												<tr>
+													<th class="w120 padding-tb0 text-center">Flight Economy Class</th>
+													<th class="w180 text-center padding-tb0">Train (Executive Chair Car, Sleeper)</th>
+													<th class="w80 text-center padding-tb0">Train (III Tier)</th>
+													<th class="w90 text-center padding-tb0">Train (II Tier)</th>
+												</tr>
+											</table>
+										</th>
+										<th class="w400 text-center no-padding">
+											<table>
+												<tr>
+													<th class="w70 text-center padding-tb0">AC Bus</th>
+													<th class="w70 text-center padding-tb0 padding-tb0">Non AC Bus</th>
+													<th class="w70 text-center">Taxi</th>
+													<th class="w60 text-center">Auto</th>
+													<th class="w70 text-center">Car/Km</th>
+													<th class="w60 text-center border-right">Bike/Km</th>
+												</tr>
+											</table>
+										</th>
+										<th class="w100">&nbsp;</th>
+										<th class="w100">&nbsp;</th>
+									</tr>
+								</table>
+							</div>
+						</th>
+					</tr>
+					
+					<tr>
+						<td >
+							<div class="table-body">
+							
+								<table>
+									<tr *ngFor="let data of sales_user_list;let i = index" >
+										<td class="no-padding sticky-td w250">
+											<table>
+												<tr>
+													<td class="w50" style="border-left: 1px solid #dcdbdb;">{{i + 1}}</td>
+													<td class="w200" style="border-right: 1px solid #dcdbdb;" ><p class="one-line-text" >{{data.user_name}} {{data.role_name && data.role_name!=''? '  ('+(data.role_name | uppercase)+') '  :''}}</p></td>
+												</tr>
+											</table>
+										</td>
+										
+										<td class="w470 no-padding text-center">
+											<table class="in-table">
+												<tr>
+													<td class="w120  text-center">
+														<div class="input-check">
+															<mat-checkbox id="flight{{i}}" name="flight{{i}}" [(ngModel)]="data.flight" >&nbsp;</mat-checkbox>
+														</div>
+													</td>
+													<td class="w180 text-center">
+														<div class="input-check">
+															<mat-checkbox name="trainSleeperClass{{i}}" [(ngModel)]="data.trainSleeperClass" >&nbsp;</mat-checkbox>
+														</div>
+													</td>
+													<td class="w80 text-center">
+														<div class="input-check">
+															<mat-checkbox name="train3Tier{{i}}" [(ngModel)]="data.train3Tier">&nbsp;</mat-checkbox>
+														</div>
+													</td>
+													<td class="w90 text-center">
+														<div class="input-check">
+															<mat-checkbox name="train2Tier{{i}}" [(ngModel)]="data.train2Tier">&nbsp;</mat-checkbox>
+														</div>
+													</td>
+												</tr>
+											</table>
+										</td>
+										
+										<td class="w400 text-center no-padding">
+											<table class="in-table">
+												<tr>
+													<td class="w70 text-center">
+														<div class="input-check">
+															<mat-checkbox name="busAC{{i}}" [(ngModel)]="data.busAC" [checked]="data.busAC == '1' ? true : ''">&nbsp;</mat-checkbox>
+														</div>
+													</td>
+													<td class="w70 text-center">
+														<div class="input-check">
+															<mat-checkbox name="busNonAC{{i}}" [(ngModel)]="data.busNonAC" [checked]="data.busNonAC == '1' ? true : ''">&nbsp;</mat-checkbox>
+														</div>
+													</td>
+													<td class="w70 text-center">
+														<div class="input-check">
+															<mat-checkbox name="taxi{{i}}" [(ngModel)]="data.taxi" [checked]="data.taxi == '1' ? true : ''">&nbsp;</mat-checkbox>
+														</div>
+													</td>
+													<td class="w60 text-center">
+														<div class="input-check">
+															<mat-checkbox name="auto{{i}}" [(ngModel)]="data.auto" [checked]="data.auto == '1' ? true : ''">&nbsp;</mat-checkbox>
+														</div>
+													</td>
+													<td class="w70 text-center">
+														<div class="input-check">
+															<input class="wp100" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46"  name="car{{i}}" [(ngModel)]="data.car" value="{{data.car}}">
+														</div>
+													</td>
+													<td class="w60 text-center border-right">
+														<div class="input-check">
+															<input class="wp100" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46" name="bike{{i}}" [(ngModel)]="data.bike" value="{{data.bike}}">
+														</div>
+													</td>
+												</tr>
+											</table>
+										</td>
+										
+										
+										<td class="w100">
+											<div class="input-check">
+												<input class="wp100" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46" name="hotel{{i}}" [(ngModel)]="data.hotel" value="{{data.hotel}}">
+											</div>
+										</td>
+										<td class="w100">
+											<div class="input-check">
+												<input class="wp100" type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46"  name="food{{i}}" [(ngModel)]="data.food" value="{{data.food}}">
+											</div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			
+		</div>
+	</div>
+</div>

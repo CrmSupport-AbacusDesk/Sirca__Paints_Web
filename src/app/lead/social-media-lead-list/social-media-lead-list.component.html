@@ -1,0 +1,476 @@
+<div class="main-container">
+
+
+
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/leads_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Social Media Leads</h2>
+        <p>Total Lead - {{count}}</p>
+      </div>
+    </div>
+
+    <!-- left auto start  -->
+
+    <div class="left-auto">
+
+      <ng-container *ngIf="login_data.user_type!= 'Inside Sales Team'">
+        <mat-form-field class="search-select" appearance="outline">
+          <mat-select name="list_type"  [(ngModel)]="search_val.list_type" (ngModelChange)="start = 0 ; get_social_media_list()">
+            <mat-option value="all">All Data</mat-option>
+            <mat-option value="assign">Assigned Leads</mat-option>
+            <mat-option value="not_assign">Not Assigned Leads</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+
+
+      <ul class="mr10">
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="get_social_media_list('refresh') " matTooltip="Refresh"><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+
+
+      <div class="top-pagination">
+        <ul>
+          <li>
+            <p>Pages {{pagenumber}} Of {{total_page}} </p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start=start-page_limit; get_social_media_list()" [disabled]="pagenumber <= 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; get_social_media_list()" [(ngModel)]="pagenumber"  min="1" max={{total_page}}>
+          </li>
+
+          <li>
+            <button mat-button class="right-btn" (click)="start=start+page_limit; get_social_media_list()" [disabled]="pagenumber >= total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf= "login_data.user_type!= 'Inside Sales Team'" class="update-block flat flat-block ml30" [ngClass]="selected_social_media_leads.length ? 'pl10' : ''">
+         <ng-container *ngIf="selected_social_media_leads.length">
+          <!-- <p> </p> -->
+          <mat-form-field class="search-select" appearance="outline">
+            <mat-select name="discount_type"  [(ngModel)]="selected_user_id">
+              <div class="search-block">
+                <input type="text" name="user" placeholder="Search.." (input)="filter_dr(user_name)" [(ngModel)]="user_name">
+              </div>
+              <mat-option *ngFor="let updatelist of socail_media_update_list"  value="{{updatelist.id}}">{{updatelist.name}}</mat-option>
+              <mat-option disabled="" *ngIf="!socail_media_update_list.length">No data Found</mat-option>
+            </mat-select>
+
+          </mat-form-field>
+
+          <button mat-raised-button class="mr10" color="primary" [disabled]="!selected_user_id" (click)="update_lead_assign();selected_user_id=''" >Update</button>
+        </ng-container>
+        <button mat-raised-button color="accent" (click)="upload_excel()"><i class="material-icons">backup</i> Upload
+          File</button>
+      </div>
+
+
+    </div>
+  </div>
+
+
+  <!-- left auto end  -->
+
+  <!-- table container start social media -->
+  <div class="container-outer padding0">
+    <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table cs-table-scroll">
+            <div class="stickyTableHead" style="width: fit-content;">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <th class="w110">Date</th>
+                    <th class="w110">Lead Date</th>
+                    <th class="w150">Created By</th>
+                    <th class="w150">Created By Type</th>
+                    <th class="w220">Company Name</th>
+                    <th class="w150">Contact Person</th>
+                    <th class="w110">Contact No.</th>
+                    <th class="w120">Assigned To Inside User</th>
+                    <th class="w200">Address</th>
+                    <th class="w130">Total Activity Count</th>
+                    <th class="w100">Last Activity </th>
+                    <th class="w100">Campaign Type</th>
+                    <th class="w100">Business Type</th>
+                    <th class="w100">Remarks by Party</th>
+                    <th class="w100">State</th>
+                    <th class="w100">City</th>
+                    <th class="w100">Pin Code</th>
+                    <th class="w100">Order Won Date</th>
+                    <th class="w100">Payment Status</th>
+                    <th class="w100">Order Amount</th>
+                    <th class="w100">Disposition Type</th>
+                    <th class="w100"> Disposition Name</th>
+                    <th class="w100">Lead Status</th>
+                    <th class="w100">Dead Reason</th>
+                    <!-- <th class="w100">channel Partner
+                    </th> -->
+                    <th class="w250">Comment</th>
+
+                    <th class="w150">Actions</th>
+
+                  </tr>
+                </table>
+              </div>
+
+              <!-- 2nd row social media start -->
+              <div class="table-head bdrt" >
+                <table>
+                  <tr>
+                    <th class="w110">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="cs-input date-column infix-bodr">
+                          <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" [(ngModel)]="search_val.date_created" (dateChange)="onDate($event)">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w110">
+                      <!-- <div class="th-search-acmt">
+                        <mat-form-field class="cs-input date-column infix-bodr">
+                          <input matInput [matDatepicker]="picker" placeholder="Lead Date" name="lead_date" [(ngModel)]="search_val.lead_date">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div> -->
+                    </th>
+
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Created By. . ."  type="text" name="created_by" [(ngModel)]="search_val.created_by" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150"></th>
+
+                    <th class="w220">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Company Name. . ."name="company_name" (keyup.enter)="get_social_media_list()" [(ngModel)]="search_val.company_name" >
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Contact Person. . ."  type="text" name="contact_person" [(ngModel)]="search_val.contact_person" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w110">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Contact No. . ."  type="text" name="contact_no" [(ngModel)]="search_val.contact_no" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w120">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Assigned to Inside User. . ." (keyup.enter)="get_social_media_list()" [(ngModel)]="search_val.assign_to_inside_user" >
+
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w200"></th>
+                    <th class="w130"></th>
+                    <!-- aamir change in social media table -->
+                    <th class="w100">  <div class="th-search-acmt">
+                      <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Days. . ."  (keyup.enter)="get_social_media_list()" [(ngModel)]="search_val.last_activity_days_filter">
+
+                      </mat-form-field>
+                    </div> </th>
+
+                    <th class="w100">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Campaign Type. . ."  type="text" name="campaign_type" [(ngModel)]="search_val.campaign_type" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w100">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Business Type. . ."  type="text" name="business_type" [(ngModel)]="search_val.business_type" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w100"></th>
+                    <th class="w100">
+                      <div class="th-search">
+                        <select (change)="get_social_media_list()" name="state" [(ngModel)]="search_val.state">
+                          <option value="">Select State</option>
+                          <option *ngFor="let val of state_values">{{val.state_name}}</option>
+                        </select>
+                      </div>
+                    </th>
+                    <th class="w100">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="City. . ."  type="text" name="city" [(ngModel)]="search_val.city" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w100">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Pin Code. . ."  type="text" name="pincode" [(ngModel)]="search_val.pincode" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w100"></th>
+
+                    <th class="w100">
+                      <!-- <div class="th-search">
+                        <select (change)="get_social_media_list()" name="lead_dead_reason" [(ngModel)]="search_val.lead_dead_reason">
+                          <option value="">Payment Status</option>
+                          <option *ngFor="let lead_dead_reason_data of dead_reason_listing_array" [value]="lead_dead_reason_data.dead_reason">{{lead_dead_reason_data.dead_reason}}</option>
+                        </select>
+                      </div> -->
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Payment Status. . ."  type="text" name="payment_status" [(ngModel)]="search_val.payment_status" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w100"></th>
+                    <th class="w100"></th>
+                    <th class="w100"></th>
+                    <th class="w100">
+                      <div class="th-search">
+                        <select (change)="get_social_media_list()" name="lead_status" [(ngModel)]="search_val.lead_status">
+                          <option value="">Select Lead Status</option>
+                          <option *ngFor="let lead_status_listing_data of lead_status_listing_array" [value]="lead_status_listing_data.lead_status">{{lead_status_listing_data.lead_status}}</option>
+                        </select>
+                      </div>
+                    </th>
+                    <th class="w100">
+                      <div class="th-search">
+                        <select (change)="get_social_media_list()" name="lead_dead_reason" [(ngModel)]="search_val.lead_dead_reason">
+                          <option value="">Select Lead Status</option>
+                          <option *ngFor="let lead_dead_reason_data of dead_reason_listing_array" [value]="lead_dead_reason_data.dead_reason">{{lead_dead_reason_data.dead_reason}}</option>
+                        </select>
+                      </div>
+                    </th>
+                    <!-- <th class="w100"></th> -->
+                    <th class="w250">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Comment. . ."  type="text" name="comment" [(ngModel)]="search_val.comment" (keyup.enter)="get_social_media_list()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150"></th>
+                        <!-- end here -->
+                  </tr>
+                </table>
+              </div>
+              <!-- 2nd row social media end -->
+
+
+               <!-- 3rd row table container social media start  -->
+            <div class="table-container" style="width: fit-content;">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let lists of socail_media_lead_list">
+                    <td class="w110">
+                      <mat-checkbox *ngIf="(lists.lead_assign_to_inside_user_flag== '0' || lists.lead_assign_to_inside_user_secondary_flag == '0') && login_data.user_type!= 'Inside Sales Team'" [checked]="lists.lead_assign_to_inside_user_flag == '1' " (change)="select_social_lead_method(lists.id);user_name=''; socail_media_update_list = inside_user_list;"></mat-checkbox>
+                      <mat-checkbox *ngIf="lists.lead_assign_to_inside_user_flag== '1' && lists.lead_assign_to_inside_user_secondary_flag == '1' && login_data.user_type!= 'Inside Sales Team'" [disabled]=true [indeterminate]=true></mat-checkbox>
+                      {{lists.date_created | date :'MMM d, y'}}
+                    </td>
+                    <td class="w110">
+                      {{lists.lead_date | date :'MMM d, y'}}
+                    </td>
+                    <td class="w150" >{{lists.created_by_name}}
+
+                    </td>
+                    <td class="w150" >{{lists.created_by_type}}</td>
+                    <!-- <td class="w220"><a mat-button class="link-btn" routerLink="/social-media-lead-detail/{{lists.id}}" routerLinkActive="active">{{lists.company_name}}</a></td> -->
+                    <td class="w220"><a mat-button class="link-btn" routerLink="/lead-detail/{{lists.id}}/{{lists.type}}" routerLinkActive="active" (click) = "goToDetailPage()">{{lists.company_name}}</a></td>
+
+                    <td class="w150">  {{lists.name}} </td>
+                    <td class="w110">
+                      <a mat-button class="link-btn" routerLink="/lead-detail/{{lists.id}}/{{lists.type}}" routerLinkActive="active" (click) = "goToDetailPage()">{{lists.mobile}}</a>
+                    </td>
+                    <td class="w120">{{lists.assigned_inside_username}}</td>
+                    <!-- <td class="w120">NIL</td> -->
+                    <td class="w200" >
+                      {{lists.address}}
+
+                    </td>
+                    <td class="w130">{{lists.total_activity_count}}</td>
+                    <!-- <td class="w200" >
+                      <div class="one-line">
+                        N/A
+                      </div>
+                      <div class="action-btns">
+                        <a  mat-button class="view" routerLink="/lead-detail/" routerLinkActive="active"><i class="material-icons">remove_red_eye</i> View</a>
+                        <button  mat-button class="delete" ><i class="material-icons">delete_sweep</i> Delete</button>
+                      </div>
+                    </td> -->
+                    <td class="w100" *ngIf="lists.last_inside_activity_days == 'N/A'">{{'N/A'}}</td>
+                    <td class="w100" *ngIf="lists.last_inside_activity_days != 'N/A'">{{lists.last_inside_activity_days + ' days'}}</td>
+                    <td class="w100" >{{lists.campaign_type}}</td>
+                    <td class="w100" >{{lists.bussiness_type}}
+                    </td>
+                    <td class="w100" style="word-break:break-all">{{lists.remarks_by_party}}
+                    </td>
+                    <td class="w100" >{{lists.state}}</td>
+                    <td class="w100" >{{lists.city}}</td>
+                    <td class="w100" >{{lists.pincode}}</td>
+                    <td class="w100" >
+                      <span *ngIf="edit_fields != lists.id">
+
+                      {{lists.order_won_date}}
+                      </span>
+                      <div class="input-block" *ngIf="edit_fields == lists.id">
+                        <input  placeholder="Order Won Date" name="order_won_date" #order_won_date="ngModel" onkeypress="return event.charCode >= 48 && event.charCode <= 57" [(ngModel)]="lists.order_won_date">
+
+                      </div>
+                    </td>
+                    <td class="w100" >
+                      <span *ngIf="edit_fields != lists.id">
+                      {{lists.payment_status}}
+                      </span>
+                      <div class="input-block" *ngIf="edit_fields == lists.id">
+                        <input  placeholder="Payment status" name="payment_status" #payment_status="ngModel" [(ngModel)]="lists.payment_status">
+
+                      </div>
+                    </td>
+                    <td class="w100" >
+                      <span *ngIf="edit_fields != lists.id">
+                      {{lists.order_amount}}
+                      </span>
+                      <div class="input-block" *ngIf="edit_fields == lists.id">
+                        <input  placeholder="Order_Amount" name="order_amount" #order_amount="ngModel" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  [(ngModel)]="lists.order_amount">
+
+                      </div>
+                    </td>
+                    <td class="w100" >{{lists.disposition_type}}
+                    </td>
+                    <td class="w100" >{{lists.disposition_name}}
+                    </td>
+                    <td class="w100" >{{lists.lead_status}}
+                    </td>
+                    <td class="w100" >{{lists.dead_reason}}
+                    </td>
+                   
+                    <!-- <td class="w100" >{{lists.channel_partner}}
+                    </td> -->
+                    <td class="w250" >
+                      <!-- <span *ngIf="edit_fields != lists.id" style="word-break: break-all;">
+                      {{lists.comment}}
+                      </span> -->
+                      <div *ngIf="edit_fields != lists.id" [innerHtml]="lists.comment"></div>
+                      <div class="input-block" *ngIf="edit_fields == lists.id">
+                        <input  placeholder="comment" name="comment" #comment="ngModel"  [(ngModel)]="lists.comment">
+
+                      </div>
+                    </td>
+                    <td class="w150">
+
+                    <div class="action-btn-group">
+                      <button *ngIf="edit_fields != lists.id && view_edit==false" mat-button class="delete-mat" (click)="edit_fields = lists.id" >
+                        <i class="material-icons green-clr" >edit </i>
+                      </button>
+                      <button *ngIf="edit_fields == lists.id" mat-button class="delete-mat" (click)="update_edit_detail(lists.comment,lists.order_amount,lists.order_won_date,lists.payment_status,lists.id)">
+                        <i class="material-icons green-clr" mat-button matTooltip="Save">save</i>
+                      </button>
+                      <button mat-button class="delete-mat" *ngIf="lists.lead_assign_to_inside_user_flag== '1' && lists.lead_assign_to_inside_user_secondary_flag== '1' && login_data.user_type!= 'Inside Sales Team'" (click)="remove_assign_dr(lists.id)">
+                        <i class="material-icons green-clr" mat-button matTooltip="Re-assign">autorenew</i>
+                      </button>
+
+                      <button *ngIf="view_delete && login_data.user_type!= 'Inside Sales Team'"  mat-button class="delete-mat" (click)="delete_social_media_row(lists.id)"><i class="material-icons red-clr">delete_sweep</i>
+                      </button>
+
+                    </div>
+
+                    </td>
+                  </tr>
+
+
+                  <ng-container   *ngFor="let lead of skelton"  >
+                    <tr class="sk-loading" *ngIf="loader">
+                      <td class="w110"><div>&nbsp;</div></td>
+                      <td class="w110"><div>&nbsp;</div></td>
+                      <td class="w150"><div>&nbsp;</div></td>
+                      <td class="w150"><div>&nbsp;</div></td>
+                      <td class="w220"><div>&nbsp;</div></td>
+                      <td class="w150"><div>&nbsp;</div></td>
+                      <td class="w110"><div>&nbsp;</div></td>
+                      <td class="w120"><div>&nbsp;</div></td>
+                      <td class="w200"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w200"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                    </tr>
+                  </ng-container>
+
+                </table>
+                <div
+                class="search-results"
+                data-infinite-scroll
+                debounce
+                [infiniteScrollDistance]="1"
+                [infiniteScrollUpDistance]="2"
+                [infiniteScrollThrottle]="10"
+
+                >
+              </div>
+            </div>
+          </div>
+
+            <!-- 3rd row table container social media end  -->
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fix-btn">
+    <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()" *ngIf="!loader"><img src="assets/img/excel.svg"></a>
+  </div>
+
+  <!-- table container end social media -->
+
+  </div> <!-- end main container -->

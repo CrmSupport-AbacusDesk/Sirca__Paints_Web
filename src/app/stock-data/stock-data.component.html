@@ -1,0 +1,150 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>Stock List</h2>
+      </div>
+    </div>
+    
+    <div class="uppr-one m-right-data">
+      
+      <ng-container>
+        <mat-form-field class="search-select" appearance="outline">
+          <mat-select name="list_type"  [(ngModel)]="selected_ware_house_id" (ngModelChange)="start = 0 ; get_stock_list()">
+            <mat-option value="all">All Data</mat-option>
+            <mat-option *ngFor="let ware_house_data of ware_house_listing" value="{{ware_house_data.id}}" >{{ware_house_data.ware_house_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      
+      
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="get_stock_list('refresh')"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; get_stock_list()" [disabled]="pagenumber == 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; get_stock_list()" [(ngModel)]="pagenumber"  min="1" max={{total_page}}>
+          </li>
+          
+          <li>
+            <button mat-button class="right-btn"  (click)="start=start+page_limit; get_stock_list()" [disabled]="pagenumber == total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="container-outer padding0">
+    <div class="container">
+      <div class="cs-table cs-table-scroll">
+        <div class="stickyTableHead" style="width: fit-content;">
+          <div class="table-head">
+            <table>
+              <tr>
+                <th class="w30">S.No.</th>
+                <th class="w150">Product Name</th>
+                <th class="w150 text-center">Stock In Hand</th>
+                <th class="w150 text-center">Ready To Dispatch</th>
+                <th class="w130 text-center">Warehouse Stock</th>
+                <th class="w130 text-center">Pending Order Stock</th>
+                <th class="w100 text-center">Action</th>
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+            <table>
+              <tr>
+                <th class="w30"></th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Product Name / Code. . ." name="product_name" [(ngModel)]="search_data.product_name" (keyup.enter)="get_stock_list()">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150"></th>
+                <th class="w150"></th>
+                <th class="w130"></th>
+                <th class="w130 text-center"></th>
+                <th class="w100 text-center"></th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <div class="table-container" style="width: fit-content;">
+          <div class="table-content">
+            <table>
+              <tr *ngFor="let product_data of stock_list; let i = index">
+                <td class="w30">{{i+1}}</td>
+                <td class="w150">{{product_data.product_name+' - '+product_data.product_code}}</td>
+                <td class="w150 text-center">{{product_data.total_primary_box_qty_in_hand}}</td>
+                <td class="w150 text-center">{{product_data.total_primary_box_qty_ready_to_dispatch}}</td>
+                <td class="w130 text-center">{{product_data.overall_ware_house_stock}}</td>
+                <td class="w130 text-center">{{product_data.total_order_item_qty}}</td>
+                <td class="w100 text-center">
+                  <a class="" [ngClass]="selected_ware_house_id == 'all' ? '' : 'link-btn'" (click)="selected_ware_house_id !='all' ? go_to(product_data.product_id,product_data.product_name) : ''">View Summary</a>
+                </td>
+              </tr>
+              
+              <ng-container *ngFor="let lead of skelton">
+                <tr class="sk-loading"  *ngIf="loader">
+                  <td class="w30"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w130"><div>&nbsp;</div></td>
+                  <td class="w130"><div>&nbsp;</div></td>
+                  <td class="w130"><div>&nbsp;</div></td>
+                </tr>
+              </ng-container>
+              
+            </table>
+            
+          </div>
+        </div>
+        
+        <div class="data-not-available"  *ngIf="data_not_found">
+          <div class="outer">
+            <div class="iinear">
+              <div class="figure" matRipple>
+                <div class="header">
+                  <img src="assets/img/data-not-available-header.svg" alt="">
+                </div>
+                
+                <div class="description">
+                  <div class="cs-heading">
+                    <h2>Stock</h2>
+                  </div>
+                  <div class="img">
+                    <i class="material-icons">error_outline</i>
+                  </div>
+                  <div class="psc">
+                    <p>Data Not Available</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+  </div>
+  
+</div>

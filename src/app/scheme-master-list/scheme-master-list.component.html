@@ -1,0 +1,190 @@
+<div class="main-container" >
+  <div class="middle-container mb0" style="padding-right: 0px;">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>Pop N Gift Scheme List</h2>
+      </div>
+    </div>
+
+
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="search_filter = {} ; scheme_list_method()"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+    </div>
+    
+  </div>
+  
+  <div class="container-outer">
+    <div class="container" >
+      
+      <!-- <div class="page-scroll" [ngClass]="data_not_found==true ? '' : 'excel-table'" > -->
+        <div class="page-scroll excel-table">
+          <div class="cs-table">
+            <div class="stickyHead">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <th class="w50">S.No.</th>
+                    <th class="w150">Date Created</th>
+                    <th class="w160">Created By</th>
+                    <th class="w160">Type</th>
+                    <th class="w160">Gift Percentage</th>
+                    <th class="w160">Date From</th>
+                    <th class="w160">Date To</th>
+                    <th *ngIf="view_edit || view_delete" class="w130 text-center" >Update</th>                  
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt" >
+      
+                <table class="sno-border">
+                  <tr>
+                    <th class="w50"></th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="cs-input date-column infix-bodr">
+                          <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" (click)="picker.open()" [(ngModel)]="search_filter.date_created" (dateChange)="onDate($event,'date_created')" readonly>
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w160"> 
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Created By. . ." name="created_by" [(ngModel)]="search_filter.created_by" (ngModelChange)="scheme_list_method()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w160">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="cs-input">
+                          <mat-label>Select Type</mat-label>
+                          <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="search_filter.type" (ngModelChange)="scheme_list_method()">
+                            <mat-option disabled="">Select Type</mat-option>
+                            <mat-option value="all">ALL</mat-option>
+                            <mat-option value="3">Retail Partner</mat-option>
+                            <mat-option value="1">Channel Partner</mat-option>
+                            <mat-option value="7">Direct Dealer</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        </div>
+                    </th>
+
+                    <th class="w160">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter %. . ." name="point_percentage" onkeypress="return event.charCode >= 48 && event.charCode <= 57" [(ngModel)]="search_filter.point_percentage" (ngModelChange)="scheme_list_method()">
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w160">
+                      <div class="th-search-acmt">
+                      <mat-form-field class="cs-input date-column infix-bodr">
+                          <input matInput [matDatepicker]="picker2" placeholder="Date" name="date_from" (click)="picker2.open()" [(ngModel)]="search_filter.date_from" (dateChange)="onDate($event,'date_from')" readonly>
+                          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                          <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                        </div>
+                    </th>
+
+                    <th class="w160">
+                      <div class="th-search-acmt" *ngIf="search_filter.date_from">
+                      <mat-form-field class="cs-input date-column infix-bodr">
+                          <input matInput [matDatepicker]="picker3" placeholder="Date" name="date_to" (click)="picker3.open()" [(ngModel)]="search_filter.date_to" (dateChange)="onDate($event,'date_to')" readonly>
+                          <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                          <mat-datepicker #picker3></mat-datepicker>
+                        </mat-form-field>
+                        </div>
+                    </th>
+                    <th *ngIf="view_edit || view_delete" class="w130 text-center" ></th>                  
+                  </tr>
+                </table>
+                
+                
+              </div>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  
+                  <tr *ngFor="let scheme_data of scheme_list;let i=index;">
+                    <td class="w50">{{ i + 1 }}</td>
+                    <td class="w150" [ngClass]="scheme_data.end_date < today_formatted? 'red-bgclr' : '' ">{{scheme_data.date_created | date:' d MMM , y, hh:mm aa '}}</td>
+                    <td class="w160">{{scheme_data.created_by_name}}</td>
+                    <td class="w160" *ngIf="scheme_data.type == '1'">Channel Partner</td>
+                    <td class="w160" *ngIf="scheme_data.type == '3'">Retail Partner</td>
+                    <td class="w160" *ngIf="scheme_data.type == '7'">Direct Dealer</td>
+
+                    <td class="w160">{{scheme_data.point_percentage ? scheme_data.point_percentage +' %' : '--'}}</td>
+                    <td class="w160">{{scheme_data.start_date | date:' d MMM , y'}}</td>
+                    <td class="w160">{{scheme_data.end_date | date:' d MMM , y'}}</td>
+                    
+                    <td *ngIf="view_edit || view_delete" class="w130 text-center">
+                      <button *ngIf="view_edit" mat-button class="delete-mat"  routerLink="/scheme-master-add/{{scheme_data.id}}" routerLinkActive="active"><i class="material-icons green-clr">edit</i></button>
+                      
+                      <button *ngIf="view_delete" mat-button class="delete-mat" (click)="delete_scheme(scheme_data.id)"><i class="material-icons red-clr">delete_sweep</i></button>
+                    </td>
+                    
+                  </tr>
+                  
+                  <ng-container *ngFor="let lead of skelton">
+                    <tr class="sk-loading"  *ngIf="loader">
+                    <th class="w50"><div>&nbsp;</div></th>
+                      <td class="w150"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td *ngIf="view_edit || view_delete" class="w130"><div>&nbsp;</div></td>
+                      
+                    </tr>
+                  </ng-container>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    <div class="data-not-available" *ngIf="data_not_found==true">
+        <div class="outer">
+          <div class="iinear">
+            <div class="figure" matRipple>
+              <div class="header">
+                <img src="assets/img/data-not-available-header.svg" alt="">
+              </div>
+              <div class="description">
+                <div class="cs-heading">
+                  <h2>Gift List</h2>
+                </div>
+                <div class="img">
+                  <i class="material-icons">error_outline</i>
+                </div>
+                <div class="psc">
+                  <p>data not Found</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fix-btn">
+        <a *ngIf="view_add" class="bottom-btn"  matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/scheme-master-add/0" routerLinkActive="active"><i class="material-icons">add</i></a>
+      </div>
+    </div>
+    

@@ -1,0 +1,284 @@
+<div class="main-container">
+
+  <!-- <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div> -->
+  <div class="middle-container">
+    <div class="page-heading" >
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>Travel Plan Detail</h2>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container-outer">
+    <div class="container" >
+
+      <div class="row" >
+        <div class="" [ngClass]="travel_plan_data.travel_type == 'Area Visit' ? 'col s6':'col s12'">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Basic Details</h2>
+              </div>
+
+
+              <div class="cs-figure">
+                <ul>
+
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Date Created</span>
+                        <p>{{travel_plan_data.date_created | date:'d MMM y'}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Date From</span>
+                        <p>{{travel_plan_data.travel_date_from | date:'d MMM y'}}</p>
+                        <a  *ngIf="view_eidt==true"  class="edit-column" mat-button matTooltip="Edit Date" (click)="editTravelPlanDate(travel_plan_data)"><i class="material-icons">create</i></a>
+                        <!-- <div class="action-btns">*ngIf="login_id=='206'"
+                          <button mat-button class="delete-mat"><i class="material-icons red-clr"
+                              (click)="editTravelPlanDate(travel_plan_data)">edit</i></button>
+                        </div> -->
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Date To</span>
+                        <p>{{travel_plan_data.travel_date_to | date:'d MMM y'}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+                </ul>
+
+                <ul>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Plan Type</span>
+                        <p>{{travel_plan_data.travel_type}}</p>
+                        <a *ngIf="view_eidt==true"  class="edit-column" mat-button matTooltip="Edit Date" (click)="editTravelPlan(travel_plan_data)"><i class="material-icons">create</i></a>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Created By</span>
+                        <p>{{travel_plan_data.created_by_name | titlecase}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Status</span>
+                        <p>{{travel_plan_data.status}}</p>
+                        <a *ngIf="travel_plan_data.status=='Pending'" class="edit-column" mat-button matTooltip="Edit status" (click)="change_travel_plan_status()"><i class="material-icons">create</i></a>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+
+                <ul *ngIf="travel_plan_data.reason != ''">
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Remark</span>
+                        <p>{{travel_plan_data.reason}}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col s6" *ngIf="travel_plan_data.travel_type == 'Area Visit'">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading mb0">
+                <h2>AREA DETAILS</h2>
+              </div>
+
+
+              <div class="cs-table left-right-10">
+                <div class="sticky-head">
+                  <div class="table-head">
+                    <table>
+                      <tr>
+                        <th>State</th>
+                        <th class="w130">Distirct</th>
+                        <th class="w130">City</th>
+
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="table-container pb0">
+                  <div class="table-content">
+                    <table>
+                      <tr *ngFor="let travel_plan_data of travel_plan_data.selected_data; let i = index">
+                        <td>{{travel_plan_data.state}}</td>
+                        <td class="w130">{{travel_plan_data.district}}</td>
+                        <td class="w130">{{travel_plan_data.city}}</td>
+
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row" >
+        <div class="col s6">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading mb0">
+                <!-- <h2>Network Details - Not Visited</h2> -->
+                <h2>Travel Plan Network</h2>
+              </div>
+              <div class="cs-table left-right-10">
+                <div class="sticky-head">
+                  <div class="table-head">
+                    <table>
+                      <tr>
+                        <th class="w50"></th>
+                        <th>Company Name</th>
+                        <th class="w140">Type</th>
+                        <th class="w150">Network</th>
+                        <!-- <th class="w100">Checkin Date</th> -->
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="table-container pb0">
+                  <div class="table-content">
+                    <table>
+                      <ng-container *ngFor="let channel_parner_data of travel_plan_data.district_wise_assign_dr">
+                        <!-- <tr *ngIf="channel_parner_data.checkin_verification_flag == 0"> -->
+                        <tr>
+                          <td class="w50">
+                            <button mat-button class="verify-mat">
+                              <i *ngIf="channel_parner_data.checkin_verification_flag == 1" class="material-icons verify-button">verified</i>
+                              <i *ngIf="channel_parner_data.checkin_verification_flag == 0" class="material-icons cancel-button">cancel</i>
+                            </button>
+                          </td>
+                          <td>
+                            <a *ngIf="channel_parner_data.lead_type == 'Dr' " class="link-btn" mat-button routerLink="/distribution-detail/{{channel_parner_data.dr_id}}" routerLinkActive="active">{{channel_parner_data.company_name}}</a>
+                            <a *ngIf="channel_parner_data.lead_type != 'Dr' " class="link-btn" mat-button routerLink="/lead-detail/{{channel_parner_data.dr_id}}/{{channel_parner_data.dr_type}}" routerLinkActive="active">{{channel_parner_data.company_name}}</a>
+
+                          </td>
+                          <td class="w140">{{channel_parner_data.dr_type && channel_parner_data.dr_type == '1'?'Channel Partner' : (channel_parner_data.dr_type == '7' ? 'Direct Dealer' : (channel_parner_data.dr_type == '3' ? 'Retail Partner' : '--'))}}</td>
+                          <td class="w150">{{channel_parner_data.lead_type == 'Dr' ? 'Distributor Network' : 'Lead Network'}} </td>
+                          <!-- <td class="w100" >
+                            <span class="" [ngClass]="channel_parner_data.checkin_date && channel_parner_data.checkin_date != '' ? 'show-pointer-cursor':''" (click)="channel_parner_data.checkin_date && channel_parner_data.checkin_date != '' ? goTo('checkin_list',channel_parner_data.checkin_date,channel_parner_data.company_name,travel_plan_data.created_by_name):''">
+                              {{channel_parner_data.checkin_date && channel_parner_data.checkin_date != '' ? (channel_parner_data.checkin_date | date:'d MMM y') : 'Not Yet Visit'}}
+                            </span>
+                          </td> -->
+                        </tr>
+                       </ng-container>
+
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s6">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading mb0">
+                <!-- <h2>Network Details - Visited</h2> -->
+                <h2>Checkin List</h2>
+              </div>
+              <div class="cs-table left-right-10">
+                <div class="sticky-head">
+                  <div class="table-head">
+                    <table>
+                      <tr>
+                        <!-- <th class="w50"></th> -->
+                        <th>Company Name</th>
+                        <th class="w140">Type</th>
+                        <th class="w150">Network</th>
+                        <th class="w100">Checkin Date</th>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="table-container pb0">
+                  <div class="table-content">
+                    <table>
+                      <ng-container *ngFor="let channel_parner_data of travel_plan_data.check_in_data">
+                        <tr>
+                          <!-- <td class="w50">
+                            <button mat-button class="verify-mat">
+                              <i  class="material-icons verify-button">verified</i>
+                            </button>
+                          </td> -->
+                          <td>
+
+                            <span *ngIf="channel_parner_data.lead_type == '' || channel_parner_data.lead_type == null" >{{channel_parner_data.other_name}}</span>
+
+                            <a *ngIf="channel_parner_data.lead_type == 'Dr' " class="link-btn" mat-button routerLink="/distribution-detail/{{channel_parner_data.dr_id}}" routerLinkActive="active">{{channel_parner_data.company_name}}</a>
+                            <a *ngIf="channel_parner_data.lead_type != 'Dr' " class="link-btn" mat-button routerLink="/lead-detail/{{channel_parner_data.dr_id}}/{{channel_parner_data.dr_type}}" routerLinkActive="active">{{channel_parner_data.company_name}}</a>
+
+                          </td>
+                          <td class="w140" >{{channel_parner_data.dr_type && channel_parner_data.dr_type == '1'?'Channel Partner' : (channel_parner_data.dr_type == '7' ? 'Direct Dealer' : (channel_parner_data.dr_type == '3' ? 'Retail Partner' : 'Other'))}}</td>
+
+
+                          <td class="w150">{{channel_parner_data.lead_type == 'Dr' ? 'Distributor Network' : 'Lead Network'}} </td>
+
+                          <td class="w100" >
+                            <span class="" [ngClass]="channel_parner_data.checkin_date && channel_parner_data.checkin_date != '' ? 'show-pointer-cursor':''" (click)="channel_parner_data.checkin_date && channel_parner_data.checkin_date != '' ? goTo('checkin_list',channel_parner_data.checkin_date,channel_parner_data.company_name,travel_plan_data.created_by_name):''">
+                              {{channel_parner_data.checkin_date | date:'d MMM y'}}
+                            </span>
+                          </td>
+                        </tr>
+                       </ng-container>
+
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

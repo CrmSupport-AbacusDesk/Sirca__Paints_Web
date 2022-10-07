@@ -1,0 +1,63 @@
+        
+        <div class="edit-modal">
+            <p class="heading">Update Admin Login Details</p>
+            <div mat-dialog-content class="padding0">
+                <div class="sprate-box" style="padding: 0px 7px 0px 7px;">
+                    <div class="cs-heading">
+                        <h2>CRM Admin Login Details</h2>
+                    </div>
+                    <mat-divider class="left-right-15 mt10"></mat-divider>
+                    <div class="from-fields">
+                        <div class="row">
+                            <div class="col s6">
+                                <div class="control-field">
+                                    <mat-form-field class="cs-input">
+                                        <input type="text" name="crm_user_name" matInput placeholder="User Name" #crm_user_name="ngModel" [(ngModel)]="data.crm_user_name" >
+                                    </mat-form-field>
+                                    
+                                </div>
+                            </div>
+                            <div class="col s6">
+                                <div class="control-field">
+                                    <mat-form-field class="cs-input">
+                                        <input type="text" name="crm_password" matInput placeholder="Password" #crm_password="ngModel" [(ngModel)]="data.crm_password"  required>
+                                    </mat-form-field>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <mat-divider class="left-right-15 mt20 mb10"></mat-divider>
+                        <div class="cs-heading">
+                            <h2>Loyalty Plan Login Details</h2>
+                        </div>
+                        <mat-divider class="left-right-15 mt10"></mat-divider>
+                        
+                        <div class="row">
+                            <div class="col s6">
+                                <div class="control-field">
+                                    <mat-form-field class="cs-input">
+                                        <input type="text" name="loyalty_username" matInput placeholder="User Name" #loyalty_username="ngModel" [(ngModel)]="data.loyalty_username" >
+                                    </mat-form-field>
+                                    
+                                </div>
+                            </div>
+                            <div class="col s6">
+                                <div class="control-field">
+                                    <mat-form-field class="cs-input">
+                                        <input type="text" name="loyalty_password" matInput placeholder="loyalty_password" #loyalty_password="ngModel"  [(ngModel)]="data.loyalty_password" required>
+                                    </mat-form-field>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div mat-dialog-actions>
+                <button mat-button [mat-dialog-close]="false">Cancel</button>
+                <button mat-button [disabled]="!data.crm_password || !data.crm_user_name || !data.loyalty_username || !data.loyalty_password" (click)="update()">Save</button>
+            </div>
+        </div>
+        
+        

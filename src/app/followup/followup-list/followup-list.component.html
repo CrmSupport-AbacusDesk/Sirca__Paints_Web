@@ -1,0 +1,206 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>Follow Ups</h2>
+      </div>
+    </div>
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="followUpList('refresh') "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      <div class="tabs ml15">
+        <ul>
+          <li><a class="" [ngClass]="active_tab == 'pending' ? 'active' : ''" (click)="active_tab = 'pending';followUpList('pending');">Pending</a></li>
+          <li><a class="" [ngClass]="active_tab == 'upcoming' ? 'active' : ''" (click)="active_tab = 'upcoming';followUpList('upcoming');">Upcoming</a></li>
+          <li><a class="" [ngClass]="active_tab == 'done' ? 'active' : ''" (click)="active_tab = 'done';followUpList('done');">Complete</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-outer padding0">
+    <div class="container">
+      <div class="cs-table cs-table-scroll">
+        <div class="stickyTableHead" style="width: fit-content;">
+          <div class="table-head">
+            <table>
+              <tr>
+                <!-- <th class="w70" *ngIf="followup_list.status=='Pending'"></th> -->
+
+                <th class="w150">Date Created</th>
+                <th class="w150">Created By</th>
+                <th  class="w150">Sales User</th>
+                <th class="w150">Company Name</th>
+                <th class="w130">Type</th>
+                <th class="w100">City</th>
+                <th class="w150">Contact Person Name</th>
+                <th class="w90">Mobile</th>
+                <th class="w120">Followup Date</th>
+                <th class="w120">Followup Type</th>
+                <th class="w150" >Description</th>
+                <th class="w100" *ngIf="active_tab == 'pending' && user_type == 'Inside Sales Team'">Action</th>
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+            <table>
+              <tr>
+                <!-- <th class="w70"  *ngIf="followup_list.status=='Pending'"></th> -->
+                <th class="w150"></th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Created By Name...."  name="created_by" [(ngModel)]="search.created_by" (keyup.enter)="followUpList(active_tab)">
+                    </mat-form-field>
+                  </div>
+                </th>
+
+                <th  class="w150" >
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."  name="sales_user_name" [(ngModel)]="search.sales_user_name" (keyup.enter)="followUpList(active_tab)">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."  name="dr_name "  [(ngModel)]="search.dr_name" (keyup.enter)="followUpList(active_tab)" >
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w130">
+                  <div class="th-search">
+                    <select name="user_type" [(ngModel)]="search.dr_type" (ngModelChange)="followUpList(active_tab)">
+                      <option value="1" >Channel Partner</option>
+                      <option value="7" >Direct Dealer</option>
+                      <option value="3" >Retail Partner</option>
+                    </select>
+                  </div>
+                </th>
+                <th class="w100"></th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."  name="contact_person"  [(ngModel)]="search.contact_person" (keyup.enter)="followUpList(active_tab)">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w90">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput type ="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="Mobile no...."  name="mobile" minlength="10" maxlength="10" [(ngModel)]="search.mobile" (keyup.enter)="followUpList(active_tab)">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w120">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input"  >
+                      <input matInput [matDatepicker]="picker" placeholder="Date" name="followup_date" [(ngModel)]="search.followup_date" (dateChange)="con_date(search.followup_date)" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w120"></th>
+                <th class="w150" ></th>
+                <th class="w100" *ngIf="active_tab == 'pending' && user_type == 'Inside Sales Team'"></th>
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-container" style="width: fit-content;">
+          <div class="table-content">
+            <table>
+              <tr *ngFor= "let list of followup_list;let i=index ">
+                <!-- <td class="w70" *ngIf="list.status=='Pending'">
+                  <mat-checkbox *ngIf="list.status == 'Pending'" (click)="openDialog(list.id,list.status)"></mat-checkbox>
+                </td> -->
+                <td class="w150">{{list.date_created | date : 'dd MMM ,y , hh:mm aa'}}</td>
+                <td class="w150">{{list.created_by_name ? list.created_by_name:'--'}}</td>
+
+                <td class="w150">{{list.sales_user_name}}</td>
+                <td class="one-line w150" matTooltip="{{list.dr_name}}" matTooltipPosition="above">{{list.dr_name}}</td>
+                <td class="w130" *ngIf="list.type == '1'">Channel Partner</td>
+                <td class="w130" *ngIf="list.type == '3'">Retail Partner</td>
+                <td class="w130" *ngIf="list.type == '7'">Direct Dealer</td>
+                <td class="w130" *ngIf="list.type == '10'">Social Media Lead</td>
+                <td class="w100" style="word-break:break-all;"> {{ list.dr_city && list.dr_city!=''?list.dr_city:'--'}}</td>
+
+                <td class="w150">{{list.contact_person}}</td>
+                <td class="w90">{{list.mobile}}</td>
+                <td class="w120">{{list.follow_up_date | date : 'd MMM ,y'}}</td>
+                <td class="w120">{{list.follow_up_type}}</td>
+                <td class="one-line w150" matTooltip="{{list.description}}" matTooltipPosition="above">{{list.description}}</td>
+
+                <td class="w100" *ngIf="active_tab == 'pending' && user_type == 'Inside Sales Team'">
+                  <button mat-button class="delete-mat" (click)="openDialog(list.id,list.status)" >
+                    <i class="material-icons green-clr" >edit </i>
+                  </button>
+                </td>
+              </tr>
+
+              <ng-container *ngFor="let lead of skelton">
+                <tr class="sk-loading"  *ngIf="loader">
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td  class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w130"><div>&nbsp;</div></td>
+                  <td class="w100"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w90"><div>&nbsp;</div></td>
+                  <td class="w120"><div>&nbsp;</div></td>
+                  <td class="w120"><div>&nbsp;</div></td>
+                  <td class="w150" ><div>&nbsp;</div></td>
+                  <td class="w100" *ngIf="active_tab == 'pending' && user_type == 'Inside Sales Team'"><div>&nbsp;</div></td>
+
+                </tr>
+              </ng-container>
+            </table>
+            <div class="search-results" data-infinite-scroll debounce [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2"  [infiniteScrollThrottle]="10" (scrolled)="followUpList()"
+            >
+          </div>
+          <div *ngIf="loader" class="lazy-loading" >
+            <img src="../../../assets/img/lazy_loader.gif" alt="">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="data-not-available"  *ngIf="data_not_found==true">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+
+          <div class="description">
+            <div class="cs-heading">
+              <h2>Follow Up</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>Data Not Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div>
+<!-- <div class="fix-btn">
+  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+</div> -->

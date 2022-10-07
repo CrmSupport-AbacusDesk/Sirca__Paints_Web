@@ -1,0 +1,135 @@
+<!-- <div class="gift-box">
+    <div class="zift-hadding">
+        <div class="export-count">
+            <p>Import Data</p>
+        </div>
+        
+        <div class="close-icon">
+            <button mat-button [mat-dialog-close]="false" ><i class="material-icons">clear</i></button>
+        </div>
+    </div>
+    
+    <div class="modal-body pt0">
+        <div class="row mb0">
+            <div class="col s12">
+                <div class="file-import">
+                    
+                </div>
+            </div>
+        </div>
+        
+        <div mat-dialog-actions>
+            <button mat-raised-button (click)="uploadCoupon()" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" color="primary">Upload</button>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="edit-modal" *ngIf="come_from == 'area_target_list'">
+    
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div><p>Loading....</p></div>
+        </mat-spinner>
+    </div>
+    
+    
+    
+    
+    <p class="heading">Upload Area Data</p>
+    <div mat-dialog-content style="padding: 0px 15px;">
+        <div class="excel-container grid-one-column">
+            <div class="excel-box">
+                <label>
+                    <form name="couponForm" #f="ngForm" novalidate autocomplete="off">
+                        <input type="file"  (change)="onUploadChange($event)" name="fileupload" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  style="display: none;">
+                    </form>
+                    <img src="assets/img/excel.svg">
+                    <p *ngIf="excel_name == ''">Click Here To Upload Area Excel</p>
+                    <p *ngIf="excel_name != ''">{{excel_name}}</p>
+                </label>
+                <a (click)="download_sample_excel('Area Target')">Area Target sample file</a>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">Close</button>
+        <button mat-raised-button color="accent" (click)="upload_area_data_excel()" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">Upload</button>
+    </div>
+</div>
+
+
+<div class="edit-modal" *ngIf="come_from == 'invoice_billing_list'">
+    
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div><p>Loading....</p></div>
+        </mat-spinner>
+    </div>
+    
+    <p class="heading"> {{payment_flag == 'true' ? 'Upload Payment Data' : (payment_flag == 'false' ? 'Upload Billing Data' : 'Upload Billing/Payment Data')}}</p>
+    <div  mat-dialog-content>
+        
+        <div class="excel-container" [ngClass]=" payment_flag == 'true' ? 'grid-one-column' : (payment_flag == 'false' ? 'grid-one-column' : '')">
+            <div class="excel-box" *ngIf="payment_flag == '' || payment_flag == 'false'">
+                <label>
+                    <form name="couponForm" #f="ngForm" novalidate autocomplete="off">
+                        <input type="file"  (change)="onUploadChange($event);payment_flag = 'false'" name="fileupload" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  style="display: none;">
+                    </form>
+                    <img src="assets/img/excel.svg">
+                    <p *ngIf="excel_name == ''">Click Here To Upload Billing Excel</p>
+                    <p *ngIf="excel_name != ''">{{excel_name}}</p>
+                </label>
+                <a (click)="download_sample_excel('Billing')">Billing sample file</a>
+            </div>
+            
+            <div class="excel-box" *ngIf="payment_flag == '' || payment_flag == 'true'">
+                <label>
+                    <form name="couponForm" #f="ngForm" novalidate autocomplete="off">
+                        <input type="file"  (change)="onUploadChange($event);payment_flag = 'true'" name="fileupload" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  style="display: none;">
+                    </form>
+                    <img src="assets/img/excel.svg">
+                    <p *ngIf="excel_name == ''">Click Here To Upload Payment Excel</p>
+                    <p *ngIf="excel_name != ''">{{excel_name}}</p>
+                </label>
+                <a (click)="download_sample_excel('Payment')">Payment sample file</a>
+            </div>
+        </div>
+        
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">Close</button>
+        <button mat-raised-button color="accent" (click)="payment_flag == 'false' ? upload_billing_data_excel(): (payment_flag == 'true' ?  upload_payment_data_excel() : '')" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">Upload</button>
+    </div>
+</div>
+
+
+<div class="edit-modal" *ngIf="come_from == 'from_social_media_leads'">
+    
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div><p>Loading....</p></div>
+        </mat-spinner>
+    </div>
+    
+    <p class="heading">Upload Social Media Lead Data</p>
+    <div mat-dialog-content style="padding: 0px 15px;">
+        <div class="excel-container grid-one-column">
+            <div class="excel-box">
+                <label>
+                    <form name="couponForm" #f="ngForm" novalidate autocomplete="off">
+                        <input type="file"  (change)="onUploadChange($event)" name="fileupload" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"  style="display: none;">
+                    </form>
+                    <img src="assets/img/excel.svg">
+                    <p *ngIf="excel_name == ''">Click Here To Upload Social Media Lead Excel</p>
+                    <p *ngIf="excel_name != ''">{{excel_name}}</p>
+                </label>
+                <a (click)="download_sample_excel('Social Media Lead')">Social Media Lead sample file</a>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-raised-button color="warn" [mat-dialog-close]="false">Close</button>
+        <button mat-raised-button color="accent" (click)="upload_social_media_lead_data_excel()" accept=".csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">Upload</button>
+    </div>
+</div>

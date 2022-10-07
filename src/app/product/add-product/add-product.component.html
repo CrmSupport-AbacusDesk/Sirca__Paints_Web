@@ -1,0 +1,311 @@
+<form #f="ngForm" (ngSubmit)="f.valid && check_product_code()  ">
+  <div class="main-container" >
+    
+    
+    <div *ngIf="loader" class="cs-loader">
+      <mat-spinner class="loader">
+        <div><p>Loading....</p></div>
+      </mat-spinner>
+    </div>
+    
+    
+    <div class="middle-container">
+      <div class="page-heading">
+        <img src="assets/img/leads_icon.svg" class="h-icon">
+        <div class="heading-text">
+          <h2>Product</h2>
+          <p>Add New Product</p>
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="container-outer">
+      <!-- <app-master-tab></app-master-tab> -->
+      <div class="container tab-container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box">
+              <div class="cs-heading">
+                <h2>BASIC INFORMATION</h2>
+                
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="from-fields">
+                <div class="row">
+                  
+                  <div class="col s3 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select name="category" placeholder="Category" #category="ngModel" [(ngModel)]="data.category" [ngClass]="{'has-error' : category.invalid } " required>
+                          <mat-option disabled="">Select Category</mat-option>
+                          <mat-option  *ngFor="let category of category_list"(click)="getSubCategoryList()" value="{{category}}">{{category}}</mat-option>
+                          <div class="alert alert-danger" *ngIf="!category.valid && category.touched">
+                            Category is required...
+                          </div>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>                  
+                  </div>
+                  
+                  <div class="col s3">
+                    <div class="control-field" [ngClass]="{'has-error' : subCategory.invalid } ">
+                      
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Sub Category" name="subCategory" #subCategory="ngModel" [(ngModel)]="data.sub_category"  >
+                          <mat-option disabled="">Select Sub Category</mat-option>
+                          <mat-option  *ngFor="let subCategory of subCategory_list" value="{{subCategory.id}}">{{subCategory.sub_category}}</mat-option>
+                          <!-- <div class="alert alert-danger" *ngIf="!category.valid && category.touched">
+                            Category is required...
+                          </div> -->
+                        </mat-select>
+                      </mat-form-field>
+                      
+                    </div>
+                  </div>   
+                  
+                  <div class="col s3 ">
+                    <div class="control-field" [ngClass]="{'has-error' : productcode.invalid } ">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Product Code"  name="productcode" #productcode="ngModel" [(ngModel)]="data.cat_no" required>
+                        
+                      </mat-form-field>
+                      <div class="alert alert-danger" *ngIf="!productcode.valid && productcode.touched">
+                        product code is required...
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col s3 pr0">
+                      <div class="control-field" [ngClass]="{'has-error' : productName.invalid } ">
+                          <mat-form-field class="cs-input">
+                            <input matInput placeholder="Product Name" name="productName" #productName="ngModel" [(ngModel)]="data.product_name" required>
+                            <div class="alert alert-danger" *ngIf="!productName.valid && productName.touched">
+                              
+                              Product name is required...
+                            </div>
+                          </mat-form-field>
+                        </div>
+                  </div>
+                </div>
+                
+                <div class="row">
+
+                  <div class="col s6">
+                    <div class="control-field" [ngClass]="{'has-error' : master_packing.invalid } ">
+                        <mat-form-field class="cs-input">
+                          <input matInput placeholder="Master Packing" name="master_packing" #master_packing="ngModel" [(ngModel)]="data.master_packing" required>
+                          <div class="alert alert-danger" *ngIf="!master_packing.valid && master_packing.touched">
+                            
+                            Master Packing is required...
+                          </div>
+                        </mat-form-field>
+                      </div>
+                   </div>
+                   <!-- <div class="col s6">
+                    <div class="control-field" [ngClass]="{'has-error' : secondary_packing.invalid } ">
+                        <mat-form-field class="cs-input">
+                          <input matInput placeholder="Secondary Packing" name="secondary_packing" #secondary_packing="ngModel" [(ngModel)]="data.secondary_packing" required>
+                          <div class="alert alert-danger" *ngIf="!secondary_packing.valid && secondary_packing.touched">
+                            
+                            Secondary Packing is required...
+                          </div>
+                        </mat-form-field>
+                      </div>
+                   </div> -->
+
+
+
+                </div>
+       
+                <div class="row" >
+                  <div class="col s12" >
+                    <div class="collaps">
+                      <div class="collaps-area">
+                        <mat-accordion>
+                          <mat-expansion-panel *ngFor="let row of data.region" >
+                            <mat-expansion-panel-header >
+                              <mat-panel-title>
+                                {{row.region_name}}
+                                <span class="counter">{{row.state.length}}</span>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="cs-table left-right-20">
+                              <div class="table-head">
+                                <table>
+                                  <tr >
+                                    <th>State Name</th>
+                                    <th class="w200">
+                                      <div class="place-input">
+                                        <!-- <a class="edit" > -->
+                                          <!-- <i class="material-icons">create</i></a> -->
+                                          <input type="number" matInput placeholder="Enter..." name="price" #price="ngModel" [(ngModel)]="row.price">
+                                          <!-- <ul class="action-save">
+                                            <li><a><i class="material-icons green-clr">save</i></a></li>
+                                            <li><a><i class="material-icons red-clr" >close</i></a></li>
+                                          </ul> -->
+                                        </div>
+                                      </th>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <div class="table-container">
+                                  <div class="table-content">
+                                    <table>
+                                      <tr *ngFor="let row2 of row.state;let i=index">
+                                        <td>{{row2.state_name}}</td>
+                                        <td class="w200">
+                                          <div class="place-input">
+                                            <!-- <a class="edit" >
+                                              <i class="material-icons">create</i></a> -->
+                                              <input type="number" matInput placeholder="Enter..." name="price" #price="ngModel" [(ngModel)]="row2.price">
+                                              <!-- <ul class="action-save">
+                                                <li><a><i class="material-icons green-clr">save</i></a></li>
+                                                <li><a><i class="material-icons red-clr" >close</i></a></li>
+                                              </ul> -->
+                                            </div>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </mat-expansion-panel>
+                            </mat-accordion>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                  
+                  <mat-divider class="left-right-15 mt10 mb10"></mat-divider>
+                  <div class="cs-heading">
+                    <h2>DESCRIPTION</h2>
+                  </div>
+                  <mat-divider class="left-right-15 mt10"></mat-divider>
+                  <div class="row mb15">
+                    <div class="col s12 padding0" >
+                      <div class="from-fields">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input h-input">
+                            <textarea matInput placeholder="Enter..." name="description" #description="ngModel" [(ngModel)]="data.description" [ngClass]="{'has-error' : description.invalid } "></textarea>    
+                          </mat-form-field>
+                          <div class="alert alert-danger" *ngIf="!description.valid && description.touched">
+                            Description is required...
+                          </div>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  
+                  <form>
+                    <div class="row">
+                      <div class="col s12">
+                        <div class="cs-file" >
+                          <p>Upload Image</p>
+                          <ul class="product-images" style="display:flex;">
+                            <li style="display:flex;" *ngFor="let val of urls; let i = index" >
+                              <label class="cs-file-img">
+                                <img height="75" width="75" [src]=" val || 'http://placehold.it/180'" alt="your image">
+                                <span (click)="delete_img(i)" class="cancel-icon">
+                                  <a class="close"><i class="material-icons dp48">clear</i></a>
+                                </span>
+                              </label>
+                            </li>
+                            
+                            <li>
+                              <div class="field-control mrt0">
+                                <label class="cs-file-img">
+                                  <img src="assets/img/default-img.png">
+                                  <input type="file" (change)="insertImage($event)" name="image" placeholder="Upload file" accept=".png,.jpg,.jpeg" multiple style="display: none;" required>
+                                </label>
+                              </div> 
+                            </li>
+                          </ul>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                  
+                  
+                  <mat-divider class="left-right-15 mt10 mb10"></mat-divider>
+                  <div class="row mt15">
+                    <div class="col s4">
+                      <div class="territory-info">
+                        <div class="head" [ngClass]="{'active':active.branch==true}">
+                          <h2>BRANDS</h2>
+                          
+                        </div>
+                        <div class="cs-checkbox">
+                          <div class="checkbox-outer">
+                            <section class="checkbox-inner"  *ngFor="let list of brand_list;let index=index" aria-required="true" >
+                              <mat-checkbox class="check-list" (change)="product_Brand(list.brand_name,index,$event)" value="{{list.brand_name}}">{{list.brand_name}}</mat-checkbox>
+                            </section>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="col s4">
+                      <div class="territory-info">
+                        <div class="head" [ngClass]="{'active':active.color==true}">
+                          <h2>COLORS</h2>
+                          
+                        </div>
+                        <div class="cs-checkbox">
+                          <div class="checkbox-outer">
+                            <section class="checkbox-inner" *ngFor="let list of color_list;let index=index" aria-required="true">
+                              <mat-checkbox class="check-list" (change)="product_Color(list,index,$event)" value="{{list.color_name}}">{{list.color_name}}</mat-checkbox>
+                            </section>
+                          </div>
+                        </div>
+                      </div>
+                    </div> 
+                    
+                    
+                    <!-- <div class="col s4">
+                      <div class="territory-info">
+                        <div class="head" [ngClass]="{'active':active.extrafield==true}">
+                          <h2>EXTRA FIELDS</h2>
+                          
+                        </div>
+                        <div class="cs-checkbox">
+                          <div class="checkbox-outer">
+                            <section class="checkbox-inner" *ngFor="let list of extra_field_list;let i=index">
+                              <mat-checkbox class="check-list bg-list" (change)="product_ExtraField(list,i,$event)" value="1">{{list.label}}</mat-checkbox>
+                            </section>
+                          </div>
+                        </div>
+                      </div>
+                    </div>  -->
+
+                   
+                    
+                  </div>
+                  <!-- <div>
+                    <mat-checkbox name="flag" #flag="ngModel" [(ngModel)]="data.flag" value="1" >Check for show in new Arrival</mat-checkbox>
+                  </div> -->
+                </div>
+              </div>
+              
+              
+              <div class="col s12">
+                <div class="cs-btn fixedd mt32 text-right">
+                  <div class="in-btn">
+                    <button mat-raised-button color="accent"  type="save">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="h50"></div>
+    </form>
+    

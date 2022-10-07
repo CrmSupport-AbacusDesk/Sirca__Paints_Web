@@ -1,0 +1,183 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/report.svg" class="h-icon h20">
+      <div class="heading-text">
+        <h2>Plumber Meet Report</h2>
+      </div>
+    </div>
+    
+    <div class="uppr-one m-right-data">
+      
+      <div class="left-auto ml10">
+        <div class="from-fields cs-flex">
+          <div class="control-field mr10">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="pickers" placeholder="From" name="date_from" [(ngModel)]="search.date_from" readonly [max]="today" (ngModelChange)="search.date_from = con_date(search.date_from)">
+              <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+              <mat-datepicker #pickers></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="control-field mr10">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="picker" placeholder="To" name="date_to" [(ngModel)]="search.date_to" readonly [min]="search.date_from"  [max]="today"  (ngModelChange)="search.date_to = con_date(search.date_to)">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="cs-btn mt5">
+          <div class="in-btn">
+            <button mat-raised-button color="accent" [disabled]="search=={} &&  !search.date_from && !search.date_to " (click)="get_plumber_meet_report_data()">Go</button>
+          </div>
+        </div>
+      </div>
+
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="get_plumber_meet_report_data('refresh') "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; get_plumber_meet_report_data()" [disabled]="pagenumber <= 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; get_plumber_meet_report_data()" [(ngModel)]="pagenumber"  min="1" max={{total_page}} >
+          </li>
+          
+          <li>
+            <button mat-button class="right-btn" (click)="start=start+page_limit; get_plumber_meet_report_data()" [disabled]="pagenumber >= total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    
+    <div class="container" *ngIf="plumber_meet_report_data.length">
+      <div class="row">
+        
+        <div class="col s12">
+          <div class="excel-table page-scroll">
+            <div class="cs-table">
+              <div class="stickyHead">
+                <div class="table-head">
+                  <table>
+                    <tr>
+                      <th class="w45">Sr.No</th>
+                      <th class="w150">Channel Partner</th>
+                      <th class="w150">Dealer</th>
+                      <th class="w220">Plumber Count</th>
+                      <th class="w150">Date of Meeting</th>
+                      <th class="w150">State</th>
+                      <th class="w150">City</th>
+                      <th class="w150">Pincode</th>
+                      <th class="w150">Sales Executive</th>
+                      <th class="w150">Expected Budget</th>
+                      <th class="w150">Actual Expense</th>
+                      <th class="w100 text-center">View Details</th>
+                    </tr>
+                  </table>
+                </div>
+                <div class="table-head bdrt">
+                  <!-- <table>
+                    <tr>
+                      <th class="w45">&nbsp;</th>
+                      <th class="w150">
+                        <div class="th-search-acmt">
+                          <mat-form-field class="example-full-width cs-input"  >
+                            <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" [(ngModel)]="search_val.date_created" (dateChange)="con_date(search_val.date_created)" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field>
+                        </div>
+                      </th>
+                      <th>
+                        <div class="th-search-acmt">
+                          <mat-form-field class="example-full-width cs-input select-input">
+                            <input matInput  placeholder="Search..." name="company_name" [(ngModel)]="search_val.company_name" (keyup.enter)="get_plumber_meet_report_data()">
+                          </mat-form-field>
+                        </div>
+                      </th>
+                      <th class="w220">
+                        <div class="th-search-acmt">
+                          <mat-form-field class="example-full-width cs-input select-input">
+                            <input matInput  placeholder="Search..." name="contact_person" [(ngModel)]="search_val.contact_person" (keyup.enter)="get_plumber_meet_report_data()">
+                          </mat-form-field>
+                        </div>
+                      </th>
+                      <th class="w120">&nbsp;</th>
+                      <th class="w100 text-center">&nbsp;</th>
+                    </tr>
+                  </table> -->
+                </div>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let report_data of plumber_meet_report_data;let i=index;">
+                      <td class="w45">{{start+i+1}}</td>
+                      <td class="w150">{{report_data.created_by_type == 'dr_login' ? (report_data.type == '1' ? report_data.created_by_dr_name : report_data.distributor_name) : (report_data.company_name && report_data.company_name!= '' ? report_data.company_name : '--')}}</td>
+                      <td class="w150">{{report_data.created_by_type == 'dr_login' && report_data.type == '3' ?  report_data.created_by_dr_name : '--'}}</td>
+                      <td class="w220">{{report_data.total_member}}</td>
+                      <td class="w150">{{report_data.date_of_meeting | date : 'h MMM, y'}}</td>
+                      <td class="w150">{{report_data.dr_state}}</td>
+                      <td class="w150">{{report_data.dr_city}}</td>
+                      <td class="w150">{{report_data.dr_pincode}}</td>
+                      <td class="w150">{{report_data.created_by_type =='Executive' ? report_data.created_by_name :'--'}}</td>
+                      <td class="w150">{{report_data.total_budget}}</td>
+                      <td class="w150">{{report_data.expense}}</td>
+                      <td class="w100 text-center">
+                        <a style ="cursor: pointer" (click)="view_plumber_details(report_data.id)" class="ankr-clr">VIEW</a>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="data-not-available" *ngIf="!plumber_meet_report_data.length">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+          
+          <div class="description">
+            <div class="cs-heading">
+              <h2>Plumber Meet Report</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>Data Not Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fix-btn">
+  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="download_excel()"><img src="assets/img/excel.svg"></a>
+</div>

@@ -1,0 +1,170 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/report.svg" class="h-icon h20">
+      <div class="heading-text">
+        <h2>Series Wise Sales Report</h2>
+      </div>
+      <div class="uppr-one m-right-data">
+        <ul>
+          <li class="refresh-area mr0 after-none">
+            <a class="refresh-btn" mat-raised-button (click)="refresh()"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+ 
+  <!-- below headers -->
+ 
+  <div class="container-outer">
+    
+    <div class="filters">
+      
+      <mat-form-field appearance="outline">
+        <input matInput [matDatepicker]="pickers" placeholder="From" name="date_from" [(ngModel)]="data.date_from" readonly [max]="today" (ngModelChange)="date_flag = true">
+        <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+        <mat-datepicker #pickers></mat-datepicker>
+      </mat-form-field>
+      
+      
+      <mat-form-field appearance="outline">
+        <input matInput [matDatepicker]="picker" placeholder="To" name="date_to" [(ngModel)]="data.date_to" readonly [min]="data.date_from"  [max]="today"  (ngModelChange)="date_flag = true">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      
+      
+      <mat-form-field  appearance="outline">
+        <mat-label>Data Type</mat-label>
+        <mat-select  name="data_type" [(ngModel)]="data.data_type">
+          <mat-option  value="total_item">Total Item</mat-option>
+          <mat-option  value="total_qty">Total Quantity</mat-option>
+          <mat-option  value="dispatch_qty"> Dispatch Quantity</mat-option>
+          <mat-option  value="order_val">Order Value</mat-option>
+          <mat-option  value="dispatch_val">Dispatch Value</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field  appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select  name="category" #category="ngModel"  [(ngModel)]="data.category">
+          <mat-option  *ngFor="let category of category_list" value="{{category.main_category}}">{{category.main_category}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+    
+      <mat-form-field  appearance="outline">
+        <mat-label>State</mat-label>
+        <mat-select  name="state" #state="ngModel"  [(ngModel)]="data.state"  (ngModelChange)="data.district='';data.city='';data.user_type='';getDistrict(); party_name()">
+          <mat-option *ngFor="let state of state_list" value="{{state}}">{{state}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field  appearance="outline">
+        <mat-label>District</mat-label>
+        <mat-select  name="district" #district="ngModel"  [(ngModel)]="data.district" (ngModelChange)="data.city='';data.user_type='';getCityList(); party_name()">
+          <mat-option *ngFor="let district of district_list"(keyup.enter)="getCityList()"(click)="getCityList()" value="{{district}}">{{district}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field  appearance="outline">
+        <mat-label>City</mat-label>
+        <mat-select  name="city" #city="ngModel"  [(ngModel)]="data.city" (ngModelChange)="party_name()">
+          <mat-option *ngFor="let city of city_list" value="{{city}}">{{city}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <mat-form-field  appearance="outline">
+        <mat-label>Party Type</mat-label>
+        <mat-select  name="user_type" [(ngModel)]="data.user_type" (ngModelChange)="party_name()">
+          <mat-option value="1" >Channel Partner</mat-option>
+          <mat-option value="3" >Direct Dealer</mat-option>
+          <mat-option value="7" >Retail Partner</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field  appearance="outline">
+        <mat-label>Party Name</mat-label>
+        <mat-select  (change)="party_name()" class="select-filter" name="partyname" #partyname="ngModel"  [(ngModel)]="data.partyname">
+          <mat-option *ngFor="let partyname of party_name_list" value="{{partyname}}">{{partyname.company_name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+       <mat-form-field  appearance="outline">
+        <mat-label>Type</mat-label>
+        <mat-select class="select-filter" name="order_type" #order_type="ngModel"  [(ngModel)]="data.order_type">
+          <mat-option value="" disabled>Select Type</mat-option>
+          <mat-option  value="Primary">Primary Type</mat-option>
+          <mat-option  value="Secondary">Secondary Type</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent" [disabled]="((!data.date_from)||(!data.date_to)||(!data.data_type))" (click)="get_report_data();date_flag = true">Go</button>
+    </div>
+    
+    <mat-spinner class="loader" *ngIf="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+    <div class="container"  *ngIf="report_data.length">
+      <div class="excel-table page-scroll">
+        <div class="cs-table">
+          <div class="stickyHead">
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th class="w45">S NO</th>
+                  <th class="w200">Category name</th>
+                  <th class="w200">Series Name</th>
+                  <th class="w80" *ngFor= "let data of allMonthsInPeriod"> {{data}}</th>
+                  <th class="w80">Grand Total</th>
+                  
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <div class="table-content">
+              <table>
+                <tr *ngFor= "let map of report_data; let i=index">
+                  <td class="w45">{{i+1}}</td>
+                  <td class="w200">{{map.main_category?map.main_category:'--'}}</td>
+                  <td class="w200">{{map.sub_category?map.sub_category:'--'}}</td>
+                  <td class="w80" *ngFor="let data of allMonthsInPeriod">
+                    <div *ngFor="let column of map | keyvalue "> 
+                      <div *ngIf= " column.key == data">{{column.value}} </div>
+                    </div>
+                  </td>
+                  <td class="w80">{{map.total?map.total:0}}</td>
+                  
+                </tr>
+                
+                
+              
+              </table>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="suggestion-box" *ngIf="report_data.length == 0">
+      <img src="assets/img/select_please.jpg">
+    </div>  
+    
+  </div>
+  <div class="see-more-item" *ngIf="showSeeMore">
+    <button mat-raised-button color="accent" (click)="frontEndPagination(10)">
+      See more 
+      <i class="material-icons">keyboard_arrow_down</i>
+    </button>
+  </div>
+</div>
+
+
+<div class="fix-btn">
+  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+  
+</div>

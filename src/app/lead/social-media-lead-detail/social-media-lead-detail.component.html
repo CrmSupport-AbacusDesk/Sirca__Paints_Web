@@ -1,0 +1,258 @@
+<div class="main-container">
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div>
+        <p>Loading....</p>
+      </div>
+    </mat-spinner>
+  </div>
+
+
+  <div class="middle-container">
+
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/social-media-lead-list" routerLinkActive="active"><i
+              class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{lead_detail.company_name}}</h2>
+        <p class="light">{{lead_detail.dr_type}}</p>
+      </div>
+    </div>
+
+    <div class="left-auto">
+      <div class="cs-btn text-right">
+        <div class="in-btn">
+          <button mat-raised-button color="accent">Convert Lead</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs right-tab ml15">
+      <ul class="dflex1">
+          <li ><a>Profile</a></li>
+          <li ><a>Discount</a></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="container-outer">
+    <div class="container">
+
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info">
+
+            <div class="basic-details">
+              <div class="profile-info">
+                <ul>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/company.svg" class="fix-img">
+                      <span>Company Name</span>
+                      <p>{{lead_detail.company_name}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                        (click)="editDilog(lead_detail.company_name,'companyname')"><i
+                          class="material-icons">create</i></a>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"><i
+                          class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/people.svg" class="fix-img">
+                      <span>Name</span>
+                      <p>{{lead_detail.name}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                        (click)="editDilog(lead_detail.name,'dr_name')"><i class="material-icons">create</i></a>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"><i
+                          class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/gmail.svg" class="fix-img">
+                      <span>Email</span>
+                      <p class="link-clr">{{lead_detail.email}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                        (click)="editDilog(lead_detail.email,'email')"><i class="material-icons">create</i></a>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"><i
+                          class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/mobile.svg" class="fix-img">
+                      <span>Mobile</span>
+                      <p>{{lead_detail.mobile}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                        (click)="editDilog(lead_detail.mobile,'mobile')"><i class="material-icons">create</i></a>
+
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"><i
+                          class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/phone.svg" class="fix-img">
+                      <span>Landline</span>
+                      <p>{{lead_detail.landline_no}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                        (click)="editDilog(lead_detail.landline_no,'landline_no')"><i
+                          class="material-icons">create</i></a>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"><i
+                          class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/whatsapp.svg" class="fix-img">
+                      <span>Whatsapp No.</span>
+                      <p>{{lead_detail.whatsapp_no}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                        (click)="editDilog(lead_detail.whatsapp_no,'whatsapp_no')"><i
+                          class="material-icons">create</i></a>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"><i
+                          class="material-icons">create</i></a> -->
+                    </div>
+                  </li>
+                  <li>
+                    <div class="cs-box">
+                      <img src="assets/img/gst.svg" class="fix-img">
+                      <span>GST</span>
+                      <p>{{lead_detail.gst}}</p>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                        (click)="editDilog(lead_detail.gst,'gst')"><i class="material-icons">create</i></a>
+                      <!-- <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"><i
+                          class="material-icons">create</i></a> -->
+
+                    </div>
+
+                  </li>
+
+                  <li *ngIf="show_edit==false" >
+
+                    <ul>
+                      <li>
+                        <div class="cs-box">
+                          <img src="assets/img/whatsapp.svg" class="fix-img">
+                          <span>Status</span>
+                          <p>{{lead_detail.whatsapp_no}}</p>
+
+                        </div>
+                      </li>
+                      <li>
+                        <div class="cs-box">
+                          <img src="assets/img/gst.svg" class="fix-img">
+                          <span>Reason</span>
+                          <p>{{lead_detail.gst}}</p>
+
+
+
+                        </div>
+
+                      </li>
+                      <a class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="show_edit=true" ><i class="material-icons">create</i></a>
+                    </ul>
+
+                  </li>
+
+
+                  <li *ngIf="show_edit==true">
+                    <ul>
+                      <li>
+                        <div class="cs-box">
+                            <mat-select name="Lead Status" placeholder="Lead Status"   required>
+                              <mat-option disabled="">Select Lead Status</mat-option>
+                              <mat-option *ngFor="let leadstatus of leadstatusarray" (click)="get_dead_reason_list()"   value="{{leadstatus.lead_status}}">{{leadstatus.lead_status}}</mat-option>
+                              </mat-select>
+                        </div>
+
+                      </li>
+
+                      <li>
+                        <div class="cs-box" >
+                            <mat-select name="Dead reason" placeholder="Dead reason"  required>
+                              <mat-option disabled="">Select Dead Reasons</mat-option>
+                              <mat-option  *ngFor="let deadreason of deadreasonarray" (click)="get_dead_reason_list()"  value="{{deadreason.dead_reason}}">{{deadreason.dead_reason}}</mat-option>
+                              </mat-select>
+                         </div>
+
+                      </li>
+                      <button class="ng-tns-c1-0 mat-raised-button mat-accent" (click)="show_edit=false; update_status()">Save</button>
+                    </ul>
+                  </li>
+
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mt20">
+            <div class="col s8">
+              <div class="sprate-box padding0">
+                <div class="full-address">
+                  <div class="top-heading">
+                    <h2>ADDRESS</h2>
+                  </div>
+                  <a mat-button class="address-edit" matTooltip="EDIT" color="accent"
+                    (click)="editAddress(lead_detail.country,lead_detail.state,lead_detail.district,lead_detail.city,lead_detail.pincode,lead_detail.address,'address')"><i
+                      class="material-icons">edit</i></a>
+
+                  <div class="nationality">
+                    <img src="../assets/img/india.svg" alt="">
+                    <p>India</p>
+                  </div>
+
+                  <div class="ds-from-fields">
+
+                    <div class="cs-row">
+                      <div class="static-info">
+                        <p>Country</p>
+                        <p>{{lead_detail.country}}</p>
+                      </div>
+
+
+
+                      <div class="static-info">
+                        <p>State</p>
+                        <p>{{lead_detail.state}}</p>
+                      </div>
+                      <div class="static-info">
+                        <p>District</p>
+                        <p>{{lead_detail.district}}</p>
+                      </div>
+                      <div class="static-info">
+                        <p>City</p>
+                        <p>{{lead_detail.city}}</p>
+                      </div>
+                      <div class="static-info">
+                        <p>Pin Code</p>
+                        <p>{{lead_detail.pincode}}</p>
+                      </div>
+                    </div>
+                    <div class="cs-row">
+                      <div class="static-info">
+                        <p>address</p>
+                        <p>{{lead_detail.address}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,118 @@
+<div class="main-container">
+  <div class="middle-container">
+    <div class="page-heading">
+      <img src="assets/img/discount.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>SECONDARY COUPON</h2>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container">
+      <form name="coupon" (ngSubmit)="secondary_coupon_generate_form.form.valid" #secondary_coupon_generate_form="ngForm" novalidate autocomplete="off">
+        <div class="row " >
+          <div class="col s12 ">
+            <div class="sprate-box ">
+              <div class="cs-heading">
+                <h2>GENERATE SECONDARY COUPON</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="from-fields">
+                <div class="row mb0">
+                  <div class="col s12 mb0 ">
+                    <div class="col s4">
+                      <div class="option-field">
+                        <div class="row mb0">
+                          <div class="col s12">
+                            <div class="control-field col s6">
+                              <mat-form-field class="cs-input">
+                                <input matInput placeholder="Total Number of Code" onkeypress="return event.charCode>=48 && event.charCode<=57"  name="total_coupon_code" [(ngModel)] = "total_coupon"  #total_coupon_code="ngModel" required >
+                              </mat-form-field>  
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col s12">
+            <div class="cs-btn fixedd text-right">
+              <div class="in-btn">
+                <button mat-raised-button color="accent" (click)="true">GENERATE</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      
+      
+      <div class="top-pagination" >
+        <ul></ul>
+      </div>
+      
+      <div class="cs-table cs-table-scroll" >
+        <div class="stickyTableHead" style="width: fit-content;">
+          <div class="table-head">
+            <table>
+              <tr>
+                <th class="w50 border-right text-center">S.No.</th>
+                <th class="w120">Date</th>
+                <th class="w150"> Created by</th>
+                <th>Coupon Code</th>
+                <th class="w200 text-center">Coupon Value</th>
+                <th class="w200 text-center">Action</th>
+              </tr>
+            </table>
+          </div>
+          
+          <div class="table-head bdrt">
+            <table>
+              <tr>
+                <th class="w50 border-right ">&nbsp;</th>
+                <th class="w120">
+                  <div class="th-search-acmt">
+                    <i *ngIf="filter.date" class="material-icons" (click)="filter.date = '';get_coupon_code_list() ">clear</i>
+                    <mat-form-field>
+                      <input matInput placeholder=" Date" [(ngModel)]="filter.date" (click)="picker1.open();" name="date" matInput (dateChange)="get_coupon_code_list()" [matDatepicker]="picker1" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                      <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </th>  
+                <th class="w150"></th>
+                <th></th>
+                <th class="w200"></th>
+                <th class="w200"></th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <div class="table-container">
+          <div class="table-content">
+            <table>
+              <tr *ngFor="let row of [].constructor(5);let i = index">
+                <td class="w50 border-right text-center">{{i+1}}</td>
+                <td class="w120">2 june 2021</td>
+                <td class="w150"> shivam</td>
+                <td>821349ABCH12Dse1</td>
+                <td class="w200 text-center">Action</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div> 
+      
+      
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+@media only screen and (max-width: 600px) {
+    body
+    {
+        background: red;
+        
+        .mob-right{
+            text-align: right !important;
+        }
+        
+        .sprate-box{
+            box-shadow: none;
+            padding: 0px 10px;
+            margin: 0px -10px;
+            width: initial;
+            
+            .cs-heading{
+                padding: 9px 0px 0px 0px;
+                display: flex;
+                align-items: center;
+                
+                h2{
+                    font-size: 11px;
+                }
+                span.required{
+                    font-size: 9px;
+                }
+            }
+        }
+        .mobile-view{
+            margin: 0px -10px;
+            overflow: auto;
+        }
+        
+        .survey-container{
+            width: 100% !important;
+        }
+        
+        
+        .mob-full-btn{
+            &.fixedd {
+                .in-btn{
+                    width: 100%;
+                    
+                    button,a {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        .mob-mb15{
+            margin-bottom: 15px;
+            margin-top: 0px !important;
+        }
+    }
+}

@@ -1,0 +1,473 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/checkin_icon.svg" class="h-icon h20">
+      <div class="heading-text">
+        <h2>Activity</h2>
+      </div>
+
+      <div class="left-auto ml10" *ngIf="show_today==false">
+        <div class="from-fields cs-flex">
+          <div class="control-field mr10">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="picker1" placeholder="From" name="date_from" [(ngModel)]="data.date_from"
+                (dateChange)="distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2' ,data)">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="control-field mr10">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="pickers" placeholder="To" name="date_to" [(ngModel)]="data.date_to"
+                [min]="data.date_from" [max]="today_date"
+                (dateChange)="distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2' ,data)">
+              <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+              <mat-datepicker #pickers></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <div class="uppr-one m-right-data">
+      <ng-container>
+        <mat-form-field class="search-select" appearance="outline">
+          <mat-select name="list_type"    placeholder="Select.." [(ngModel)]="data.list_type" (ngModelChange)="start = 0 ;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')">
+            <mat-option value="all">All Data</mat-option>
+            <!-- <mat-option value="assign">Assigned Leads</mat-option> -->
+            <!-- <mat-option value="not_assign">Not Assigned Leads</mat-option> -->
+            <mat-option value="product_quality">Product Quality</mat-option>
+            <mat-option value="working_tenure">Working Tenure</mat-option>
+            <mat-option value="purchase_frequency">Purchase Frequency</mat-option>
+            <mat-option value="segments_in_gravity">Segments in Gravity</mat-option>
+            <mat-option value="why_not_all_segments_of_gravity">Why not all segments of Gravity</mat-option>
+            <mat-option value="dealing_in_how_many_brands">Dealing in how many Brands</mat-option>
+            <mat-option value="most_selling_brands">Most Selling Brands</mat-option>
+            <mat-option value="status">Status</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="distributorList('refresh')" matTooltip="Refresh"><i
+              class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+
+      <div class="top-pagination">
+        <ul>
+          <li>
+            <p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn"
+              (click)="start=start-pagelimit;  distributorList((show_today==false?'get_all_activity_list':'get_today_activity_list'),(show_today==false?2:1))"
+              [disabled]="pagenumber == 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber"
+              (keyup.enter)="start=(pagenumber*pagelimit)-pagelimit;  distributorList((show_today==false?'get_all_activity_list':'get_today_activity_list'),(show_today==false?2:1))"
+              [(ngModel)]="pagenumber" min="1" max={{total_page}}>
+          </li>
+
+          <li>
+            <button mat-button class="right-btn"
+              (click)="start=start+pagelimit;  distributorList((show_today==false?'get_all_activity_list':'get_today_activity_list'),(show_today==false?2:1))"
+              [disabled]="pagenumber == total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="tabs ml15">
+        <ul>
+          <li><a class="pr50" [ngClass]="{'active': show_today==true}"
+              (click)="change_tab('get_today_activity_list',1);show_today=true">Today <span
+                class="counter">{{count_1}}</span></a></li>
+          <li><a class="pr50" [ngClass]="{'active': show_today==false}"
+              (click)="change_tab('get_all_activity_list',2);show_today=false">All <span
+                class="counter">{{count_2}}</span></a></li>
+        </ul>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="container-outer padding0">
+    <div>
+      <mat-spinner class="loader" *ngIf="spinner_enable">
+        <div>
+          <p>Loading....</p>
+        </div>
+      </mat-spinner>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table cs-table-scroll">
+            <div class="stickyTableHead" style="width: fit-content;">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <th class="w50">S No.</th>
+                    <th class="w120">Date</th>
+                    <th class="w150">Created By</th>
+                    <th class="w200">Company Name</th>
+                    <th class="w150">City</th>
+                    <th class="w150">Contact Person</th>
+                    <th class="w150">Contact No.</th>
+                    <th class="w150">Activity Type</th>
+                    <th class="w150">Distributor Name</th>
+                    <th class="w150">Disposition Type</th>
+                    <th class="w150">Disposition Name</th>
+                    <th class="w150">Product Quality</th>
+                    <th class="w150">Working Tenure</th>
+                    <th class="w150">Purchase Frequency</th>
+                    <th class="w150">Segments in Gravity</th>
+                    <th class="w150">Why not all segments of Gravity</th>
+                    <th class="w150">Dealing in how many brands</th>
+                    <th class="w150">Most Selling Brands</th>
+                    <th class="w150">Status</th>
+
+                    <th class="w150">Remark</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-head bdrt">
+                <table>
+                  <tr>
+
+                    <th class="w50"></th>
+
+                    <th class="w120">
+                      <div class="th-search-acmt" *ngIf="!show_today">
+                        <mat-form-field class="example-full-width cs-input">
+                          <input matInput [matDatepicker]="picker" placeholder="Date"
+                            (dateChange)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2' ,data)"
+                            name="date_created" [(ngModel)]="data.date_created">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="name" #name="ngModel" [(ngModel)]="data.user_name">
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w200">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter Name...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="name" #name="ngModel" [(ngModel)]="data.company_name">
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w150"></th>
+                    <th class="w150"></th>
+                    <th class="w150"></th>
+                    <th class="w150">
+                      <div class="th-search">
+                        <select name="user_type" [(ngModel)]="data.activity_type" (ngModelChange)="distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')">
+                          <option value="" disabled >Select Type</option>
+                          <option value="Mail" >Mail</option>
+                          <option value="Call" >Call</option>
+                          <option value="SMS" >SMS</option>
+                        </select>
+                      </div>
+                    </th>
+
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="name" #name="ngModel" [(ngModel)]="data.distributor_name">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150"></th>
+                    <th class="w150"></th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter ...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="product_quality" #product_quality="ngModel" [(ngModel)]="data.product_quality">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="working_tenure" #working_tenure="ngModel" [(ngModel)]="data.working_tenure">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="purchase_frequency" #purchase_frequency="ngModel" [(ngModel)]="data.purchase_frequency">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="segments_in_gravity" #segments_in_gravity="ngModel" [(ngModel)]="data.segments_in_gravity">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="why_not_all_segments_of_gravity" #why_not_all_segments_of_gravity="ngModel" [(ngModel)]="data.why_not_all_segments_of_gravity">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="dealing_in_how_many_brands" #dealing_in_how_many_brands="ngModel" [(ngModel)]="data.dealing_in_how_many_brands">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter...."
+                            (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
+                            name="most_selling_brands" #most_selling_brands="ngModel" [(ngModel)]="data.most_selling_brands">
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w150">
+                      <div class="th-search">
+                        <select name="status" placeholder="Select..." [(ngModel)]="data.status" (ngModelChange)="distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')">
+                          <option value="" disabled >Select Type</option>
+                          <option value="satisfied">Satisfied</option>
+                          <option value="unsatisfied" >Unsatisfied</option>
+                        </select>
+                      </div>
+                    </th>
+
+                    <th class="w150"></th>
+
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="table-container" style="width: fit-content;">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let list of activity;let i=index">
+                    <td class="w50">{{!loader ? start+i+1:'--'}}</td>
+                    <td class="w120">
+                      {{list.date_created | date:' d MMM , y, hh:mm aa '}}</td>
+                    <td class="w150">{{list.created_by_name}}</td>
+
+                    <td class="w200" *ngIf="list.dr_id != '0'">{{list.company_name}}
+                      (<span style="font-weight: 500;" *ngIf="list.type == '1'">Channel Partner</span>
+                      <span style="font-weight: 500;" *ngIf="list.type == '3'">Retail Partner</span>
+                      <span style="font-weight: 500;" *ngIf="list.type == '7'">Direct Dealer</span>
+                      <span style="font-weight: 500;"
+                        *ngIf="list.type != '7' && list.type != '1' && list.type != '3'">Other</span>)
+                    </td>
+
+                    <td class="w150">{{list.dr_city && list.dr_city !='' ? list.dr_city : '--'}}
+                    </td>
+
+                    <td class="w150">{{list.contact_person && list.contact_person !='' ? list.contact_person : '--'}}
+                    </td>
+
+                    <td class="w150">{{list.mobile && list.mobile !='' ? list.mobile : '--'}}</td>
+
+
+                    <td class="w150">{{list.activity_type?list.activity_type : 'NA'}}</td>
+
+                    <td class="w150"> {{list.distributor_name?list.distributor_name:"NA"}}</td>
+
+                    <td class="w150">
+                        {{list.disposition_type_value}}
+                    </td>
+
+                    <td class="w150">
+                      {{list.disposition_name}}
+                    </td>
+                    <td class="w150">
+                      {{list.product_quality?list.product_quality:"NA"}}
+                    </td>
+                     <td class="w150">
+                      {{list.working_tenure?list.working_tenure:"NA"}}
+                    </td>
+                    <td class="w150">
+                      {{list.purchase_frequency?list.purchase_frequency:"NA"}}
+                    </td>
+                    <td class="w150">
+                      {{list.segments_in_gravity?list.segments_in_gravity:"NA"}}
+                    </td>
+                    <td class="w150">
+                      {{list.why_not_all_segments_of_gravity?list.why_not_all_segments_of_gravity:"NA"}}
+                    </td>
+                    <td class="w150">
+                      {{list.dealing_in_how_many_brands?list.dealing_in_how_many_brands:"NA"}}
+                    </td>
+                    <td class="w150">
+                      {{list.most_selling_brands?list.most_selling_brands:"NA"}}
+                    </td>
+                    <td class="w150">
+                      {{list.status?list.status:"NA"}}
+                    </td>
+
+                    <td class="w150">
+                      <div class="one-line">
+                        {{list.remark}}
+                      </div>
+                    </td>
+
+                  </tr>
+
+                  <ng-container *ngFor="let lead of skelton">
+                    <tr class="sk-loading" *ngIf="loader">
+                      <td class="w50">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w120">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w200">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+                      <td class="w150">
+                        <div>&nbsp;</div>
+                      </td>
+
+                    </tr>
+                  </ng-container>
+                </table>
+                <!-- <div
+                      class="search-results"
+                      data-infinite-scroll
+                      debounce
+                      [infiniteScrollDistance]="1"
+                      [infiniteScrollUpDistance]="2"
+                      [infiniteScrollThrottle]="10"
+                      (scrolled)="distributorList((show_today==false?'get_all_activity_list':'get_today_activity_list'),(show_today==false?2:1))"
+                      >
+                    </div> -->
+
+              </div>
+            </div>
+
+            <div class="data-not-available" *ngIf="data_not_found==true">
+              <div class="outer">
+                <div class="iinear">
+                  <div class="figure" matRipple>
+                    <div class="header">
+                      <img src="assets/img/data-not-available-header.svg" alt="">
+                    </div>
+
+                    <div class="description">
+                      <div class="cs-heading">
+                        <h2>Activity</h2>
+                      </div>
+                      <div class="img">
+                        <i class="material-icons">error_outline</i>
+                      </div>
+                      <div class="psc">
+                        <p>Data Not Available</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="fix-btn" *ngIf = "login_data.user_type!='Inside Sales Team'">
+  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button
+    (click)="exportAsXLSX(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2' )"><img src="assets/img/excel.svg"></a>
+</div>
+<div class="h50"></div>

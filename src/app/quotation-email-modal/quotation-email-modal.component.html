@@ -1,0 +1,41 @@
+<div class="edit-modal">
+  <p class="heading">Send  Email</p>
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+        <div>
+            <p>Loading....</p>
+        </div>
+    </mat-spinner>
+</div>
+  <div mat-dialog-content>
+    <div class="row" style="margin-top:5px;">
+
+      <div class="col s12">
+
+        <mat-form-field class="cs-input" appearance="outline" style="width: 100%;">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" (keyup)="emailValidate(item.email_id)" [ngClass]="{'has-error':showEmailError}"  placeholder="Enter Email Address..." name="email_id" #email_id="ngModel" [(ngModel)]="item.email_id"  required />
+        </mat-form-field>
+        <div class="alert alert-danger" *ngIf="showEmailError">
+          Email Address is required...
+        </div>
+      </div>
+      <div class="col s12">
+
+        <mat-form-field class="cs-input" appearance="outline" style="width: 100%;">
+          <mat-label>CC</mat-label>
+          <input matInput type="email" placeholder="Enter Other Mail Id's..." name="email_cc" #email_cc="ngModel" [(ngModel)]="item.email_cc" />
+        </mat-form-field>
+        <div class="alert alert-danger">
+          {{"'CC' is not compulsory.you can provide multiple email in 'CC' by using ',' " | titlecase}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false">Cancel</button>
+    <div *ngIf="!showEmailError">
+          <button mat-button (click)="sendEmail()">Send</button>
+      </div>
+  </div>
+</div>

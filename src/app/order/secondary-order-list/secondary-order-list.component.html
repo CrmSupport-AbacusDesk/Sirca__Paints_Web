@@ -1,0 +1,363 @@
+<div class="main-container pb0" >
+  <div class="middle-container mb0">
+    <div class="page-heading">
+
+      <img src="assets/img/order_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Secondary Order</h2>
+        <p *ngIf="check_cnt== 0  " >{{count.count}} | &#8377; {{count.sum}}</p>
+        
+        <p *ngIf=" check_cnt!=0 " >{{check_cnt}} | {{sum}} </p>
+        
+      </div>
+
+      <div class="left-auto ml15">
+        <div class="from-fields cs-flex">
+          <div class="control-field mr15">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="picker1" placeholder="From" name="date_from" [(ngModel)]="search_val.date_from">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="control-field mr15">
+            <mat-form-field class="cs-input date-column infix-bodr">
+              <input matInput [matDatepicker]="pickers" placeholder="To" name="date_to" [(ngModel)]="search_val.date_to">
+              <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+              <mat-datepicker #pickers></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      <!-- 
+        <div class="uppr-one m-right-data">
+          <ul>
+            <li class="refresh-area mr0 after-none">
+              <a class="refresh-btn" mat-raised-button (click)="Order('refresh') "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+            </li>
+          </ul>
+        </div> -->
+        
+        <div class="action-menu">
+          <button mat-raised-button [matMenuTriggerFor]="menu" color="accent" [disabled]="excel_button_disabled" >
+            Action
+          </button>
+          <mat-menu #menu="matMenu" class="drop-down-menu">
+            <button mat-menu-item (click)="submit('item_wise')" >
+              <span>Download itemwise Excel</span>
+            </button>
+            <button mat-menu-item (click)="submit('whole_wise')" >
+              <span>Download Whole Excel</span>
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+      
+      
+      <div class="uppr-one m-right-data">
+        
+        <a mat-raised-button color="primary" class="delete-action" *ngIf="allCount" (click)="deletecheckavailable()">Delete <span class="count"> {{ allCount }}</span></a>
+        
+        <ul>
+          <li class="refresh-area mr0 after-none">
+            <a class="refresh-btn" mat-raised-button matTooltip="Refresh" (click)="orderList('refresh')" ><i class="material-icons"> refresh</i></a>
+          </li>
+        </ul>
+        
+        <div class="top-pagination">
+          <ul>
+            <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+            </li>
+            <li>
+              <button mat-button class="left-btn" (click)="start=start-page_limit; orderList()" [disabled]="pagenumber <= 1">
+                <i class="material-icons">keyboard_arrow_left</i>
+              </button>
+            </li>
+            <li>
+              <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; orderList()" [(ngModel)]="pagenumber"  min="1" max={{total_page}} >
+            </li>
+            
+            <li>
+              <button mat-button class="right-btn" (click)="start=start+page_limit; orderList()" [disabled]="pagenumber >= total_page">
+                <i class="material-icons">keyboard_arrow_right</i>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div *ngFor="let i of orderlist">
+          
+          {{i.data}}
+        </div>
+        
+        <a mat-raised-button color="primary" class="delete-action mr30" *ngIf="allCount" (click)="deletecheckavailable()">Delete <span class="count"> {{ allCount }}</span></a>
+      </div>
+      
+      
+    
+      <!--      
+        <div class="cs-btn mt5">
+          <div class="in-btn">
+            <button mat-raised-button color="accent" [disabled]="((!search_val.date_from)||(!search_val.date_to))" matTooltip="Download Whole Excel" matTooltipPosition="above" mat-raised-button (click)="submit()">Download Whole Excel</button>
+          </div>
+        </div> -->
+        <!--        
+          <select  class="select-filter" name="type" [(ngModel)]="search_val.type">
+            <option selected disabled value="">Select Download Type</option>
+            <option (change)="submit()" value="itemwise">Download Itemwise Excel</option>
+            <option  value="whole">Download Whole Excel</option>
+            
+          </select> -->
+          
+          <!-- <div class="cs-btn mt5">
+            <div class="in-btn">
+              <button mat-raised-button color="accent" [disabled]="((!search_val.date_from)||(!search_val.date_to))" (click)="submit()">Go</button>
+            </div>
+          </div> -->
+        </div>
+        
+        <div class="cs-table cs-table-scroll">
+          <div class="stickyTableHead" style="width: fit-content;">
+            <div class="tab-space">
+              <div class="tabs">
+                <ul>
+                  <li><a [ngClass]="{'active': view_tab=='all'}" (click)="filter_order_data('all')">All</a></li>
+                  <li><a [ngClass]="{'active': view_tab=='Pending'}" (click)="filter_order_data('Pending')">Order Placed    </a></li>
+                  <li><a [ngClass]="{'active': view_tab=='Approved'}" (click)="filter_order_data('Approved')">Order Accepted </a></li>
+                  <li><a [ngClass]="{'active': view_tab=='Reject'}" (click)="filter_order_data('Reject')">Referred Back</a></li>
+                  <li><a [ngClass]="{'active': view_tab=='PDispatch'}" (click)="filter_order_data('PDispatch')">Partially Dispatched</a></li>
+                  <li><a [ngClass]="{'active': view_tab=='Dispatch'}" (click)="filter_order_data('Dispatch')">Complete Dispatched</a></li>
+                  <li><a [ngClass]="{'active': view_tab=='Pre Close'}" (click)="filter_order_data('Pre Close')">Pre Closed </a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th class="w40"><mat-checkbox color="accent" [(ngModel)]="search_val.allStates" (change)="allOrderdata()"  name="allStates"  value="true"></mat-checkbox></th>
+                  <th class="w90">Date </th>
+                  <th class="w160">Created By</th>
+                  <th class="w160">Created By Type</th>
+                  <th class="w120">Order ID</th>
+                  <th class="w160">Company Name</th>
+                  <th class="w90 text-center">Total Item</th>
+                  <th class="w90 text-center">Tally Status</th>
+                  <th class="w100 text-right">Order Value</th>
+                  <!-- <th class="w100 text-right">Company Order Value</th> -->
+                  <th class="w180">Channel Partner</th>
+                  <th class="w120">Status</th>
+                </tr>
+              </table>
+            </div>
+            <div class="table-head bdrt" >
+              <table class="sno-border">
+                <tr>
+                  <th class="w40"></th>
+                  <th class="w90">
+                    <div class="th-search-acmt">
+                      <mat-form-field class="cs-input date-column infix-bodr">
+                        <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" [(ngModel)]="search_val.date_created" (dateChange)="onDate($event)" readonly>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w160">
+                    <div class="th-search-acmt">
+                      <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Created By. . ." name="created_by" [(ngModel)]="search_val.created_by" (keyup.enter)="orderList()">
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w160">
+                  </th>
+                  <th class="w120">
+                    <div class="th-search-acmt">
+                      <mat-form-field >
+                        <input type="text" matInput placeholder="Order Id. . ."  name="order_id" (keyup.enter)="orderList()" [(ngModel)]="search_val.order_id" >
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w160">
+                    <div class="th-search-acmt">
+                      <mat-form-field>
+                        <input type="text"  matInput placeholder="Company Name. . ." (keyup.enter)="orderList()" [(ngModel)]="search_val.company_name">
+                        
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w90"></th>
+                  <th class="w90">
+                    <div class="th-search-acmt">
+                      <mat-form-field>
+                        <input type="text"  matInput placeholder="Tally Status. . ." (keyup.enter)="orderList()" [(ngModel)]="search_val.tally_status">
+                        
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <!-- <th class="w100"></th>-->
+                  <th class="w100">
+                    <div *ngIf="view_tab=='all'" >
+                      {{total_order_val}}
+                    </div>
+                    
+                    <div *ngIf="view_tab=='Pending'" >
+                      {{total_pending_sum}}
+                    </div>
+                    
+                    <div *ngIf="view_tab=='Approved'" >
+                      {{order_accepted_sum}}
+                    </div>
+                    
+                    <div *ngIf="view_tab=='PDispatch'" >
+                      {{pdispatch_sum}}
+                    </div>
+                    
+                    <div *ngIf="view_tab=='Dispatch'" >
+                      {{complete_dispatch_sum}}
+                    </div>
+                    
+                    <div *ngIf="view_tab=='Reject'" >
+                      {{referred_back_sum}}
+                    </div>
+                    
+                    <div *ngIf="view_tab=='Pre Close'" >
+                      {{pre_close_sum}}
+                    </div>
+                  </th>
+                  <th class="w180">
+                    <div class="th-search-acmt">
+                      <mat-form-field>
+                        <input type="text"  matInput placeholder="Channel Partner. . ." (keyup.enter)="orderList()" #search="ngModel" [(ngModel)]="search_val.delivery_from" >
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w120"></th>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <div class="table-container mb60">
+            <div class="table-content" style="width: fit-content;">
+              <table>
+                <tr *ngFor="let list of orderlist;let i=index">
+                  
+                  <td class="w40 text-center">{{start+i+1}}</td>
+                  
+                  <!-- <td class="w40"><mat-checkbox color="accent" [(ngModel)]="list.selected_order" (change)="countSelected()"  [name]="'id'+i" value="true"></mat-checkbox></td> -->
+                  <td class="w90">{{list.date_created}}</td>
+                  <td class="w160" *ngIf="list.created_by_type!='channel partner'">{{list.created_by_name}}</td>
+                  <td class="w160" *ngIf="list.created_by_type=='channel partner'">{{list.created_by_sec_name}}</td>
+                  <td class="w160" *ngIf="list.created_by_type!='channel partner'">Sales User</td>
+                  <td class="w160" *ngIf="list.created_by_type=='channel partner'">Retail Partner</td>
+                  <td class="w120"><a *ngIf="view_edit" class="link-btn" mat-button routerLink="/order-detail/{{list.id}}" routerLinkActive="active">{{list.order_no}} </a> {{!view_edit?list.order_no:''}}</td>
+                  <td class="w160" matTooltip="{{list.company_name}}" matTooltipPosition="above">
+                    <!-- <div class="one-line"> -->
+                      {{list.company_name}}
+                      <!-- </div> -->
+                    </td>
+                    <td class="w90 text-center">{{list.order_item}}</td>
+                    <td class="w90 text-center">{{list.Tally_status}}</td>
+                    <td class="w100 text-right">&#8377; {{list.order_grand_total}}</td>
+                    <!-- <td class="w100 text-right">&#8377; {{list.sec_ord_background_amt}}</td>   -->
+                    <td class="w180" matTooltip="{{list.distributor_name}}" matTooltipPosition="above">
+                      <div class="one-line">
+                        {{list.distributor_name}}
+                      </div>
+                    </td>
+                    <td class="w120">
+                      <ng-container *ngIf="list.order_status == 'Pending'">
+                        Order Placed
+                      </ng-container>
+                      <ng-container *ngIf="list.order_status == 'Approved'">
+                        Order Accepted
+                      </ng-container>
+                      <ng-container *ngIf="list.order_status == 'PDispatch'">
+                        Partially Dispatched
+                      </ng-container>
+                      <ng-container *ngIf="list.order_status == 'Dispatch'">
+                        Complete Dispatched
+                      </ng-container>
+                      <ng-container *ngIf="list.order_status == 'Reject' || list.order_status == 'Rejected'">
+                        Reffered Back
+                      </ng-container>
+                      <ng-container *ngIf="list.order_status == 'Pre Close'">
+                        Pre Closed
+                      </ng-container>
+                      <div class="action-btns">
+                        <a *ngIf="view_edit" mat-button class="view" (click)="detailOrder(list.id)"><i class="material-icons">remove_red_eye</i> View</a>
+                        <button  mat-button class="delete" *ngIf="!login_dr_id && view_delete" (click)="deleteOrder(list.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                      </div>
+                    </td>
+                  </tr>
+                  
+                  <ng-container *ngFor="let lead of skelton">
+                    <tr class="sk-loading"  *ngIf="loader">
+                      <td class="w90"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td class="w120"><div>&nbsp;</div></td>
+                      <td class="w160"><div>&nbsp;</div></td>
+                      <td class="w90"><div>&nbsp;</div></td>
+                      <td class="w90"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w180"><div>&nbsp;</div></td>
+                      <td class="w120"><div>&nbsp;</div></td>
+                    </tr>
+                  </ng-container>
+                  
+                </table>
+                
+              </div>
+            </div>
+            <div
+            class="search-results"
+            data-infinite-scroll
+            debounce
+            [infiniteScrollDistance]="1"
+            [infiniteScrollUpDistance]="2"
+            [infiniteScrollThrottle]="10"
+            (scrolled)="orderList()"
+            >
+          </div>
+        </div>
+        
+        <div *ngIf="exp_loader">
+          <mat-spinner class="loader">
+            <div><p>Loading....</p></div>
+          </mat-spinner>
+        </div>
+        
+        <div class="data-not-available" *ngIf="data_not_found==true">
+          <div class="outer">
+            <div class="iinear">
+              <div class="figure" matRipple>
+                <div class="header">
+                  <img src="assets/img/data-not-available-header.svg" alt="">
+                </div>
+                
+                <div class="description">
+                  <div class="cs-heading">
+                    <h2>Order List</h2>
+                  </div>
+                  <div class="img">
+                    <i class="material-icons">error_outline</i>
+                  </div>
+                  <div class="psc">
+                    <p>data not Found</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- <div class="fix-btn">
+          <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+        </div> -->
+      </div>
+      
+      

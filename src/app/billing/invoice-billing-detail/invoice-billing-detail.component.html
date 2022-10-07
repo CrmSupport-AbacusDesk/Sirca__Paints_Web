@@ -1,0 +1,281 @@
+<div class="main-container">
+  
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading" >
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{type == 'Billing' ? 'Bill Detail' : 'Payment Detail' }}</h2>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      
+      <div class="row" >
+        <div class="col s6" [ngClass]="(payment_list.length || payment_detail_summary.length) ? 'col s6' : 'col s12'">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Basic Details</h2>
+              </div>
+              
+              
+              <div class="cs-figure">
+                <ul class="mb10">
+                  
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Customer Name</span>
+                        <p>{{invoice_bill_detail.customer_name && invoice_bill_detail.customer_name!= '' ? invoice_bill_detail.customer_name : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Customer Code</span>
+                        <p>{{invoice_bill_detail.customer_code && invoice_bill_detail.customer_code!= '' ? invoice_bill_detail.customer_code : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li *ngIf="type == 'Billing'">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Billing Date</span>
+                        <p>{{invoice_bill_detail.billing_date && invoice_bill_detail.billing_date!= '' ? (invoice_bill_detail.billing_date | date : 'd MMM y' ) : '--' }}</p>
+                      </div>
+                    </div>
+                  </li> 
+
+                  <li *ngIf="type != 'Billing'">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Billing Date</span>
+                        <p>{{invoice_bill_detail.payment_date && invoice_bill_detail.payment_date!= '' ? (invoice_bill_detail.payment_date | date : 'd MMM y' ) : '--' }}</p>
+                      </div>
+                    </div>
+                  </li> 
+                </ul>
+                
+                <ul class="mb10">
+                  
+                  <li *ngIf="type == 'Billing'">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Bill Number</span>
+                        <p>{{invoice_bill_detail.bill_number && invoice_bill_detail.bill_number!= '' ? invoice_bill_detail.bill_number : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li *ngIf="type != 'Billing'">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Payment ID</span>
+                        <p>{{invoice_bill_detail.payment_id && invoice_bill_detail.payment_id!= '' ? invoice_bill_detail.payment_id : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li *ngIf="type != 'Billing'">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Payment Amount</span>
+                        <p>&#8377; {{invoice_bill_detail.payment_amount && invoice_bill_detail.payment_amount!= '' ? invoice_bill_detail.payment_amount : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li *ngIf="type == 'Billing'">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Bill Item</span>
+                        <p>{{invoice_bill_detail.total_billing_item && invoice_bill_detail.total_billing_item!= '' ? invoice_bill_detail.total_billing_item : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li *ngIf="type == 'Billing'">
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Item Quantity</span>
+                        <p>{{invoice_bill_detail.total_billing_item_qty && invoice_bill_detail.total_billing_item_qty!= '' ? invoice_bill_detail.total_billing_item_qty : '--'}}</p>
+                      </div>
+                    </div>
+                  </li> 
+                </ul>
+                
+                <ul *ngIf="type == 'Billing'">
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Bill Amount</span>
+                        <p>&#8377; {{invoice_bill_detail.total_billing_amount && invoice_bill_detail.total_billing_amount!= '' ? invoice_bill_detail.total_billing_amount : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Payment Received</span>
+                        <p>&#8377; {{invoice_bill_detail.billing_receive_amount && invoice_bill_detail.billing_receive_amount!= '' ? invoice_bill_detail.billing_receive_amount : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Pending Amount</span>
+                        <p>&#8377; {{invoice_bill_detail.pending_balance && invoice_bill_detail.pending_balance!= '' ? invoice_bill_detail.pending_balance : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+        
+        <div class="col s6" *ngIf="payment_list.length && type == 'Billing'">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Payment Details</h2>
+              </div>
+              
+              <div class="col s12">
+                <div class="cs-table left-right-20">
+                  <div class="table-head">
+                    <table class="sno-border">
+                      <tr>
+                        <th class="w60 text-center">S. No.</th>
+                        <th class="w110" >Payment Date.</th>
+                        <!-- <th class="w110" >Payment Type</th> -->
+                        <th class="w110">Receipt No.</th>
+                        <th class="w110">Payment Received</th>
+                      </tr>
+                    </table>
+                  </div>
+                  
+                  <div class="table-container">
+                    <div class="table-content">
+                      <table class="sno-border">
+                        <tr *ngFor="let payment_data of payment_list; let i=index">
+                          <td class="w60 text-center">{{i+1}}</td>
+                          <td class="w110">{{payment_data.payment_date && payment_data.payment_date != '' && payment_data.payment_date != null && payment_data.payment_date != '0000-00-00' ? (payment_data.payment_date | date :' d MMM, y '): '--'}}</td>
+                          <!-- <td class="w110" >{{payment_data.payment_type && payment_data.payment_type!='' ? payment_data.payment_type : '--' }}</td> -->
+                          <td class="w110">{{payment_data.payment_id}}</td>
+                          <td class="w110">&#8377; {{payment_data.payment_amount && payment_data.payment_amount != '' && payment_data.payment_amount != null ? payment_data.payment_amount : '--'}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
+        <div class="col s6" *ngIf="payment_detail_summary.length && type != 'Billing'">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Payment Summary</h2>
+              </div>
+              
+              <div class="col s12">
+                <div class="cs-table left-right-20">
+                  <div class="table-head">
+                    <table class="sno-border">
+                      <tr>
+                        <th class="w60 text-center">S. No.</th>
+                        <th class="w110" >Payment Date.</th>
+                        <th class="w110" >Payment Against</th>
+                        <th class="w110">Bill No.</th>
+                        <th class="w110">Amount</th>
+                      </tr>
+                    </table>
+                  </div>
+                  
+                  <div class="table-container">
+                    <div class="table-content">
+                      <table class="sno-border">
+                        <tr *ngFor="let summary_data of payment_detail_summary; let i=index">
+                          <td class="w60 text-center">{{i+1}}</td>
+                          <td class="w110">{{summary_data.date_created && summary_data.date_created != '' && summary_data.date_created != null && summary_data.date_created != '0000-00-00' ? (summary_data.date_created | date :' d MMM, y '): '--'}}</td>
+                          <td class="w110" >{{summary_data.payment_against && summary_data.payment_against!='' ? summary_data.payment_against : '--' }}</td>
+                          <td class="w110">{{summary_data.bill_no && summary_data.bill_no!='' ? summary_data.bill_no : '--' }}</td>
+                          <td class="w110">&#8377; {{summary_data.amount && summary_data.amount != '' && summary_data.amount != null ? summary_data.amount : '--'}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+      <div *ngIf="type == 'Billing'" class="row mt25">
+        <div class="col s12">
+          <div class="heading-bg mb0">
+            <h2>Bill Item</h2>
+          </div>
+          <div class="cs-table left-right-20">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th class="w60 text-center">S. No.</th>
+                  <th class="w110" >Invoice No.</th>
+                  <th>Product Description</th>
+                  <th class="w110">Product Code</th>
+                  <th class="w80">Sale QTY</th>                  
+                  <th class="w90" >UOM</th>
+                  <th class="w95">Amount</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let item_data of invoice_bill_item; let i=index">
+                    <td class="w60 text-center">{{i+1}}</td>
+                    <td class="w110">{{item_data.invoice_no && item_data.invoice_no != '' ? item_data.invoice_no : '--'}}</td>
+                    <td>{{item_data.material_description && item_data.material_description != '' ? (item_data.material_description | titlecase) : '--' }}</td>
+                    <td class="w110">{{item_data.material_code && item_data.material_code != '' ? (item_data.material_code | uppercase) : '--' }}</td>
+                    <td class="w80">{{item_data.sale_qty && item_data.sale_qty != '' ? item_data.sale_qty : '--'}}</td>                  
+                    <td class="w90">{{item_data.uom && item_data.uom != '' ? item_data.uom : '--'}}</td>
+                    <td class="w95">&#8377; {{item_data.total_amt && item_data.total_amt != '' ? item_data.total_amt : '--'}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>

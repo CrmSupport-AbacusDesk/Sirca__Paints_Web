@@ -1,0 +1,84 @@
+<div class="edit-modal">
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="update_order()">
+
+        <p class="heading">Update Dispatch Quantity</p>
+        <a mat-raised-button class="b1" color="accent"  [matMenuTriggerFor]="action_item">Action</a>
+        <!-- <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" [matMenuTriggerFor]="action_item"
+            matTooltipPosition="above" mat-raised-button><img src="assets/img/excel.svg"></a> -->
+
+        <mat-menu #action_item="matMenu" class="drop-down-menu">
+            <button mat-menu-item (click)="select_all()">Add All Item In Dispatch Qty</button>
+            <button mat-menu-item (click)="select_all2()">Add All Item In PreClose Qty</button>
+        </mat-menu>
+        <!-- <button mat-raised-button class="b1" color="accent" [matMenuTriggerFor]="menu">Action</button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="select_all()">Add All Item In Dispatch Qty</button>
+            <button mat-menu-item (click)="select_all2()">Add All Item In PreClose Qty</button>
+        </mat-menu> -->
+
+        <div mat-dialog-content>
+            <div class="from-fields">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="cs-table left-right-20">
+                            <div class="table-head">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w40 text-center"></th>
+                                        <th>Product Description</th>
+                                        <th class="w80">Order QTY</th>
+                                        <th class="w100">Pending QTY</th>
+                                        <th class="w100">Dispatched QTY</th>
+                                        <th class="w100">Preclosed QTY</th>
+                                        <th class="w100">Dispatch QTY</th>
+                                        <th class="w100">Preclose QTY</th>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="table-container">
+                                <div class="table-content">
+                                    <table class="sno-border">
+                                        <tr [hidden]="!list.pending_qty || list.pending_qty==0"
+                                            *ngFor="let list of order_item; let i=index">
+                                            <td class="w40 text-center">{{i+1}}</td>
+                                            <td *ngIf="this.status_flag != 'Change Status from pop and gift'">
+                                                {{list.product_name}} {{list.cat_no}} - {{list.brand}} - {{list.color}}
+                                            </td>
+                                            <td *ngIf="this.status_flag == 'Change Status from pop and gift'">
+                                                {{list.gift_name}}</td>
+                                            <td class="w80">{{list.qty}}</td>
+                                            <td class="w100">{{list.pending_qty}}</td>
+                                            <td class="w100">{{list.dispatch_qty}}</td>
+                                            <td class="w100">{{list.Precloseqty}}</td>
+                                            <td class="w100">
+                                                <div class="td-input active">
+                                                    <input type="text" class="input-bdr"
+                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                        name="dispatchQty{{i}}" #dispatchQty="ngModel"
+                                                        [(ngModel)]="list.dispatchQty" (keyup)="check_qty(i)">
+                                                </div>
+                                            </td>
+                                            <td class="w100">
+                                                <div class="td-input active">
+                                                    <input type="text" class="input-bdr"
+                                                        onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+                                                        name="precloseQty{{i}}" #precloseQty="ngModel"
+                                                        [(ngModel)]="list.precloseQty" (keyup)="check_qty2(i)">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+            <button mat-raised-button color="accent" [disabled]="disable" type="submit">Save</button>
+        </div>
+    </form>
+</div>

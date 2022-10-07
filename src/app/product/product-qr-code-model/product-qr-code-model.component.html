@@ -1,0 +1,42 @@
+<div class="edit-modal">
+    <p class="heading">CHANGE STATUS & ADD COUPON POINTS</p>
+  <form #update_basic="ngForm" name="update_basic" (ngSubmit)="submit_qrCode()" validate>
+    <div mat-dialog-content style="padding: 0px 15px;">
+      <div class="from-fields">
+        <div class="col">
+          <div class="valu-12">
+            <ul>
+              <li>
+                <h4>Product Name</h4>
+                <p>{{product_name}}</p>
+              </li>
+              
+              <li>
+                <h4>Product Code</h4>
+                <p>{{product_code}}</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row row-flexs">
+          
+          <div class="col">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input matInput placeholder="Grnerate QR Code" name="qr_code_no" #qr_code_no="ngModel" [(ngModel)]="form.qr_code_no" required>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!qr_code_no.valid && update_basic.submitted">
+                  Grnerate QR Code is required...
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+      <button mat-raised-button color="accent" type="submit">Save</button>
+    </div>
+  </form>
+</div>

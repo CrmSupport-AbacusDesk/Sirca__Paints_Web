@@ -1,0 +1,337 @@
+<div class="" [ngClass]="login_data.type == '' ? 'navigation':''" *ngIf="login_data.type == ''">
+
+    <div class="menu">
+        <ul>
+            <li *ngIf="login_data.view_dashboard=='1'">
+                <a routerLink="/dashboard" (click)="toggleDropdown(0)" routerLinkActive="active">Dashboard <img
+                        src="assets/img/dashboard_icon.svg" class="nav-icon h18"></a>
+            </li>
+
+            <li class="dropdown" *ngIf="login_data.view_leads=='1' || login_data.user_type=='Inside Sales Team'">
+                <a (click)="toggleDropdown(4)" [ngClass]="{'active':leadactive }">Leads<img
+                        src="assets/img/leads_icon.svg" class="nav-icon"></a>
+                <ul>
+                    <li *ngIf="login_data.view_lead_channel_partner=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/lead-list" routerLinkActive="active">
+                            Channel Partner
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.dr_lead}}</span> -->
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_lead_dealer=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/dealer-lead-list" routerLinkActive="active">
+                            Retail Partners
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.dealer_lead}}</span> -->
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_lead_dealer=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/social-media-lead-list" routerLinkActive="active">
+                            SOCIAL MEDIA
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.dealer_lead}}</span> -->
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="dropdown"
+                *ngIf="login_data.view_distribution_n_w=='1' || login_data.user_type=='Inside Sales Team'">
+                <a (click)="toggleDropdown(1)" [ngClass]="{'active':distactive }">Distribution Net. <img
+                        src="assets/img/distribution_icon.svg " class="nav-icon h22"></a>
+                <ul>
+                    <li
+                        *ngIf="login_data.view_dist_n_w_channel_partner=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/distribution-list" routerLinkActive="active">
+                            Channel Partner
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.dist}}</span> -->
+
+                        </a>
+                    </li>
+                    <li
+                        *ngIf="login_data.view_dist_n_w_direct_dealer=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/direct-dealer" routerLinkActive="active">
+                            Direct Dealers
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.direct_dealer}}</span> -->
+
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_dist_n_w_dealer=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/dealer" routerLinkActive="active">
+                            Retail Partner
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.dealer}}</span> -->
+
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="dropdown" *ngIf="login_data.view_orders=='1'">
+                <a (click)="toggleDropdown(2)" [ngClass]="{'active':ordersactive}">Orders<img
+                        src="assets/img/order_icon.svg" class="nav-icon h23"></a>
+                <ul>
+                    <li *ngIf="login_data.view_orders=='1'">
+                        <a routerLink="/order-list" routerLinkActive="active">
+                            Order To Gravity
+                            <i class="material-icons"> arrow_right_alt</i>
+
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_orders_secondary=='1'">
+                        <a routerLink="/secondary-order-list" routerLinkActive="active">
+                            Order To Channel Partner
+                            <i class="material-icons"> arrow_right_alt</i>
+
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_pop_order=='1'">
+                        <a routerLink="/pop-n-gift-list" routerLinkActive="active">
+                            Pop N Gift Orders
+                            <i class="material-icons"> arrow_right_alt</i>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li *ngIf="login_data.view_billing=='1'">
+                <a routerLink="/invoice-billing" (click)="toggleDropdown(0)" routerLinkActive="active">Billing <img
+                        src="assets/img/bill-receipt.svg" class="nav-icon h20"></a>
+
+            </li>
+
+            <li *ngIf="login_data.view_attendence=='1'">
+                <a routerLink="/attendance" (click)="toggleDropdown(0)" routerLinkActive="active">Attendance <img
+                        src="assets/img/calender.svg" class="nav-icon h18"></a>
+
+            </li>
+            <li *ngIf="login_data.view_check_in=='1' && login_data.user_type!='Inside Sales Team'">
+                <a routerLink="/checkin" (click)="toggleDropdown(0)" routerLinkActive="active">Check In <img
+                        src="assets/img/checkin_icon.svg" class="nav-icon h22"></a>
+
+            </li>
+
+            <li *ngIf="login_data.access_level=='1' || login_data.user_type=='Inside Sales Team'">
+                <a routerLink="/activity" (click)="toggleDropdown(0)" routerLinkActive="active">Activity <img
+                        src="assets/img/checkin_icon.svg" class="nav-icon h22"></a>
+
+            </li>
+
+            <li *ngIf="login_data.view_followup=='1' || login_data.user_type=='Inside Sales Team'">
+                <a routerLink="/followup-list" (click)="toggleDropdown(0)" routerLinkActive="active">Follow Up <img
+                        src="assets/img/calender.svg" class="nav-icon h18"></a>
+
+            </li>
+
+            <li>
+                <a routerLink="/quotation-list" (click)="toggleDropdown(0)" routerLinkActive="active">Quotation<img
+                        src="assets/img/quote.svg" class="nav-icon h18"></a>
+
+            </li>
+
+            <!-- <li *ngIf="login_data.view_banner=='1'">
+                <a  (click)="toggleDropdown(0)" routerLink="/banner-banner-list" routerLinkActive="active">
+                    Banner
+                    <img src="assets/img/banner.svg" class="nav-icon h14">
+                </a>
+            </li> -->
+            <li *ngIf="login_data.view_leaves=='1'">
+                <a (click)="toggleDropdown(0)" routerLink="/leave-list" routerLinkActive="active">
+                    Leaves
+                    <img src="assets/img/leave.svg" class="nav-icon h18">
+                </a>
+            </li>
+
+            <li *ngIf="login_data.view_travel_plan=='1'">
+                <a routerLink="/travel-list" routerLinkActive="active">
+                    Travel Plan
+                    <img src="assets/img/travel.svg" class="nav-icon h22">
+                </a>
+            </li>
+
+            <li *ngIf="login_data.view_expense=='1'">
+                <a routerLink="/expense-list" routerLinkActive="active">
+                    Expense
+                    <img src="assets/img/wallet.svg" class="nav-icon h22">
+                </a>
+            </li>
+
+            <li *ngIf="login_data.view_plumber_meet=='1'">
+                <a routerLink="/plumber-meet" routerLinkActive="active">
+                    Plumber Meet
+                    <img src="assets/img/meet.svg" class="nav-icon h22">
+
+                </a>
+            </li>
+
+
+            <li class="dropdown"
+                *ngIf="login_data.view_products=='1' ||login_data.view_pop_master == '1' || login_data.view_masters == '1'|| login_data.view_users=='1' || login_data.view_discount=='1' || login_data.view_category_master=='1' || login_data.view_scheme_master=='1'">
+                <a (click)=toggleDropdown(3) [ngClass]="{'active':masteractive}">Masters<img
+                        src="assets/img/master_icon.svg " class="nav-icon h25"></a>
+                <ul>
+                    <li *ngIf="login_data.view_products=='1' || login_data.user_type!='Inside Sales Team'">
+                        <a routerLink="/product-list" routerLinkActive="active">
+                            Products
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <span class="nav-counter orange-count">{{count.product}}</span>
+
+                        </a>
+                    </li>
+
+                    <li *ngIf="true && login_data.user_type!='Inside Sales Team'">
+                        <a routerLink="/production-plan-list" routerLinkActive="active">
+                            Production Plan
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+                    <li *ngIf="true && login_data.user_type!='Inside Sales Team'">
+                        <a routerLink="/stock-data" routerLinkActive="active">
+                            Stock
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+                    <li *ngIf="true && login_data.user_type!='Inside Sales Team'">
+                        <a routerLink="/warehouse-to-warehouse-summary" routerLinkActive="active">
+                            Warehouse To Warehouse Transfer
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+
+
+                    <li *ngIf="login_data.view_users=='1'">
+                        <a routerLink="/sale-user-list" routerLinkActive="active">
+                            Executive
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.user}}</span> -->
+
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_discount=='1'">
+                        <a routerLink="/discount-list" routerLinkActive="active">
+                            Discount
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.discount}}</span> -->
+
+                        </a>
+                    </li>
+
+                    <li *ngIf="login_data.view_discount=='1'">
+                        <a routerLink="/specialdiscount" routerLinkActive="active">
+                            Special Loyality/ Extra Discount
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.discount}}</span> -->
+
+                        </a>
+                    </li>
+
+                    <li *ngIf="login_data.view_pop_master=='1'">
+                        <a routerLink="/pop-n-gift-master" routerLinkActive="active">
+                            Pop N Gift
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+                    <li *ngIf="login_data.view_area_target=='1'">
+                        <a routerLink="/area-target" routerLinkActive="active">
+                            Area target
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+                    <!-- <li *ngIf="login_data.view_area_target=='1'">
+                        <a routerLink="/target-survey" routerLinkActive="active">
+                            Area target survey
+                            <i class="material-icons"> arrow_right_alt  </i>
+                        </a>
+                    </li> -->
+                    <li *ngIf="login_data.view_allowance_master=='1'">
+                        <a routerLink="/allowance-master" routerLinkActive="active">
+                            Allowance Master
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+
+                </ul>
+            </li>
+
+            <li class="dropdown"
+                *ngIf="login_data.view_monthly_work_report=='1' && login_data.view_c_p_sales_report=='1' && login_data.view_primary_secondary_report=='1'">
+                <a (click)=toggleDropdown(5) [ngClass]="{'active':reportactive}">Report<img src="assets/img/report.svg "
+                        class="nav-icon h20"></a>
+
+                <ul>
+                    <li>
+                        <a routerLink="/monthly-dwr" routerLinkActive="active">
+                            PartyWise Sales Report
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/topsellingitem" routerLinkActive="active">
+                            Location Wise Report
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a routerLink="/distriutor-sales-report" routerLinkActive="active">
+                            SalesPerson wise Report
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+
+
+                    <li>
+                        <a routerLink="/series-wise-report" routerLinkActive="active">
+                            SeriesWise Sales Report
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a routerLink="/primary-vs-secondary" routerLinkActive="active">
+                            Discount Structure Wise
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a routerLink="/area-target-survey-report" routerLinkActive="active">
+                            Area Target Survey Report
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/plumber-meet-report" routerLinkActive="active">
+                            Plumber Meet Report
+                            <i class="material-icons"> arrow_right_alt </i>
+                        </a>
+                    </li>
+
+                    <!-- <li>
+                        <a routerLink="/product-wise-report" routerLinkActive="active">
+                            Itemwise Monthly Sales Report
+                            <i class="material-icons"> arrow_right_alt  </i>
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/dwrreport" routerLinkActive="active">
+                            Excecutive Wise Report
+                            <i class="material-icons"> arrow_right_alt  </i>
+                        </a>
+                    </li>   -->
+                </ul>
+            </li>
+        </ul>
+
+        <div class="h80"></div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+<header >
+
+    <div class="logo">
+            <div class="outer">
+                <div class="inner">
+                    <div class="profile-area">
+                        <!-- <img src="assets/img/profile.jpg" > -->
+                        <!-- <p>Admin</p> -->
+                        <div class="company-logo" *ngIf="login_data.view_dashboard=='1'">
+                            <img src="assets/img/p-logo.png">
+                        </div>
+                        <div class="company-logo" *ngIf="login_data.view_dashboard!='1'">
+                            <img src="assets/img/p-logo.png">
+                        </div>
+                    </div>
+                    <div id="nav-icon2" (click)="toggleNav()" matRipple *ngIf="login_data.view_dashboard=='1'">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!-- <div class="company-logo">
+    <img src="assets/img/theme/pearl/pearl_logo.png">
+</div> -->
+
+<!-- <div class="cs-type">
+    <mat-form-field class="sel-opt">
+        <select matNativeControl required>
+            <option value="volvo">Type</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+            <option value="distribution net">Distribution Net.</option>
+        </select>
+    </mat-form-field>
+</div> -->
+
+<div class="text_url" style="text-align: center;width: 100%;">
+    <a *ngIf="login_data.user_type != 'Inside Sales Team'" style="color: white;text-decoration: underline;" href="https://app.gravitybath.com">Go To Loyalty Panel</a>
+</div>
+
+<div class="right-data">
+    <div class="outer">
+        <div class="inner">
+
+            <ul>
+                <!-- <li>
+                    <button matRipple class="add-remove" (click)="toggleHeader()">&nbsp;</button>
+                </li>
+                <li><a href="#." mat-button><img src="assets/img/report-icon.svg" alt=""></a></li>
+                <li><a href="#." mat-button><img src="assets/img/transport.svg" alt=""></a></li>
+                <li class="af-none"><a href="#." mat-button><img src="assets/img/setting.svg" alt=""></a></li> -->
+                <li><a class="logout" matRipple>
+                    <div (click)="logout()">
+                        <i class="material-icons">power_settings_new</i>
+                        logout
+                    </div>
+                </a>
+            </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+</header>

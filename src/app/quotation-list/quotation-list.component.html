@@ -1,0 +1,271 @@
+
+<div class="main-container pb0">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/distribution_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2> Quotation List</h2>
+        <p>Total Quotation List - {{quotation_count}}</p>
+      </div>
+    </div>
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="refresh()"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; getQuotationList()" [disabled]="pagenumber <= 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; getQuotationList()" [(ngModel)]="pagenumber"  min="1" max={{total_page}} >
+          </li>
+
+          <li>
+            <button mat-button class="right-btn" (click)="start=start+page_limit; getQuotationList()" [disabled]="pagenumber >= total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div  *ngIf="exp_loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+
+  <div class="cs-table cs-table-scroll no-tab">
+    <div class="stickyTableHead" style="width: fit-content;">
+      <div class="table-head">
+        <table>
+          <tr>
+            <th class="w50 text-center">&nbsp;</th>
+            <th class="w100 text-center">ID</th>
+            <th class="w90">Date Created</th>
+
+            <th class="w140">Created By</th>
+            <th class="w140">Company Name</th>
+
+            <th class="w140">Name</th>
+            <th class="w140">Contact No.</th>
+            <th class="w170">Customer Billing Address</th>
+            <th class="w150">Customer Shipping Address</th>
+            <th class="w120">Quotation Remark</th>
+            <!-- <th class="w90">Quotation Status</th> -->
+            <th class="w80">Total Quantity</th>
+            <th class="w80">Total Amount</th>
+            <!-- <th class="w180">Secondary Sale</th> -->
+            
+           
+          </tr>
+        </table>
+      </div>
+      <div class="table-head bdrt" >
+        <table class="sno-border">
+          <tr>
+            <th class="w50"></th>
+            <th class="w100">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Quotation Id" name="id" (keyup.enter)="getQuotationList()" onkeypress="return event.charCode>=48 && event.charCode<=57" [(ngModel)]="search_val.id" >
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w90">
+              <div class="th-search-acmt">
+                <mat-form-field class="cs-input date-column infix-bodr">
+                  <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" [(ngModel)]="search_val.date_created" (dateChange)="onDate($event)" >
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w140">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Created By" name="created_by" (keyup.enter)="getQuotationList()" [(ngModel)]="search_val.created_by" >
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w140">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Comapny Name" name="company_name" onkeypress="return event.charCode>=48 && event.charCode<=57"   (keyup.enter)="getQuotationList()" [(ngModel)]="search_val.company_name">
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w140">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Name" name="dr_name" (keyup.enter)="getQuotationList()" [(ngModel)]="search_val.dr_name" >
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w140">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Mobile" name="mobile" onkeypress="return event.charCode>=48 && event.charCode<=57"   (keyup.enter)="getQuotationList()" [(ngModel)]="search_val.mobile" >
+                </mat-form-field>
+              </div>
+            </th>
+          
+            <th class="w170">
+              <!-- <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="City" name="city" (keyup.enter)="distributorList()" [(ngModel)]="search_val.city" >
+                </mat-form-field>
+              </div> -->
+            </th>
+            <th class="w150">
+              <!-- <div class="th-search">
+                <select (change)="distributorList()" name="state" [(ngModel)]="search_val.state">
+                  <option value="">Select State</option>
+                  <option *ngFor="let val of state_values">{{val.state_name}}</option>
+                </select>
+              </div> -->
+            </th> 
+            <th class="w120"></th>
+            <!-- <th class="w90"> -->
+              <!-- <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Days. ." type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="last_order_days_filter" (keyup.enter)="distributorList()" [(ngModel)]="search_val.last_order_days_filter" >
+                </mat-form-field>
+              </div> -->
+            <!-- </th> -->
+            <th class="w80"></th>
+            <th class="w80"></th>
+            <!-- <th class="w180"></th> -->
+          
+          </tr>
+        </table>
+      </div>
+    </div>
+
+
+    <div class="table-container mb60">
+      <div class="table-content" style="width: fit-content;">
+        <table>
+          <tr *ngFor="let row of quotation_data; let i=index">
+            <td class="w50 text-center">{{start+i+1}}</td>
+            <td class="w100 text-center"><a class="link-btn" mat-button routerLink="/quotation-detail/{{row.quotation_id}}" routerLinkActive="active">#Quo-id-{{row.id}}</a></td>
+            <td class="w90">{{row.date_created | date: 'dd-MMM-yyyy'}}</td>
+
+            <td class="w140">{{row.created_by_name}}</td>
+            <td class="w140">{{row.company_name}}</td>
+
+            <td class="w140">{{row.name}}</td>
+            <td class="w140">{{row.contact_no}}</td>
+            <td class="w170">{{row.customer_billing_address}}</td>
+            <td class="w150">{{row.customer_shipping_address}}</td>
+            <td class="w120">{{row.quotation_remark}}</td>
+            <!-- <td class="w90">{{row.quotation_status}}</td> -->
+            <td class="w80">
+              <div class="one-line">
+               {{row.total_quantity}}
+              </div>
+            </td>
+            <td class="w80">
+              <div class="one-line">
+                &#8377;{{row.grand_total}}
+              </div>
+            </td>
+            <!-- <td class="w180">
+              <div class="one-line">
+                
+              </div>
+            </td> -->
+            
+          </tr>
+
+          <ng-container *ngFor="let lead of skelton">
+
+            <tr class="sk-loading"  *ngIf="loader">
+              <th class="w50 text-center"><div>&nbsp;</div></th>
+              <th class="w80 text-center"><div>&nbsp;</div></th>
+              <th class="w140"><div>&nbsp;</div></th>
+              <th class="w90"><div>&nbsp;</div></th>
+              <th class="w140"><div>&nbsp;</div></th>
+              <th class="w140"><div>&nbsp;</div></th>
+              <th class="w140"><div>&nbsp;</div></th>
+              <th class="w100"><div>&nbsp;</div></th>
+              <th class="w150"><div>&nbsp;</div></th>
+              <th class="w120"><div>&nbsp;</div></th>
+              <th class="w80"><div>&nbsp;</div></th>
+              <th class="w80"><div>&nbsp;</div></th>
+             
+            </tr>
+          </ng-container>
+
+        </table>
+
+      </div>
+    </div>
+
+
+    <div class="data-not-available" *ngIf="quotation_data<1">
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+
+            <div class="description">
+              <div class="cs-heading">
+                <h2>Quotation List</h2>
+              </div>
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>data not Found</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="search-results" data-infinite-scroll debounce [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2" [infiniteScrollThrottle]="10" (scrolled)="getQuotationList()">
+  </div> -->
+</div>
+
+
+
+
+
+
+<!-- 
+
+<div class="fix-btn" *ngIf="login_data_2.user_type != 'Inside Sales Team'"> -->
+
+
+  <!-- <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" [matMenuTriggerFor]="download_excel" matTooltipPosition="above" mat-raised-button><img src="assets/img/excel.svg"></a>
+  <mat-menu #download_excel="matMenu" class="drop-down-menu">
+    <button mat-menu-item (click)="download_billing_data()">
+      <span>Download Billing data</span>
+    </button>
+    <button mat-menu-item (click)="download_all_branding()">
+      <span>Download Branding Data</span>
+    </button>
+    <button mat-menu-item (click)="exportAsXLSX()">
+      <span>Download Full Data</span>
+    </button>
+  </mat-menu> -->
+
+
+  <!-- <a *ngIf="view_add || login_data_2.user_type == 'Inside Sales Team' " class="bottom-btn"  matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/add-distribution/1"><i class="material-icons">add</i></a> -->
+<!-- </div> -->
+</div>

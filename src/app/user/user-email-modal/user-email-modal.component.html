@@ -1,0 +1,559 @@
+<!-- <h1>Hi Admin</h1> -->
+<!-- /********************************************/ -->
+
+<div class="edit-modal" *ngIf="data.type !='brand'&&  data.type!='DealerDiscountEdit' &&  data.type !='coupon_value' && data.type != 'category' && data.category != 'user' && data.type != 'discount'">
+    <p class="heading">Update</p>
+    <div mat-dialog-content>
+
+        <mat-form-field class="example-full-width cs-input cs-field">
+            <input matInput placeholder="" name="product" #product="ngModel" [(ngModel)]="data.value" [ngClass]="{'has-error' : product.invalid } " required>
+            <div class="alert alert-danger" *ngIf="!product.valid && product.touched">
+                field is required....
+            </div>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div *ngIf="product.valid  ">
+            <button mat-button (click)="update()">Save</button>
+        </div>
+    </div>
+</div>
+<div class="edit-modal" *ngIf="data.category=='user' && data.type!='email'&& data.type!='bank_name'&& data.type!='account_name'&& data.type!='ifsc'&& data.type!='account_no' && data.type!='contact_01' && data.type!='manager' && data.type!='name' && data.type!='user_type' && data.type!='ware_house_name'  && data.type!='access_level' && data.type!='username' && data.type!='password' && data.type!='working_state'">
+    <p class="heading">Update User detail</p>
+    <div mat-dialog-content>
+
+        <mat-form-field class="example-full-width wp100 cs-field">
+            <input matInput placeholder="" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } " required>
+            <div class="alert alert-danger" *ngIf="!user.valid && user.touched">
+                field is required....
+            </div>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div *ngIf="user.valid">
+            <button mat-button (click)="update_user()">Save</button>
+        </div>
+    </div>
+</div>
+<div class="edit-modal" *ngIf="data.type=='brand'">
+    <p class="heading">Update Brand</p>
+    <div mat-dialog-content>
+        <mat-form-field class="example-full-width cs-input select-input">
+            <input matInput placeholder="Brand" [matAutocomplete]="brand" (input)="brand_array_filter(data.brand,product_brand)" name="brand" #brand="ngModel" [(ngModel)]="data.value" >
+            <mat-autocomplete #brand="matAutocomplete">
+                <mat-option *ngFor="let brand of brand_list;let i=index" value="{{brand}}">
+                    <small>{{brand}}</small>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div  *ngIf="data.value != ''">
+            <button mat-button (click)="update()">Save</button>
+        </div>
+    </div>
+</div>
+<div class="edit-modal" *ngIf="data.type=='category'">
+    <p class="heading">Update Product Details</p>
+    <div mat-dialog-content>
+
+        <div class="row">
+            <div class="col s6">
+                <div class="control-field">
+
+                    <!-- <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Category" [matAutocomplete]="category" (input)="category_array_filter(data.category,category_list)" name="category" #category="ngModel" [(ngModel)]="data_category.category" [ngClass]="{'has-error' : category.invalid } " required>
+                        <div class="alert alert-danger" *ngIf="!category.valid && category.touched">
+                            field is required....
+                        </div>
+                        <mat-autocomplete #category="matAutocomplete">
+                            <mat-option *ngFor="let category of category_list"(click)="getSubCategoryList()" value="{{category}}">
+                                <small>{{category}}</small>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field> -->
+
+                    <div mat-dialog-content>
+
+                        <mat-form-field class="example-full-width cs-input cs-field">
+                            <input matInput placeholder="Product Code" name="product" #product="ngModel" [(ngModel)]="data_category.cat_no" required>
+                            <!-- <div class="alert alert-danger" *ngIf="!product.valid && product.touched">
+                                field is required....
+                            </div> -->
+                        </mat-form-field>
+                    </div>
+                    <div mat-dialog-content>
+
+                        <mat-form-field class="example-full-width cs-input cs-field">
+                            <input matInput placeholder="Product name" name="product" #product="ngModel" [(ngModel)]="data_category.product_name"  required>
+                            <!-- <div class="alert alert-danger" *ngIf="!product.valid && product.touched">
+                                field is required....
+                            </div> -->
+                        </mat-form-field>
+                    </div>
+                    <div mat-dialog-content>
+
+                        <mat-form-field class="example-full-width cs-input cs-field">
+                            <input matInput placeholder="Master Packing" name="master_packing" #master_packing="ngModel" [(ngModel)]="data_category.master_packing"  required>
+                            <div class="alert alert-danger" *ngIf="!master_packing.valid && master_packing.touched">
+                                field is required....
+                            </div>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <div class="control-field">
+                    <!-- <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Sub Category" [matAutocomplete]="subCategory" (input)="sub_categoryy_array_filter(data.sub_category,subCategory_list)" name="subCategory" #subCategory="ngModel" [(ngModel)]="data_category.sub_category" [ngClass]="{'has-error' : subCategory.invalid } "  >
+                        <div class="alert alert-danger" *ngIf="!subCategory.valid && subCategory.touched">
+                            field is required....
+                        </div>
+                        <mat-autocomplete #subCategory="matAutocomplete">
+                            <mat-option *ngFor="let subCategory of subCategory_list" value="{{subCategory.sub_category}}">
+                                <small>{{subCategory.sub_category}}</small>
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field> -->
+
+
+
+
+                    <div mat-dialog-content>
+
+                        <mat-form-field class="example-full-width cs-input cs-field">
+                            <input matInput placeholder="Channel Partner Net Price" name="cn_net_price" #cn_net_price="ngModel" [(ngModel)]="data_category.cn_net_price"  required>
+                            <div class="alert alert-danger" *ngIf="!cn_net_price.valid && cn_net_price.touched">
+                                field is required....
+                            </div>
+                        </mat-form-field>
+                    </div>
+
+
+                    <div mat-dialog-content>
+
+                        <mat-form-field class="example-full-width cs-input cs-field">
+                            <input matInput placeholder="Direct Dealer Net Price" name="dd_net_price" #dd_net_price="ngModel" [(ngModel)]="data_category.dd_net_price"  required>
+                            <div class="alert alert-danger" *ngIf="!dd_net_price.valid && dd_net_price.touched">
+                                field is required....
+                            </div>
+                        </mat-form-field>
+                    </div>
+
+                    <div mat-dialog-content>
+
+                        <mat-form-field class="example-full-width cs-input cs-field">
+                            <input matInput placeholder="Secondary Packing" name="secondary_packing" #secondary_packing="ngModel" [(ngModel)]="data_category.secondary_packing"  required>
+                            <div class="alert alert-danger" *ngIf="!secondary_packing.valid && secondary_packing.touched">
+                                field is required....
+                            </div>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s6">
+                <div class="control-field">
+                    <mat-form-field class="cs-input">
+                        <!-- <mat-select name="stock_status" placeholder="Stock Availability" #stock_status="ngModel"  [(ngModel)]="data_category.stock_status" (ngModelChange)="data_category.stock_incoming_days = ''"> -->
+                            <mat-select name="stock_status" placeholder="Stock Availability" #stock_status="ngModel"  [(ngModel)]="stock_data.stock_status" (ngModelChange)="data_category.stock_incoming_days = ''">
+                            <mat-option disabled="">Select Stock Availability</mat-option>
+                            <mat-option value="In Stock">In stock</mat-option>
+                            <mat-option value="Out Of Stock">Out of Stock</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <!-- <div class="col s6" *ngIf="data_category.stock_status == 'Out Of Stock'"> -->
+                <div class="col s6" *ngIf="stock_data.stock_status == 'Out Of Stock'">
+                <div class="control-field">
+                    <div mat-dialog-content >
+                        <mat-form-field class="example-full-width cs-input cs-field">
+                            <!-- <input matInput placeholder="Stock Available (in days)" name="stock_incoming_days" #stock_incoming_days="ngModel" [(ngModel)]="data_category.stock_incoming_days"  required> -->
+                            <input matInput placeholder="Stock Available (in days)" name="stock_incoming_days" #stock_incoming_days="ngModel" [(ngModel)]="stock_data.stock_incoming_days"  required>
+                            <div class="alert alert-danger" *ngIf="!stock_incoming_days.valid && stock_incoming_days.touched">
+                                field is required....
+                            </div>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <!-- [ngClass]="{'has-error' : product.invalid } " -->
+        </div>
+    </div>
+
+
+
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div *ngIf="data_category.category != '' ">
+            <!-- <button mat-button  [disabled]="data_category.stock_status == 'Out Of Stock' && !data_category.stock_incoming_days ? true: false " (click)="updateCategory()" >Save</button> -->
+            <button mat-button  [disabled]="stock_data.stock_status == 'Out Of Stock' && !stock_data.stock_incoming_days ? true: false " (click)="updateCategory()" >Save</button>
+        </div>
+    </div>
+</div>
+
+<div class="edit-modal" *ngIf="data.type=='discount'">
+    <p class="heading">Update Discount</p>
+    <div mat-dialog-content>
+
+        <mat-form-field class="example-full-width wp100 cs-field">
+            <input matInput placeholder="" name="category" #category="ngModel" [(ngModel)]="data.value1"  [ngClass]="{'has-error' : category.invalid } " readonly>
+            <div class="alert alert-danger" *ngIf="!category.valid && category.touched">
+                field is required....
+            </div>
+        </mat-form-field>
+        <mat-form-field class="example-full-width wp100 cs-field">
+            <input matInput placeholder="" name="discount" #discount="ngModel" [(ngModel)]="data.value2"  [ngClass]="{'has-error' : discount.invalid } " required>
+            <div class="alert alert-danger" *ngIf="!discount.valid && discount.touched">
+                field is required....
+            </div>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div *ngIf="discount.valid">
+            <button mat-button (click)="update_discount()">Save</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="data.type=='email'">
+    <p>Update Email</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } "   required="true">
+                <div class="alert alert-danger" *ngIf="!user.valid && update_basic.submitted">
+                    field is Invalid....
+                </div>
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div *ngIf="data.type=='bank_name'">
+    <p>Update Bank Name</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput type="text" name="user" #user="ngModel" [(ngModel)]="data.value"     required="true">
+               
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div *ngIf="data.type=='ifsc'">
+    <p>Update IFSC CODE</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput type="text" name="user" #user="ngModel" [(ngModel)]="data.value"     required="true">
+               
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div *ngIf="data.type=='account_no'">
+    <p>Update Account No</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput type="tel" name="user" #user="ngModel" [(ngModel)]="data.value"     required="true">
+               
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div *ngIf="data.type=='account_number'">
+    <p>Update Account Number</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput type="text" name="user" #user="ngModel" [(ngModel)]="data.value"     required="true">
+               
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+<div *ngIf="data.type=='contact_01'">
+    <p>Update Mobile</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput type="tel" minlength="10" maxlength="10"  name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } "  (keypress)="MobileNumber($event)" required="true">
+                <div class="alert alert-danger" *ngIf="!user.valid && update_basic.submitted">
+                    Mobile is Invalid....
+                </div>
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="data.type=='working_state'">
+    <p>Working State</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(state_name.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <mat-select name="state_name" #state_name="ngModel" [(ngModel)]="data.value" [ngClass]="{'has-error' : state_name.invalid } " required >
+                    <mat-option disabled="">Select State</mat-option>
+                    <mat-option *ngFor="let state_name of state_list" value="{{state_name}}">{{state_name}}</mat-option>
+                </mat-select>
+                <div class="alert alert-danger" *ngIf="!state_name.valid && update_basic.submitted">
+                    State is required....
+                </div>
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="data.type=='username'">
+    <p>Update username</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(username.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput  name="username" #username="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : username.invalid } ">
+                <div class="alert alert-danger" *ngIf="!username.valid && update_basic.submitted">
+                    username is Invalid....
+                </div>
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="data.type=='password'">
+    <p>Update Password</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="update_user()">
+        <div mat-dialog-content>
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput name="password" #password="ngModel" [(ngModel)]="data.value" [ngClass]="{'has-error' : password.invalid } ">
+                <div class="alert alert-danger" *ngIf="!password.valid && update_basic.submitted">
+                    Password is Invalid....
+                </div>
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div *ngIf="data.type=='access_level'">
+    <p>Update Designation</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <mat-select name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } "   required="true" >
+                    <mat-option value="">Select Designation</mat-option>
+                    <mat-option *ngFor="let rsm of role_data" value="{{rsm.id}}">{{rsm.role_name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- <input matInput type="text" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } "   required="true">
+                <div class="alert alert-danger" *ngIf="!user.valid && update_basic.submitted">
+                    Designation is Required....
+                </div>
+            </mat-form-field > -->
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div *ngIf="data.type=='name'">
+    <p>Update User Name</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+
+            <mat-form-field class="example-full-width wp100 cs-field">
+                <input matInput type="text" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } "   required="true">
+                <div class="alert alert-danger" *ngIf="!user.valid && update_basic.submitted">
+                    Name is Required....
+                </div>
+            </mat-form-field >
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<div *ngIf="data.type=='user_type'">
+    <p style="margin-top: 20px; margin-bottom: 10px">Update User Type</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(user.valid && update_basic.submitted)?update_user():''">
+        <div mat-dialog-content>
+
+
+            <mat-radio-group aria-placeholder="User Type" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } "   required="true">
+                <mat-radio-button class="example-margin" color="accent" value="Market">Market</mat-radio-button>
+                <br><br>
+                <mat-radio-button class="example-margin" color="accent" value="Office">Office</mat-radio-button>
+                <br><br>
+                <mat-radio-button class="example-margin" color="accent" value="Inside Sales Team">Inside Sales Team</mat-radio-button>
+                <div class="alert alert-danger" *ngIf="!user.valid && update_basic.submitted">
+                    Type is required....
+                </div>
+            </mat-radio-group>
+
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div >
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div *ngIf="data.type=='ware_house_name'">
+    <p>Update Warehouse</p>
+    <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(warehouse_id.valid && update_basic.submitted)?update_user():''">
+
+        <div mat-dialog-content>
+
+            <mat-form-field class="cs-input">
+                <mat-select name="warehouse_id" placeholder="Select Warehouse" [(ngModel)]="data.warehouse_id" #warehouse_id="ngModel">
+                    <mat-option disabled value="">Select Warehouse</mat-option>
+                    <mat-option *ngFor="let ware_house_data of ware_house_listing" value="{{ware_house_data.id}}" >{{ware_house_data.ware_house_name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div mat-dialog-actions>
+            <button mat-button [mat-dialog-close]="false">Cancel</button>
+            <div>
+                <button type="submit" mat-button >Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="data.type=='manager'">
+    <p>Update RSM Assigned</p>
+    <div mat-dialog-content>
+
+        <mat-form-field class="cs-input">
+            <mat-select name="pincode" placeholder="Assing RSM"  name="value"  [(ngModel)]="data.value" >
+                <mat-option value="">Select RSM</mat-option>
+                <mat-option *ngFor="let rsm of rsm_list" value="{{rsm.id}}">{{rsm.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div >
+            <button (click)="rsm_update(data.value)" mat-button >Save</button>
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="data.type=='coupon_value'">
+    <p>Update Coupon Value</p>
+    <div mat-dialog-content>
+
+        <mat-form-field class="cs-input">
+            <input matInput type="text" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } "   required="true">
+
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div >
+            <button (click)="coupon_value_update(data.value)" mat-button >Save</button>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="data.type=='DealerDiscountEdit'">
+    <p>Update Retail Partner Discount</p>
+    <div mat-dialog-content>
+
+        <mat-form-field class="cs-input">
+            <input matInput type="text" name="user" maxlength="2" #user="ngModel" [(ngModel)]="data.dealer_discount"  [ngClass]="{'has-error' : user.invalid } "   (keypress)="MobileNumber($event)" required="true">
+
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+        <button mat-button [mat-dialog-close]="false">Cancel</button>
+        <div >
+            <button (click)="updateDiscount(data.updateDiscount)" mat-button >Save</button>
+        </div>
+    </div>
+
+</div>

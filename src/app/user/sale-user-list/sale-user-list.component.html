@@ -1,0 +1,263 @@
+<div class="main-container" >
+    <div class="middle-container mb0">
+        <div class="page-heading">
+            <img src="assets/img/person.svg" class="h-icon h20">
+            <div class="heading-text w250">
+                <h2>Total Users</h2>
+                <p>{{userlist.length}}</p>
+            </div>
+        </div>
+
+
+        <div class="left-auto">
+            <div class="top-pagination">
+                <ul>
+                    <li class="refresh-area">
+                        <a class="refresh-btn" mat-raised-button  matTooltip="Refresh" (click)="value = {};getUserList(0,50,view_tab)"><i class="material-icons"> refresh</i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="click-btn ml15" >
+                <button *ngIf="view_edit && login_id=='1'" mat-button (click)="openModal()">Update Admin Panel Details</button>
+            </div>
+        </div>
+        <div class="tab-space">
+            <div class="tabs">
+              <ul>
+                <li><a [ngClass]="{'active': view_tab=='Market'}" (click)="getUserList(0,50,'Market')">Market</a></li>
+                <li><a [ngClass]="{'active': view_tab=='Office'}" (click)="getUserList(0,50,'Office')">Office</a></li>
+                <li><a [ngClass]="{'active': view_tab=='Ware House'}" (click)="getUserList(0,50,'Ware House')">Ware House </a></li>
+                <li><a [ngClass]="{'active': view_tab=='Inside Sales Team'}" (click)="getUserList(0,50,'Inside Sales Team')">Inside Sales Team</a></li>
+                <!-- <li><a [ngClass]="{'active': view_tab=='readyToDispatch'}" (click)="getUserList('readyToDispatch')">Ready to Dispatch</a></li>
+                <li><a [ngClass]="{'active': view_tab=='PDispatch'}" (click)="getUserList('PDispatch')"> Partially Dispatched </a></li>
+                <li><a [ngClass]="{'active': view_tab=='Dispatch'}" (click)="getUserList('Dispatch')"> Complete Dispatched </a></li>
+                <li><a [ngClass]="{'active': view_tab=='Reject'}" (click)="getUserList('Reject')">Referred Back </a></li>
+                <li><a [ngClass]="{'active': view_tab=='Pre Close'}" (click)="getUserList('Pre Close')">Pre Closed</a></li> -->
+              </ul>
+            </div>
+          </div>
+    </div>
+
+    <div>
+        <app-master-tab-list></app-master-tab-list>
+        <div>
+            <div>
+                <div>
+                    <div class="cs-table cs-table-scroll no-tab">
+                        <div class="stickyTableHead" style="width: fit-content;">
+                            <div class="table-head">
+                                <table>
+                                    <tr>
+                                        <th class="w150">Name</th>
+                                        <th class="w150">User Type</th>
+                                        <th class="w150">Designation</th>
+                                        <th class="w150">Created By</th>
+                                        <th class="w100">Mobile No.</th>
+                                        <th class="w150">Channel Partner</th>
+                                        <th class="w150">Reporting Manager</th>
+                                        <th class="w150">Primary Sale</th>
+                                        <th class="w150">Secondary Sale</th>
+                                        <th class="w60">Target</th>
+                                        <th *ngIf="view_edit" class="w70 text-center" >Status</th>
+                                        <th *ngIf="view_delete" class="w70 text-center" >Delete</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="table-head bdrt" >
+                                <table>
+                                    <tr>
+                                        <th class="w150">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder="Name. . ." (keyup.enter)="getUserList(0,50,view_tab)" #search="ngModel" [(ngModel)]="value.name">
+
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+                                            <!-- <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder="Type. . ." (keyup.enter)="getItemsList('user_type',value.search1)" #search="ngModel" [(ngModel)]="value.search1" >
+                                                </mat-form-field>
+                                            </div> -->
+                                        </th>
+                                        <th class="w150">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field>
+                                                    <input type="text"  matInput placeholder="Designation. . ." (keyup.enter)="getUserList(0,50,view_tab)" #search="ngModel" [(ngModel)]="value.role">
+
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w150"></th>
+                                        <th class="w100">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field>
+                                                    <input type="text"  matInput placeholder="Mobile. . ." (keyup.enter)="getUserList(0,50,view_tab)" #search="ngModel" [(ngModel)]="value.mobile">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+
+
+
+
+                                        <th class="w150">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field>
+                                                    <input type="text"  matInput placeholder="Channel Partner" (keyup.enter)="getUserList(0,50,view_tab)" #search="ngModel" [(ngModel)]="value.distributor">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+
+
+
+                                        <th class="w150">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field>
+                                                    <input type="text"  matInput placeholder="Reporting Manager. . ." (keyup.enter)="getUserList(0,50,view_tab)" #search="ngModel" [(ngModel)]="value.assign_user">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+
+
+
+                                        <th class="w150" ></th>
+                                        <th class="w150" ></th>
+                                        <th class="w60"></th>
+                                        <th *ngIf="view_edit" class="w70" ></th>
+                                        <th *ngIf="view_delete" class="w70" ></th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="table-container" style="width: fit-content;">
+                            <div *ngIf="loader">
+                                <mat-spinner class="loader">
+                                    <div><p>Loading....</p></div>
+                                </mat-spinner>
+                            </div>
+                            <div class="table-content">
+                                <table>
+                                    <tr *ngFor="let u of userlist;let i=index ">
+                                        <td class="w150"><a *ngIf="view_edit" class="link-btn" routerLink="/sale-user-detail/{{u.id}}" routerLinkActive="active" mat-button>{{u.name}}</a> {{!view_edit?u.name:''}}</td>
+                                        <td class="w150">
+                                            <ng-container *ngIf="(u.user_type=='Market' || u.user_type=='MARKET') && u.created_type!='drLogin'">
+                                                Gravity Sales Exec.
+                                            </ng-container>
+
+                                            <ng-container *ngIf="u.user_type=='Ware House'">
+                                                Ware House Exec.
+                                            </ng-container>
+
+                                            <ng-container *ngIf="(u.user_type=='Market' || u.user_type=='MARKET') && u.created_type=='drLogin'">
+                                                Channel Partner Exec.
+                                            </ng-container>
+
+                                            <ng-container *ngIf="(u.user_type=='OFFICE' || u.user_type=='Office')">
+                                                Gravity Office Exec.
+                                            </ng-container>
+
+                                            <ng-container *ngIf="(u.user_type=='Inside Sales Team')">
+                                              Gravity Inside Sales Exec.
+                                            </ng-container>
+
+                                        </td>
+                                        <td class="w150" matTooltip="{{u.role_name}}" matTooltipPosition="above">
+                                            <div class="one-line">
+                                                {{u.role_name}}
+                                            </div>
+                                        </td>
+                                        <td class="w150">{{u.created_by_name && u.created_by_name!= '' ? (u.created_by_name | titlecase) : '--'}}</td>
+
+                                        <td class="w100">{{u.contact_01}}</td>
+
+                                        <td class="w150 " matTooltip="{{u.channel_partner}}" matTooltipPosition="above">
+                                            <div class="one-line">
+                                                {{u.channel_partner}}
+                                            </div>
+
+                                        </td>
+
+                                        <td class="w150 " matTooltip="{{u.assign_user}}" matTooltipPosition="above">
+                                            <div class="one-line">
+                                                {{u.assign_user}}
+                                            </div>
+                                        </td>
+                                        <td class="w150">
+                                            <div class="one-line">
+                                                {{u.primary_sale.count}} | &#8377; {{u.primary_sale.sum}}
+                                            </div>
+                                        </td>
+                                        <td  class="w150">
+                                            <div class="one-line">
+                                                {{u.secondary_sale.count}} | &#8377; {{u.secondary_sale.sum}}
+                                            </div>
+                                        </td>
+                                        <td class="w60" [ngClass]="u.user_type=='Market' || u.user_type=='MARKET' || u.user_type=='Inside Sales Team' ? 'ankr-clr' : ''" style ="cursor: pointer"  (click)="u.user_type=='Market' || u.user_type=='MARKET' || u.user_type=='Inside Sales Team' ? targetModal(u.id) : ''">{{u.user_type=='Market' || u.user_type=='MARKET' || u.user_type=='Inside Sales Team' ? 'View' : '--'}}</td>
+                                        <td *ngIf="view_edit" class="w70 text-center">
+                                            <mat-slide-toggle [checked]="u.status"  (click)="userStatus(i,u.id)"  (dragChange)="userStatus(i,u.id)"  ></mat-slide-toggle>
+                                        </td>
+                                        <td *ngIf="view_delete" class="w70 text-center">
+                                            <button mat-button class="delete-mat" (click)="deleteUser(u.id)"><i class="material-icons red-clr">delete_sweep</i></button>
+                                        </td>
+
+                                    </tr>
+                                    <ng-container *ngFor="let lead of skelton">
+                                        <tr class="sk-loading"  *ngIf="loader">
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w100"><div>&nbsp;</div></td>
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w150"><div>&nbsp;</div></td>
+                                            <td class="w60"><div>&nbsp;</div></td>
+                                            <td *ngIf="view_edit" class="w70"><div>&nbsp;</div></td>
+                                            <td *ngIf="view_delete" class="w70"><div>&nbsp;</div></td>
+                                        </tr>
+
+                                    </ng-container>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="data-not-available" *ngIf="data_not_found==true">
+            <div class="outer">
+                <div class="iinear">
+                    <div class="figure" matRipple>
+                        <div class="header">
+                            <img src="assets/img/data-not-available-header.svg" alt="">
+                        </div>
+
+                        <div class="description">
+                            <div class="cs-heading">
+                                <h2>User List</h2>
+                            </div>
+                            <div class="img">
+                                <i class="material-icons">error_outline</i>
+                            </div>
+                            <div class="psc">
+                                <p>data not Found</p>
+                                <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="fix-btn">
+            <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+            <a *ngIf="view_add" class="bottom-btn" matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/user-add"><i class="material-icons">add</i></a>
+        </div>
+    </div>
+</div>
+

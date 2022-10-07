@@ -1,0 +1,86 @@
+.cs-figure{
+    ul{
+        display: flex;
+        grid-column-gap: 10px;
+        grid-row-gap: 10px;
+        margin-bottom: 10px;
+        
+        li{
+            border: 1px solid #B29D9D;
+        }
+        
+        &:last-child{
+            margin-bottom: 0px;
+        }
+    }
+}
+
+.summary
+{
+    table
+    {
+        width: 100%;
+        table-layout: fixed;
+        box-sizing: border-box;
+        border-collapse: collapse;
+        
+        tr
+        {
+            td
+            {
+                padding: 5px 0px;
+                font-size: 12px;
+                
+                &:last-child
+                {
+                    
+                }
+            }
+        }
+    }
+}
+
+.green-bg
+{
+    background: #12af12 !important;
+    color: #fff !important;
+}
+
+.red-bg
+{
+    background: #ff0000 !important;
+    color: #fff !important;
+}
+
+.show-pointer-cursor{
+    cursor: pointer !important;
+    color:blue !important;
+}
+
+
+.edit-column 
+{
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    width: 35px;
+    padding: 0px !important;
+    min-width: 0px;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: 0.4s all;
+    
+    i
+    {
+        font-size: 18px;
+        color: #000000;
+        opacity: 0.8;
+    }
+    
+    &.default-show
+    {
+        opacity: 1;
+        visibility: visible;
+    }
+}

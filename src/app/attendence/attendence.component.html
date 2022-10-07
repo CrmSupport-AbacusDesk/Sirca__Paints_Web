@@ -1,0 +1,176 @@
+<div class="main-container" >
+  <div class="middle-container mb0">
+    <div class="page-heading w250">
+      <img src="assets/img/calender.svg" class="h-icon h16">
+      <div class="heading-text">
+        <h2>Attendance</h2>
+      </div>
+    </div>
+
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="refresh()"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      <div class="tabs">
+        <ul>
+          <li><a class="pr50" [ngClass]="show_today ? 'active' : ''"  (click)="change_tab('getattendance_today',1)">Today <span class="counter">{{count_1}}</span></a></li>
+          <li><a class="pr50" [ngClass]="!show_today ? 'active' : ''" (click)="change_tab('getAttendance',2)">All <span class="counter">{{count_2}}</span></a></li>
+        </ul>
+      </div>
+    </div>
+
+    
+  </div>
+  <div class="container-outer">
+    
+    <!-- <div *ngIf="loader">
+      <mat-spinner class="loader">
+        <div><p>Loading....</p></div>
+      </mat-spinner>
+    </div> -->
+    <div class="container tab-container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <th class="w120">Date</th>
+                    <th class="w180">User </th> 
+                    <th class="w90">Start Time</th>
+                    <th>Start Location</th>
+                    <th class="w90">Stop Time</th>
+                    <th>Stop Location</th>
+                    <th class="W120">Work Type</th>
+                    <th class="W200">Travel Place</th>
+                  </tr>
+                </table>
+              </div>
+              
+              <div class="table-head bdrt" >
+                <table>
+                  <tr>
+                    <th class="w120">
+                      <div class="th-search-acmt" *ngIf="!show_today">
+                        <mat-form-field class="example-full-width cs-input picker-icon"  >
+                          <input matInput [matDatepicker]="picker" placeholder="Date" (dateChange)="attendance_list('getAttendance',2)" name="date_created" [(ngModel)]="data.date_created">
+                          
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th class="w180">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input select-input">
+                          <input matInput placeholder="Enter Name...."  (keyup.enter)="show_today? attendance_list('getattendance_today',1) : attendance_list('getAttendance',2)" [(ngModel)]="data.name">
+                        </mat-form-field>
+                      </div>
+                    </th>    
+                    
+                    <th class="w90"></th>
+                    <th>&nbsp;</th>
+                    <th class="w90"></th>
+                    <th>&nbsp;</th>
+                    <th class="W120">&nbsp;</th>
+                    <th class="W200">&nbsp;</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let p of attendancelist">
+                    <td class="w120">{{p.date_created | date : 'MMM d, y' }}</td>
+                    <td class="w180">{{p.name}}</td>    
+                    <td class="w90">{{p.start_time}}</td> 
+                    <!-- <td *ngIf="p.start_address!=''"  matTooltip="{{p.start_address}}" matTooltipPosition="above"><div class="one-line">{{p.start_address}}</div></td>  -->
+                    <td *ngIf="p.start_address!=''" style="word-break: break-all;" >{{p.start_address}}</td> 
+                    <td *ngIf="p.start_address==''">N A</td>
+                    <td class="w90" *ngIf="p.stop_time!='00:00:00'"> {{p.stop_time}}</td> 
+                    <td class="w90" *ngIf="p.stop_time=='00:00:00'">N A</td>
+                    <!-- <td *ngIf="p.stop_address!=''" matTooltip="{{p.stop_address}}" matTooltipPosition="above">
+                      <div class="one-line">{{p.stop_address}}</div>
+                      <div class="action-btns" *ngIf="p.stop_address!='Not found' && show_today">
+                        <a mat-button class="view" (click)="reset_attendance(p.id)"><i class="material-icons">restore</i> Reset</a>
+                      </div>
+                    </td>  -->
+                    <td *ngIf="p.stop_address!=''" style="word-break: break-all;">
+                      {{p.stop_address}}
+                      <div class="action-btns" *ngIf="p.stop_address!='Not found' && show_today">
+                        <a mat-button class="view" (click)="reset_attendance(p.id)"><i class="material-icons">restore</i> Reset</a>
+                      </div>
+                    </td> 
+                    <td *ngIf="p.stop_address==''">N A</td>
+                    <td class="W120">{{p.work_type ? p.work_type : 'N A'}}</td>
+                    <td class="W200" matTooltip="{{p.travel_place ? p.travel_place : 'N A'}}" matTooltipPosition="above">
+                        <div class="one-line">{{p.travel_place ? p.travel_place : 'N A'}}</div>
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let lead of skelton">
+                      <tr class="sk-loading"  *ngIf="loader">
+                        <td class="w120"><div>&nbsp;</div></td>
+                        <td class="w180"><div>&nbsp;</div></td>
+                        <td class="w90"><div>&nbsp;</div></td>
+                        <td><div>&nbsp;</div></td>
+                        <td class="w90"><div>&nbsp;</div></td>
+                        <td><div>&nbsp;</div></td>
+                        <td class="W120"><div>&nbsp;</div></td>
+                        <td class="W200"><div>&nbsp;</div></td>
+                      </tr>
+                    </ng-container>
+                </table>
+                <div
+                class="search-results"
+                data-infinite-scroll
+                debounce
+                [infiniteScrollDistance]="1"
+                [infiniteScrollUpDistance]="2"
+                [infiniteScrollThrottle]="10"
+                (scrolled)="attendance_list('getAttendance',2)"              
+                >
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="data-not-available" *ngIf="data_not_foun==true">
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            <div class="description">
+              <div class="cs-heading">
+                <h2>Sales Location List</h2>
+              </div>
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>Data not Found</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="fix-btn">
+    <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+  </div>
+</div>
+<div>
+</div>
+</div>
+<div class="h60"></div>

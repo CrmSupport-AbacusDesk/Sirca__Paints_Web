@@ -1,0 +1,360 @@
+<div class="edit-modal" *ngIf="data.type =='address' && data.type !='discount' && data.type !='edit' && data.type !='add' ">
+  <form #update_basic="ngForm" name="update_basic" (ngSubmit)="(update_basic.valid && update_basic.submitted)?update_address(data):''" validate>
+    <p class="heading">Update Address</p>
+    <div mat-dialog-content>
+      <div class="from-fields">
+        <div class="row">
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="Address" name="address" #address="ngModel" value={{data.address}} [(ngModel)]="data.address" [ngClass]="{'has-error' : address.invalid } " required></textarea>
+                <div class="alert alert-danger" *ngIf="!address.valid && update_basic.submitted">
+                  Address is required....
+                </div>
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="col s4 pl0">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="country" placeholder="country" #country="ngModel" [(ngModel)]="data.country" [ngClass]="{'has-error' : country.invalid } " required>
+                  <mat-option disabled="">Select Country</mat-option>
+                  <mat-option *ngFor="let country of countryList"(click)="getStateList(data.country, 2)" (keyup.enter)="getStateList(data.country, 2)" value="{{country}}">{{country}}</mat-option>
+                </mat-select>
+                <div class="alert alert-danger" *ngIf="!country.valid && update_basic.submitted">
+                  Country is required....
+                </div>
+              </mat-form-field>
+            </div>                  
+          </div>
+          
+          <div class="col s4" *ngIf="data.country == 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="state" placeholder="State" #state="ngModel" [(ngModel)]="data.state"  [ngClass]="{'has-error' : state.invalid } " required>
+                  <mat-option disabled="">Select State</mat-option>
+                  <mat-option *ngFor="let state of state_list"(click)="getDistrict(data.state,data.country, 2)" (keyup.enter)="getDistrict(data.state, 2)" value="{{state}}">{{state}}</mat-option>
+                </mat-select>
+                <div class="alert alert-danger" *ngIf="!data.state && update_basic.submitted">
+                  State is required....
+                </div>
+              </mat-form-field>
+            </div>                  
+          </div>
+          
+          <div class="col s4" *ngIf="data.country != 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="State" name="state" #state="ngModel" [(ngModel)]="data.state"></textarea>
+              </mat-form-field>
+            </div>                  
+          </div>
+        </div>
+        
+        
+        <div class="row">
+          <div class="col s4"  *ngIf="data.country == 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="district" placeholder="District" #district="ngModel" [(ngModel)]="data.district"   [ngClass]="{'has-error' : district.invalid } " required>
+                  <mat-option disabled="">Select District</mat-option>
+                  <mat-option *ngFor="let district of district_list"(click)="getCityList(data.district,data.state, 2)" (keyup.enter)="getCityList(data.district,data.state, 2)"value="{{district}}">{{district}}</mat-option>
+                </mat-select>
+                <div class="alert alert-danger" *ngIf="!data.district && update_basic.submitted">
+                  District is required....
+                </div>
+              </mat-form-field>
+            </div>                  
+          </div>
+          <div class="col s4" *ngIf="data.country != 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="District" name="district" #district="ngModel" [(ngModel)]="data.district"></textarea>
+              </mat-form-field> 
+            </div>
+          </div>
+          
+          <div class="col s4"  *ngIf="data.country == 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="city" placeholder="City" #city="ngModel" [(ngModel)]="data.city" [ngClass]="{'has-error' : city.invalid } " required>
+                  <mat-option disabled="">Select City</mat-option>
+                  <mat-option *ngFor="let city of city_list"(click)="getPinCodeList(data.district,data.state,data.city, 2)"(keyup.enter)="getPinCodeList(data.district,data.state,data.city, 2)" value="{{city}}">{{city}}</mat-option>
+                </mat-select>
+                <div class="alert alert-danger" *ngIf="!city.valid && update_basic.submitted">
+                  City is required....
+                </div>
+              </mat-form-field>
+            </div>                  
+          </div>
+          
+          <div class="col s4" *ngIf="data.country != 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="city" name="city" #city="ngModel" [(ngModel)]="data.city"></textarea>
+              </mat-form-field>
+            </div>                  
+          </div>
+          
+          <div class="col s4"  *ngIf="data.country == 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <mat-select name="pincode" placeholder="Pincode" #pincode="ngModel"[(ngModel)]="data.pincode" [ngClass]="{'has-error' : pincode.invalid } " required>
+                  <mat-option disabled="">Select Pincode</mat-option>
+                  <mat-option *ngFor="let pincode of pinCode_list"value="{{pincode}}">{{pincode}}</mat-option>
+                </mat-select>
+                <div class="alert alert-danger" *ngIf="!pincode.valid && update_basic.submitted">
+                  Pincode is required....
+                </div>
+              </mat-form-field>
+            </div>                  
+          </div>
+          <div class="col s4" *ngIf="data.country != 'INDIA'">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="Pincode" name="pincode" #pincode="ngModel" [(ngModel)]="data.pincode"></textarea>
+              </mat-form-field>
+            </div>                  
+          </div>
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+      <button mat-raised-button color="accent" type="submit">Save</button>
+    </div>
+  </form>
+  
+</div>
+
+<div class="edit-modal" *ngIf="data.type =='discount' && data.type !='basic_detail' && data.type != 'address' && data.type !='edit'  && data.type !='add'">
+  
+  <p class="heading">Update Discount</p>
+  <div mat-dialog-content>
+    
+    <mat-form-field class="example-full-width wp100 cs-field">
+      <input matInput placeholder="" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } " required>
+      <div class="alert alert-danger" *ngIf="!user.valid && user.touched">
+        field is required....
+      </div>
+    </mat-form-field>
+    <mat-form-field class="example-full-width wp100 cs-field">
+      <input matInput placeholder="" name="user" #user="ngModel" [(ngModel)]="data.value"  [ngClass]="{'has-error' : user.invalid } " required>
+      <div class="alert alert-danger" *ngIf="!user.valid && user.touched">
+        field is required....
+      </div>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false">Cancel</button>
+    <div *ngIf="user.valid">
+      <button mat-button (click)="update_user()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="edit-modal" *ngIf="data.type !='address'  && data.type !='basic_detail' && data.type !='discount' && data.type !='edit' && data.type !='add'">
+  <p class="heading">Update{{data.type}}</p>
+  <div mat-dialog-content>
+    
+    <mat-form-field class="example-full-width cs-input cs-field">
+      <input matInput placeholder="" name="value" #value="ngModel" [(ngModel)]="data.value" required>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    <div >
+      <button mat-raised-button color="accent" (click)="update()">Save</button>
+    </div>
+  </div>
+</div> -->
+
+<div class="edit-modal" *ngIf="data.type =='basic_detail' && data.type !='discount' && data.type !='edit' && data.type !='add' ">
+  <p class="heading">Update Basic Detail</p>
+  <form #update_basic="ngForm" name="update_basic" (ngSubmit)="(update_basic.valid && update_basic.submitted)?update_basic_address(data):''" validate>
+    <div mat-dialog-content>
+      <div class="from-fields">
+        <div class="row">
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="Company Name" name="company_name" #company_name="ngModel" value={{data.company_name}} [(ngModel)]="data.company_name" name="company_name" required></textarea>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!company_name.valid && update_basic.submitted">
+                Company Name is required...
+              </div>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <textarea matInput placeholder="Name"  name="name" #name="ngModel" value={{data.name}} [(ngModel)]="data.name" [ngClass]="{'has-error' : name.invalid } " required></textarea>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!name.valid && update_basic.submitted">
+                Name is required...
+              </div>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input  type="tel" maxlength="10" minlength="10" matInput placeholder="Mobile" [ngClass]="{'has-error' : mobile.invalid } " name="mobile" #mobile="ngModel" (keypress)="MobileNumber($event)" value={{data.mobile}} [(ngModel)]="data.mobile" required>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!mobile.valid && update_basic.submitted">
+                Mobile no. must be 10 digits...
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="tel"  minlength="6" maxlength="10" matInput placeholder="Landline" name="landline" #landline="ngModel" value={{data.landline}} [(ngModel)]="data.landline" (keypress)="MobileNumber($event)" [ngClass]="{'has-error' : landline.invalid } ">
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!landline.valid && update_basic.submitted">
+                Landline is Invalid...
+              </div>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <!-- <input type="email"  minlength="6" matInput placeholder="Email" name="email" #email="ngModel" value={{data.email}} [(ngModel)]="data.email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" [ngClass]="{'has-error' : email.invalid } " > -->
+                <input type="email"  minlength="6" matInput placeholder="Email" name="email" #email="ngModel" value={{data.email}} [(ngModel)]="data.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [ngClass]="{'has-error' : email.invalid } " >
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!email.valid && update_basic.submitted">
+                Email is Invalid...
+              </div>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="tel"  minlength="10" maxlength="10" matInput placeholder="Whatsapp" name="whatsapp" #whatsapp="ngModel" value={{data.Whatsapp}} [(ngModel)]="data.whatsapp" (keypress)="MobileNumber($event)" [ngClass]="{'has-error' : whatsapp.invalid } ">
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!whatsapp.valid && whatsapp.touched">
+                Whatsapp is Invalid...
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        
+        <div class="row">
+          
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="tel"  minlength="6" matInput placeholder="GST" name="gst" #gst="ngModel" value={{data.gst}} [(ngModel)]="data.gst" maxlength="20" [ngClass]="{'has-error' : gst.invalid } ">
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!gst.valid && update_basic.submitted">
+                GST is Invalid...
+              </div>
+            </div>
+          </div>
+          
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="date"  matInput placeholder="D.O.B" name="dob" #dob="ngModel" value={{data.dob}} [(ngModel)]="data.dob">
+              </mat-form-field>
+              <!-- <div class="alert alert-danger" *ngIf="!dob.valid && update_basic.submitted">
+                Landline is Invalid...
+              </div> -->
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="date"  matInput placeholder="D.O.A" name="doa" #doa="ngModel" value={{data.doa}} [(ngModel)]="data.doa"  >
+              </mat-form-field>
+              <!-- <div class="alert alert-danger" *ngIf="!email.valid && update_basic.submitted">
+                Email is Invalid...
+              </div> -->
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="text"  matInput placeholder="Username" name="username" #username="ngModel" value={{data.username}} [(ngModel)]="data.username"  >
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="text"  matInput placeholder="Password" name="password" #password="ngModel" value={{data.password}} [(ngModel)]="data.password"  >
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="text"  matInput placeholder="Target" name="target" #target="ngModel" value={{data.target}} [(ngModel)]="data.target"  >
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="col s4" *ngIf="data.ledger_length == 0">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input type="text"  matInput placeholder="Opening Balance" name="dr_opening_balance" #dr_opening_balance="ngModel" value={{data.opening_balance}} [(ngModel)]="data.dr_opening_balance"  >
+              </mat-form-field>
+            </div>
+          </div>
+          
+        </div>
+        
+        
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+      <button mat-raised-button color="accent" type="submit">Save</button>
+    </div>
+  </form>
+  
+</div>
+
+
+<!-- 
+  <div class="edit-modal" *ngIf="data.type !='address' && data.type !='basic_detail'&& data.type !='discount' && data.type !='edit' && data.type !='add' "
+  >
+  <p class="heading">Update Discount</p>
+  <form #update_basic="ngForm" name="update_basic" (ngSubmit)="(update_basic.valid && update_basic.submitted)?update_discount(data.category,data.dr_id,data.discount):''" validate>
+    <div mat-dialog-content>
+      <div class="from-fields">
+        
+        <div class="row">
+          
+          
+          <h3>{{data.category}}</h3>
+          <div class="col s4">
+            <div class="control-field">
+              <mat-form-field class="cs-input">
+                <input  type="number"  matInput placeholder="Discount" [ngClass]="{'has-error' : discount.invalid } " name="discount" #discount="ngModel" (keypress)="MobileNumber($event)" value={{data.discount}} [(ngModel)]="data.discount" maxlength="2" minlength="1" required>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!discount.valid && update_basic.submitted">
+                Discount Required...
+              </div>
+              
+            </div>
+          </div>
+          
+        </div>
+        
+        
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+      <button mat-raised-button color="accent" type="submit">Save</button>
+    </div>
+  </form>
+  
+</div> -->

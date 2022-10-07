@@ -1,0 +1,133 @@
+<div class="edit-modal">
+  <form validate #update_basic="ngForm" name="update_basic"
+    (ngSubmit)="(update_basic.valid && update_basic.submitted?travelPlanEdit() :'')">
+
+    <p class="heading">Update Travel Plan</p>
+    <div mat-dialog-content>
+      <div class="from-fields">
+        <div *ngIf="loader">
+          <mat-spinner class="loader">
+            <div>
+              <p>Loading....</p>
+            </div>
+          </mat-spinner>
+        </div>
+        <div class="row">
+          <div class="col s12">
+            <mat-form-field class="cs-input" appearance="outline" style="width: 100%; padding: 10px 0px;">
+              <mat-label>Plan Type</mat-label>
+              <mat-select  name="travel_type" #travel_type="ngModel" [(ngModel)]="item.travel_type" [ngClass]="{'has-error' : travel_type.invalid } " required>
+                <mat-option disabled="">Select Type</mat-option>
+                <mat-option value="Area Visit">Area Visit</mat-option>
+                <mat-option value="Channel Partner Visit">Channel Partner Visit</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+
+            <div class="alert alert-danger" *ngIf="!travel_type.valid && update_basic.submitted">
+             Plan Type is required...
+            </div>
+
+          </div>
+
+         
+        </div>
+        <div class="row" *ngIf="item.travel_type=='Area Visit'">
+          <div class="col s12">
+            <mat-form-field class="cs-input" appearance="outline" style="width: 100%; padding: 10px 0px;">
+              <mat-label>Select State</mat-label>
+              <mat-select  name="state_name" #state_name="ngModel"  [(ngModel)]="item.state_name" (ngModelChange)="getDistrictList()" [ngClass]="{'has-error':state_name?.invalid} " required>
+                <div class="search-block" >
+                  <input type="text" name="item.state" placeholder="Search.."  (keyup)="searchState(item.state)"  #item.state="ngModel" [(ngModel)]="item.state">
+                </div>
+                <mat-option disabled="">Select State</mat-option>
+                <mat-option  *ngFor="let row of stateList" value="{{row.state_name}}">{{row.state_name}}</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+
+            <div class="alert alert-danger" *ngIf="!state_name.valid && update_basic.submitted">
+           State is required...
+            </div>
+
+          </div>
+
+         
+        </div>
+        <div class="row" *ngIf="item.travel_type=='Area Visit' && item.state_name">
+          <div class="col s12">
+            <mat-form-field class="cs-input" appearance="outline" style="width: 100%; padding: 10px 0px;">
+              <mat-label>Select District</mat-label>
+              <mat-select  name="district" #district="ngModel" [(ngModel)]="item.district" (ngModelChange)="getCityList(item.district)" [ngClass]="{'has-error' : district.invalid }" multiple required>
+                <div class="search-block" >
+                  <input type="text" name="item.district" placeholder="Search.."  (keyup)="searchDistrict(item.district)"  #item.district="ngModel" [(ngModel)]="item.district">
+                </div>
+                <mat-option disabled="">Select District</mat-option>
+                <mat-option   *ngFor="let datas of districtList" value="{{datas.district_name}}">
+                
+                {{datas.district_name}}
+                </mat-option>
+
+              </mat-select>
+            </mat-form-field>
+
+            <div class="alert alert-danger" *ngIf="!district.valid && update_basic.submitted">
+           District is required...
+            </div>
+
+          </div>
+
+         
+        </div>
+        <div class="row" *ngIf="item.travel_type=='Area Visit' && item.district">
+          <div class="col s12">
+            <mat-form-field class="cs-input" appearance="outline" style="width: 100%; padding: 10px 0px;">
+              <mat-label>Select City</mat-label>
+              <mat-select  name="city" #city="ngModel" [(ngModel)]="item.city" [ngClass]="{'has-error' : city.invalid }" multiple required>
+                <div class="search-block" >
+                  <input type="text" name="item.city_name" placeholder="Search.."  (keyup)="searchCity(item.city_name)"  #item.city_name="ngModel" [(ngModel)]="item.city_name">
+                </div>
+                <mat-option disabled="">Select Type</mat-option>
+                <mat-option *ngFor="let row of cityList" value="{{row.city}}">{{row.city}}</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+
+            <div class="alert alert-danger" *ngIf="!city.valid && update_basic.submitted">
+           City is required...
+            </div>
+
+          </div>
+
+         
+        </div>
+        <div class="row" *ngIf="item.travel_type=='Channel Partner Visit'">
+          <div class="col s12">
+            <mat-form-field class="cs-input" appearance="outline" style="width: 100%; padding: 10px 0px;">
+              <mat-label>Select Channel Partner</mat-label>
+              <mat-select  name="channel_partner" #channel_partner="ngModel" [(ngModel)]="item.channel_partner" [ngClass]="{'has-error' : channel_partner.invalid }" multiple required>
+                <div class="search-block" >
+                  <input type="text" name="item.channel_partner_name" placeholder="Search.."  (keyup)="searchDistributorList(item.channel_partner_name)"  #item.channel_partner_name="ngModel" [(ngModel)]="item.channel_partner_name">
+                </div>
+                <mat-option disabled="">Select Channel Partner</mat-option>
+                <mat-option *ngFor="let row of channelPartnerArray" value="{{row.id}}">{{row.company_name}}</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+
+            <div class="alert alert-danger" *ngIf="!channel_partner.valid && update_basic.submitted">
+             Channel Partner is required...
+            </div>
+
+          </div>
+
+         
+        </div>
+      </div>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+      <button mat-raised-button color="accent" type="submit">Save</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,410 @@
+<form #f="ngForm" (ngSubmit)=" f.valid && submitDetail()">
+  <div class="main-container">
+    <div class="middle-container">
+      <div class="page-heading">
+        <img src="assets/img/leads_icon.svg" class="h-icon">
+        <div class="heading-text">
+          <!-- <h2>Lead</h2> -->
+          <p>Add New Lead</p>
+        </div>
+      </div>
+      <!-- <div class="tabs right-tab">
+        <ul>
+          <li><a routerLink="/sale-user-detail/{{detail.id}}" routerLinkActive="active">DETAIL</a></li>
+          <li><a routerLink="/my-network/{{detail.id}}" routerLinkActive="active">My Network</a></li>
+          <li><a>ORDERS</a></li>
+          <li><a routerLink="/user-lead-list/{{detail.id}}" routerLinkActive="active">LEADS</a></li>
+          <li><a>FOLLOWUP</a></li>
+        </ul>
+      </div> -->
+    </div>
+    
+    
+    <div class="container-outer">
+      <div class="container" >
+        <div class="row">
+          <div class="col s2 empty"> </div>
+          
+          <div class="col s8">
+            <div class="sprate-box">
+              <div class="cs-heading">
+                <h2>BASIC INFORMATION</h2>
+                
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="from-fields">
+                <div class="row">
+                  <!-- <div class="col s4">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select placeholder="Favorite food">
+                          <mat-option>Product 1</mat-option>
+                          <mat-option>Product 2</mat-option>
+                          <mat-option>Product 3</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div> -->
+                  
+                </div>
+                
+                <div class="row">
+                  <div class="col s12 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        
+                        <input matInput placeholder="Company Name" name="company_name" #company_name="ngModel" [(ngModel)]="data.company_name" [ngClass]="{'has-error' : company_name.invalid } " required>
+                        <!-- <div class="alert alert-danger" *ngIf="!company_name.valid && company_name.touched">
+                          Company Name is required...
+                        </div> -->
+                        <div class="alert alert-danger" *ngIf="!company_name.valid && f.submitted">
+                          Company Name is required...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        
+                        <input matInput placeholder="Name" name="name" #name="ngModel" [(ngModel)]="data.name" [ngClass]="{'has-error' : name.invalid } " required>
+                        <!-- <div class="alert alert-danger" *ngIf="!company_name.valid && company_name.touched">
+                          Company Name is required...
+                        </div> -->
+                        <div class="alert alert-danger" *ngIf="!name.valid && f.submitted">
+                          Name is required...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        
+                        <input matInput placeholder="Mobile No." name="mobile" minlength="10" maxlength="10" #mobile="ngModel" [(ngModel)]="data.mobile" [ngClass]="{'has-error' : mobile.invalid } " (keypress)="MobileNumber($event)" required>
+                        <!-- <div class="alert alert-danger" *ngIf="!company_name.valid && company_name.touched">
+                          Company Name is required...
+                        </div> -->
+                        <div class="alert alert-danger" *ngIf="!mobile.valid && f.submitted">
+                          Mobile no. must be 10 digits...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                    
+                  </div>
+                </div>
+                
+                <div class="row mb20">
+                  <div class="col s4 pl0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Email" type="email" name="email" #email="ngModel" [(ngModel)]="data.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [ngClass]="{'has-error' : company_name.invalid } " required>
+                        <div class="alert alert-danger" *ngIf="!email.valid &&  f.submitted">
+                          E-mail is Invalid...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s4">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Landline" type="tel" name="landline_no" #landline_no="ngModel" [(ngModel)]="data.landline_no"  minlength="6" maxlength="10" min="0" (keypress)="MobileNumber($event)" [ngClass]="{'has-error' : landline_no.invalid } ">
+                        <div class="alert alert-danger" *ngIf="!landline_no.valid && landline_no.touched">
+                          Contact no is required...
+                        </div>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="col s4 pr0">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="GST No."  maxlength="20" type="text" name="gst" #gst="ngModel" [(ngModel)]="data.gst">
+                      </mat-form-field>
+                    </div> 
+                  </div>
+                  
+                  <div class="col s4">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <input matInput placeholder="Whatsapp No." minlength="10" maxlength="10" type="tel" name="whatsapp_no" #whatsapp_no="ngModel" [(ngModel)]="data.whatsapp_no" (keypress)="MobileNumber($event)">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="col s4">
+                    <div class="control-field">
+                      <mat-form-field class="cs-input">
+                        <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="data.type" [ngClass]="{'has-error' : type.invalid } " required>
+                          <mat-option disabled="">Select Lead Type</mat-option>
+                          <mat-option value="3">Retail Partner</mat-option>
+                          <mat-option value="1">Channel Partner</mat-option>
+                          
+                        </mat-select>
+                        <div class="alert alert-danger" *ngIf="!type.valid && f.submitted">
+                          Type is required...
+                        </div>
+                      </mat-form-field>
+                    </div> 
+                  </div>
+                </div>
+              </div>
+              
+              <!-- <mat-divider class="left-right-15 mt10 mb10"></mat-divider>
+                <div class="cs-heading">
+                  <h2>CONTACT PERSON INFORMATION</h2>
+                </div>
+                <mat-divider class="left-right-15 mt10"></mat-divider>
+                <form #p="ngForm" (ngSubmit)="p.valid && addContactPerson()">
+                  <div class="from-fields">
+                    <div class="row">
+                      <div class="col s4 pl0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <input matInput placeholder="Name" name="person_name" #person_name="ngModel" [(ngModel)]="contact_person.person_name" [ngClass]="{'has-error' : person_name.invalid } " required>
+                            <div class="alert alert-danger" *ngIf="!person_name.valid ">
+                            </div>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                      
+                      <div class="col s4">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <input matInput placeholder="Mobile No. 1" name="mobile_no1" #mobile_no1="ngModel" [(ngModel)]="contact_person.mobile_no1" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" [ngClass]="{'has-error' : mobile_no1.invalid } " required>
+                          </mat-form-field>
+                          <div class="alert alert-danger" *ngIf="!mobile_no1.valid">
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col s4 pr0">
+                        <div class="control-field pr80">
+                          <mat-form-field class="cs-input">
+                            <input matInput placeholder="Mobile No. 2"  name="mobile_no2" #mobile_no2="ngModel" [(ngModel)]="contact_person.mobile_no2" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" [ngClass]="{'has-error' : mobile_no2.invalid } " required>
+                          </mat-form-field>
+                          <div class="alert alert-danger" *ngIf="!mobile_no2.valid ">
+                          </div>
+                          <div class="plus-btn">
+                            <button mat-raised-button color="accent">
+                              <i class="material-icons">add</i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form> -->
+                
+                
+                
+                <mat-divider class="left-right-15 mt10 mb10"></mat-divider>
+                <div class="cs-heading">
+                  <h2>ADDRESS INFORMATION</h2>
+                </div>
+                <mat-divider class="left-right-15 mt10"></mat-divider>
+                
+                <div class="from-fields">
+                  <div class="row">
+                    <div class="col s4">
+                      <div class="control-field">
+                        <mat-form-field class="cs-input">
+                          <mat-select name="country" placeholder="Country" #country="ngModel"  [(ngModel)]="data.country" [ngClass]="{'has-error' : country.invalid } " required>
+                            <mat-option disabled="">Select Country</mat-option>
+                            <mat-option *ngFor="let country of countryList" (keyup.enter)="data.country=='INDIA' ?getStateList():show_country_error()"(click)="data.country=='INDIA'?getStateList():show_country_error()" value="{{country}}">{{country}}</mat-option>
+                            
+                          </mat-select>
+                          <div class="alert alert-danger" *ngIf="!country.valid && f.submitted">
+                            Country is required...
+                          </div>
+                        </mat-form-field>
+                      </div>                  
+                    </div>
+                    
+                    <ng-container *ngIf="data.country == 'INDIA'">
+                      
+                      <div class="col s4">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <mat-select name="state" placeholder="State" #state="ngModel"  [(ngModel)]="data.state" [ngClass]="{'has-error' : state.invalid } " required>
+                              <mat-option disabled="">Select State</mat-option>
+                              <mat-option *ngFor="let state of state_list"(keyup.enter)="getDistrict()"(click)="getDistrict()" value="{{state}}">{{state}}</mat-option>
+                              
+                            </mat-select>
+                            <div class="alert alert-danger" *ngIf="!state.valid && f.submitted">
+                              State is required...
+                            </div>
+                          </mat-form-field>
+                        </div>              
+                      </div>
+                      
+                      <div class="col s4">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <mat-select name="district" placeholder="District" #distric="ngModel"  [(ngModel)]="data.district"[ngClass]="{'has-error' : distric.invalid } " required>
+                              <mat-option disabled="">Select District</mat-option>
+                              <mat-option *ngFor="let district of district_list"(keyup.enter)="getCityList()"(click)="getCityList()" value="{{district}}">{{district}}</mat-option>
+                              
+                            </mat-select>
+                            <div class="alert alert-danger" *ngIf="!distric.valid && f.submitted">
+                              District is required...
+                            </div>
+                          </mat-form-field>
+                        </div>                  
+                      </div>
+                      
+                      <div class="col s4">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <mat-select name="city" placeholder="City" #city="ngModel" [(ngModel)]="data.city" [ngClass]="{'has-error' : city.invalid } " required>
+                              <mat-option disabled="">Select City</mat-option>
+                              <mat-option *ngFor="let city of city_list"(keyup.enter)="getPinCodeList()"(click)="getPinCodeList()" value="{{city}}" >{{city}}</mat-option>
+                              
+                            </mat-select>
+                            <div class="alert alert-danger" *ngIf="!city.valid && f.submitted">
+                              City is required...
+                            </div>
+                          </mat-form-field>
+                        </div>                  
+                      </div>
+                      
+                      <div class="col s4">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <mat-select name="pincode" placeholder="Pincode" #pincode="ngModel" [(ngModel)]="data.pincode" [ngClass]="{'has-error' : pincode.invalid } " required>
+                              <mat-option disabled="">Select pincode</mat-option>
+                              <mat-option *ngFor="let pincode of pinCode_list"value="{{pincode}}">{{pincode}}</mat-option>
+                              
+                            </mat-select>
+                            <div class="alert alert-danger" *ngIf="!pincode.valid &&  f.submitted">
+                              Pincode is required...
+                            </div>
+                          </mat-form-field>
+                        </div>                  
+                      </div>
+                      
+                      
+                      <div class="col s8 pr0">
+                        <div class="control-field">
+                          <mat-form-field class="cs-input">
+                            <textarea matInput placeholder="Street" name="address" #address="ngModel" [(ngModel)]="data.address"></textarea>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </ng-container>
+                    
+                    <ng-container *ngIf="data.country != 'INDIA'">
+
+                        <div class="col s4">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input">
+                                <textarea matInput placeholder="State" name="state" #state="ngModel" [(ngModel)]="data.state"></textarea>
+                              </mat-form-field>
+                            </div>
+                          </div>
+
+                        <div class="col s4">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input">
+                                <textarea matInput placeholder="District" name="district" #district="ngModel" [(ngModel)]="data.district"></textarea>
+                              </mat-form-field>
+                            </div>
+                          </div>
+
+                        <div class="col s4">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input">
+                                <textarea matInput placeholder="city" name="city" #city="ngModel" [(ngModel)]="data.city"></textarea>
+                              </mat-form-field>
+                            </div>
+                          </div>
+
+                          <div class="col s4">
+                              <div class="control-field">
+                                <mat-form-field class="cs-input">
+                                  <textarea matInput placeholder="Pincode" name="pincode" #pincode="ngModel" [(ngModel)]="data.pincode"></textarea>
+                                </mat-form-field>
+                              </div>
+                            </div>
+
+                        <div class="col s8 pr0">
+                            <div class="control-field">
+                              <mat-form-field class="cs-input">
+                                <textarea matInput placeholder="Street" name="address" #address="ngModel" [(ngModel)]="data.address"></textarea>
+                              </mat-form-field>
+                            </div>
+                        </div>
+
+
+                    </ng-container>
+                  </div>
+                </div>
+                
+                
+                
+                <mat-divider class="left-right-15 mt15 mb15"></mat-divider>
+                <!-- <form  #person="ngForm" (ngSubmit)=" person.valid && addContactPerson()"> -->
+                  <div class="col s7 pl0">
+                    <div class="territory-info">
+                      <div class="head" [ngClass]="{'active':active.user==true}">
+                        <h2>Market / Office User</h2>
+                        <i class="material-icons search-icon right20" (click)="toggleterritory('user','open')"  matRipple>search</i>
+                        <input type="text" placeholder="search..." name="sales_executive" class="fix-search" (input)="getItemsList(search.sales_executive)" #sales_executive="ngModel" [(ngModel)]="search.sales_executive">
+                        
+                        
+                        <i class="material-icons close-icon" (click)="toggleterritory('user','close')" matRipple>clear</i>
+                      </div>
+                      
+                      <!-- <div class="cs-logs">
+                        
+                        <div class="logs-outer">
+                          <div class="logs-list">
+                            <div class="lead-type">
+                              <mat-radio-group class="select-type" aria-label="Select an option" name="sales_executive" [(ngModel)]="data.sales_executive" #sales_executive="ngModel">
+                                <mat-radio-button *ngFor="let list of asmList;let index=index" value="{{list.id}}"    >{{list.name}}</mat-radio-button>
+                              </mat-radio-group>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        
+                      </div> -->
+                      <div class="cs-logs">
+                        <div class="cs-checkbox">
+                          <div class="checkbox-outer">
+                            <section class="checkbox-inner"   >
+                              <ng-container *ngFor="let list of asmList;let index=index" aria-required="true">
+                                <mat-checkbox class="check-list" [checked]="list.check" (change)="user_assign_check(list.id,index,$event)" value="{{list.id}}">{{list.name}} | {{list.role_name}}</mat-checkbox>
+                              </ng-container>
+                            </section>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="col s2 empty"> </div>
+            </div>
+            
+            <div class="row">
+              <div class="col s2 empty"> </div>
+              <div class="col s8">
+                <div class="cs-btn fixedd mt32 text-right">
+                  <div class="in-btn">
+                    <button mat-raised-button color="accent" [disabled]="data.country && data.country!='INDIA'">Save</button>
+                  </div>
+                </div>
+                <!-- <div class="alert alert-danger" *ngIf="!company_name.valid || !email.valid || !district.valid || !state.valid || !city.valid || !pincode .valid && f.submitted">
+                  Form Incomplete...
+                </div> -->
+              </div>
+              <div class="col s2 empty"> </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </form>
+    <div class="h50"></div>
+    
+    

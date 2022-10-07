@@ -1,0 +1,746 @@
+<div class="main-container">
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div>
+        <p>Loading....</p>
+      </div>
+    </mat-spinner>
+  </div>
+  <div class="middle-container">
+
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <!-- <a *ngIf="lead_type_id=='1'" mat-button routerLink="/lead-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
+          <a *ngIf="lead_type_id=='1'" mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+          <!-- <a *ngIf="lead_type_id=='3'" mat-button routerLink="/dealer-lead-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
+          <a *ngIf="lead_type_id=='3'" mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+          <!-- <a *ngIf="lead_type_id=='10'" mat-button routerLink="/social-media-lead-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
+          <a *ngIf="lead_type_id=='10'" mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{lead_detail.company_name}}</h2>
+        <p class="light">{{lead_detail.dr_type}}</p>
+      </div>
+    </div>
+
+    <div class="left-auto">
+      <div class="cs-btn text-right">
+        <div class="in-btn">
+          <button mat-raised-button color="accent" (click)="addStock(lead_detail.id)">Convert Lead</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs right-tab ml15">
+      <ul class="dflex1">
+        <li><a [ngClass]="{'active': view_tab=='profile'}" (click)="related_tabs('profile')">Profile</a></li>
+        <li><a [ngClass]="{'active': view_tab=='Activity'}"
+            (click)="related_tabs('Activity'); get_activity_data();">Activity</a></li>
+      </ul>
+    </div>
+
+
+    <!-- <div class="tabs right-tab">
+      <ul>
+        <li><a>FOLLOWUP</a></li>
+        <li><a>ORDERS</a></li>
+      </ul>
+    </div> -->
+
+    <!-- <div class="multi-btn">
+      <ul>
+        <li>
+          <a class="red-btn" matRipple>CREATE FOLLOWUP</a>
+        </li>
+        <li>
+          <a class="green-btn" matRipple>CONVERT TO CUSTOMER</a>
+        </li>
+      </ul>
+    </div> -->
+  </div>
+
+  <div class="container-outer">
+    <div class="container">
+
+      <div *ngIf="view_tab=='profile'">
+        <!-- Div By Abhishek -->
+
+        <div class="row">
+          <div class="col s12">
+            <div class="details-info">
+              <!-- <div class="img-box">
+                <img src="../assets/img/user.png">
+              </div> -->
+              <div class="basic-details">
+                <div class="profile-info">
+                  <ul>
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/company.svg" class="fix-img">
+                        <span>Company Name</span>
+                        <p>{{lead_detail.company_name}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.company_name,'companyname')"><i
+                            class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/people.svg" class="fix-img">
+                        <span>Name</span>
+                        <p>{{lead_detail.name}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.name,'dr_name')"><i class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/gmail.svg" class="fix-img">
+                        <span>Email</span>
+                        <p class="link-clr">{{lead_detail.email}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.email,'email')"><i class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/mobile.svg" class="fix-img">
+                        <span>Mobile</span>
+                        <p>{{lead_detail.mobile}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.mobile,'mobile')"><i class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/phone.svg" class="fix-img">
+                        <span>Landline</span>
+                        <p>{{lead_detail.landline_no}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.landline_no,'landline_no')"><i
+                            class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/whatsapp.svg" class="fix-img">
+                        <span>Whatsapp No.</span>
+                        <p>{{lead_detail.whatsapp_no}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.whatsapp_no,'whatsapp_no')"><i
+                            class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/gst.svg" class="fix-img">
+                        <span>GST</span>
+                        <p>{{lead_detail.gst}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.gst,'gst')"><i class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <ul *ngIf="lead_type_id!='10'">
+                    <li>
+                      <div class="cs-box">
+                        <!-- <img src="assets/img/gst.svg" class="fix-img"> -->
+                        <span>Comment</span>
+                        <p>{{lead_detail.comment}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editLeadcomment(lead_detail.comment,'comment')"><i
+                            class="material-icons">edit</i></a>
+                      </div>
+                    </li>
+                  </ul>
+
+                  <!-- <ul *ngIf ="lead_type_id!='10'">
+                    <li>
+                      <div class="cs-box">
+                        <img src="assets/img/phone.svg" class="fix-img">
+                        <span>Landline</span>
+                        <p>{{lead_detail.landline_no}}</p>
+                        <a class="edit-icon" color="accent" matRipple matTooltip="EDIT"
+                          (click)="editDilog(lead_detail.landline_no,'landline_no')"><i
+                            class="material-icons">create</i></a>
+                      </div>
+                    </li>
+                  </ul> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+
+
+          <div class="col s8">
+            <div class="sprate-box padding0">
+              <div class="full-address">
+                <div class="top-heading">
+                  <h2>ADDRESS</h2>
+                </div>
+                <a mat-button class="address-edit" matTooltip="EDIT" color="accent"
+                  (click)="editAddress(lead_detail.country,lead_detail.state,lead_detail.district,lead_detail.city,lead_detail.pincode,lead_detail.address,'address')"><i
+                    class="material-icons">edit</i></a>
+                <!-- <div class="nationality">
+                  <img src="../assets/img/india.svg" alt="">
+                  <p>India</p>
+                </div> -->
+
+                <div class="ds-from-fields">
+
+                  <div class="cs-row">
+                    <div class="static-info">
+                      <p>Country</p>
+                      <p>{{lead_detail.country}}</p>
+                    </div>
+                    <div class="static-info">
+                      <p>State</p>
+                      <p>{{lead_detail.state}}</p>
+                    </div>
+                    <div class="static-info">
+                      <p>District</p>
+                      <p>{{lead_detail.district}}</p>
+                    </div>
+                    <div class="static-info">
+                      <p>City</p>
+                      <p>{{lead_detail.city}}</p>
+                    </div>
+                    <div class="static-info">
+                      <p>Pin Code</p>
+                      <p>{{lead_detail.pincode}}</p>
+                    </div>
+                  </div>
+                  <div class="cs-row">
+                    <div class="static-info">
+                      <p>address</p>
+                      <p>{{lead_detail.address}}</p>
+                    </div>
+                  </div>
+
+
+                  <!--                <div class="cs-row">-->
+                  <!--                  <div class="static-info" >-->
+                  <!--                    <p>Channel partner</p>-->
+                  <!--                    <p>{{lead_detail.dealer_channel_partner.company_name}}</p>-->
+                  <!--                  </div>-->
+                  <!--                </div>-->
+
+
+                  <div class="sprate-box" *ngIf="lead_type_id!='10'">
+                    <div class="territory-info">
+                      <div class="head " [ngClass]="{'active':active.dealer}">
+                        <h2>Channel Partner</h2>
+                        <!-- <a class="edit-item" (click)="active.dealer = true;"><i class="material-icons">create</i></a> -->
+                      </div>
+                      <div class="cs-checkbox">
+                        <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                          <section class="checkbox-inner bodr0">
+                            <mat-checkbox class="check-list bg-none check-none" value="1"
+                              *ngFor="let row of lead_detail.dealer_channel_partner">
+                              <div class="name-outer">
+                                <div class="outer">
+                                  <div class="inner">
+                                    <div class="name-inner">
+                                      {{row.company_name.charAt(0).toUpperCase()}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="text-box">
+                                <h2>{{row.company_name}}</h2>
+                              </div>
+                            </mat-checkbox>
+                          </section>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+          </div>
+
+
+          <div class="col s4" *ngIf="lead_type_id=='10'">
+            <div class="sprate-box padding0">
+              <div class="full-address">
+                <div class="top-heading">
+                  <h2>Lead Status</h2>
+                </div>
+                <a *ngIf="lead_detail.lead_status != 'Dead'" mat-button class="address-edit" matTooltip="EDIT"
+                  color="accent"
+                  (click)="editLeadStatus(lead_detail.lead_status,lead_detail.dead_reason,'lead_status')"><i
+                    class="material-icons">edit</i></a>
+                <div class="ds-from-fields">
+
+                  <div class="cs-row">
+                    <div class="static-info">
+                      <p>Lead Status</p>
+                      <p>{{lead_detail.lead_status}}</p>
+                    </div>
+                    <div class="static-info" *ngIf="lead_detail.lead_status=='Dead'">
+                      <p>Dead Reason</p>
+                      <p>{{lead_detail.dead_reason}}</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="col s4" *ngIf="login_data.user_type != 'Inside Sales Team' && lead_type_id!='10'">
+            <div class="sprate-box">
+              <div class="territory-info" *ngIf="sales_executive_update!='true'">
+                <div class="head " [ngClass]="{'active':active.user==true}">
+                  <h2>Market / Office User</h2>
+                  <a class="edit-item" (click)="update_assigned_sales_executive('true')"><i
+                      class="material-icons">create</i></a>
+                </div>
+                <!-- <div class="cs-checkbox"  *ngIf="lead_detail.sales_executive_name">
+                <div class="checkbox-outer">
+                  <section class="checkbox-inner bodr0">
+                    <mat-checkbox class="check-list bg-none check-none" value="1">
+                      <div class="name-outer">
+                        <div class="outer">
+                          <div class="inner">
+                            <div class="name-inner">
+                              {{lead_detail.sales_executive_name.charAt(0).toUpperCase()}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div  class="text-box">
+                          <h2>{{lead_detail.sales_executive_name}}</h2>
+                          <p>{{lead_detail.role_name}}</p>
+                      </div>
+                    </mat-checkbox>
+                  </section>
+                </div>
+              </div> -->
+
+                <div class="cs-checkbox">
+                  <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                    <section class="checkbox-inner bodr0">
+                      <mat-checkbox class="check-list bg-none check-none" value="1"
+                        *ngFor="let row of lead_detail.assign_user">
+                        <div class="name-outer">
+                          <div class="outer">
+                            <div class="inner">
+                              <div class="name-inner">
+                                {{row.sales_executive_name.charAt(0).toUpperCase()}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="text-box">
+                          <h2>{{row.sales_executive_name}}</h2>
+                          <p>{{row.role_name}}</p>
+                        </div>
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+              <div class="territory-info" *ngIf="sales_executive_update=='true'">
+                <div class="head" [ngClass]="{'active':active.user==true}">
+                  <h2>Market / Office User</h2>
+                  <i class="material-icons search-icon right20" (click)="toggleterritory('user','open')"
+                    matRipple>search</i>
+                  <input type="text" placeholder="search..." class="fix-search" (input)="getItemsList(search.search)"
+                    #search="ngModel" [(ngModel)]="search.search">
+                  <i class="material-icons close-icon" (click)="toggleterritory('user','close')" matRipple>clear</i>
+                </div>
+                <!-- <div class="cs-logs">
+                <div class="logs-outer">
+                  <div class="logs-list">
+                    <div class="lead-type">
+                      <mat-radio-group class="select-type" aria-label="Select an option"  name="sales_executive" [(ngModel)]="lead_detail.sales_executive" #sales_executive="ngModel" >
+                        <mat-radio-button *ngFor="let list of asmList;let index=index" value="{{list.id}}"    >{{list.name}}
+                            <p>{{list.role_name}}</p>
+
+                        </mat-radio-button>
+                      </mat-radio-group>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+                <div class="cs-logs">
+                  <div class="cs-checkbox">
+                    <div class="checkbox-outer">
+                      <section class="checkbox-inner">
+                        <ng-container *ngFor="let list of asmList;let index=index" aria-required="true">
+                          <mat-checkbox class="check-list" [checked]="list.check"
+                            (change)="product_Brand(list.id,index,$event)" value="{{list.name}}">{{list.name}} |
+                            {{list.role_name}}</mat-checkbox>
+                        </ng-container>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="cs-btn text-right mb15 mr10">
+                  <div class="in-btn">
+                    <button mat-raised-button color="accent"
+                      (click)="update_assigned_executive(lead_detail.sales_executive)">Update</button>
+                  </div>
+                </div>
+
+              </div>
+
+
+
+            </div>
+          </div>
+
+          <!-- Assign Inside Sales Team Start Here -->
+
+          <div class="col s4" style="margin-top: 20px;"
+            *ngIf="login_data.user_type != 'Inside Sales Team' && lead_type_id!='10'">
+
+            <div class="sprate-box mb15">
+              <div class="territory-info" *ngIf="inside_executive_update!='true'">
+                <div class="head ">
+                  <h2>Inside Sales Team</h2>
+                  <a class="edit-item" (click)="update_inside_sales_executive('true')"><i
+                      class="material-icons">create</i></a>
+                </div>
+                <div class="cs-checkbox" *ngIf="lead_detail.assign_inside_user.length!=0">
+                  <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                    <section class="checkbox-inner bodr0">
+                      <mat-checkbox class="check-list bg-none check-none" value="1"
+                        *ngFor="let row of lead_detail.assign_inside_user">
+                        <div class="name-outer">
+                          <div class="outer">
+                            <div class="inner">
+                              <div class="name-inner">
+                                {{row.sales_executive_name.charAt(0).toUpperCase()}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="text-box">
+                          <h2>{{row.sales_executive_name}}</h2>
+                          <p>{{row.role_name}}</p>
+                        </div>
+                      </mat-checkbox>
+                    </section>
+                  </div>
+                </div>
+              </div>
+
+              <div class="territory-info" *ngIf="inside_executive_update=='true'">
+
+                <div class="head" [ngClass]="{'active':inside_search_box.inside_user==true}">
+                  <h2>Inside Sales Team</h2>
+                  <i class="material-icons search-icon right20" (click)="toggleterritory2('inside_user','open')"
+                    matRipple>search</i>
+                  <input type="text" placeholder="search..." class="fix-search" (input)="getItemsList2(search.search)"
+                    #search="ngModel" [(ngModel)]="search.search">
+                  <i class="material-icons close-icon" (click)="toggleterritory2('inside_user','close')"
+                    matRipple>clear</i>
+                </div>
+                <div class="cs-logs">
+                  <div class="cs-checkbox">
+                    <div class="checkbox-outer">
+                      <section class="checkbox-inner">
+                        <ng-container *ngFor="let list of inside_sales_list;let j=index" aria-required="true">
+                          <mat-checkbox (scroll)="scrollHandler($event)" class="check-list" [checked]="list.check"
+                            (change)="product_Brand12(list.id,j,$event)" value="{{list.name}}">{{list.name}} |
+                            {{list.role_name}}</mat-checkbox>
+                        </ng-container>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+                <div class="cs-btn text-right mb10 mr10">
+                  <div class="in-btn sm-btn">
+                    <button mat-raised-button color="accent"
+                      (click)="update_assigned_executive2(lead_detail.sales_executive)">Update</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Assign Inside Sales Team End Here -->
+
+
+
+        </div>
+
+
+        <div class="row" *ngIf="login_data.user_type != 'Inside Sales Team' && lead_type_id!='10'">
+
+          <div class="col s8">
+
+            <div class="sprate-box padding0 mt15">
+              <a class="edit-item" color="accent" *ngIf="login_data.access_level == '1' && login_data.type==''"
+                (click)="add_branding_detail()"><i class="material-icons">edit</i></a>
+              <div class="full-address">
+
+                <div class="top-heading" style="display: flex;">
+                  <a *ngIf="branding_list.length" class="bottom-btn ecxel-btn"
+                    style="border: 2px solid green !important;" matTooltip="Download Excel" matTooltipPosition="above"
+                    mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+                  <h2 class="mr10 ml20 pt12">Branding Detail</h2>
+                  <div style="margin-left: 200px;display: flex;align-items: center;">
+                    <!-- <strong style="padding-left: 15px;color: red;font-size: 25px;">Scroll Right to Left </strong> -->
+                    <i class="material-icons">keyboard_arrow_left</i>
+                    <span>&nbsp;</span>
+                    <i class="material-icons">keyboard_arrow_right</i>
+                  </div>
+                </div>
+                <!-- <mat-divider class="left-right-15 mt10 mb10 "></mat-divider> -->
+                <div class="from-fields h400">
+                  <div class="cs-table cs-table-scroll">
+                    <div class="stickyTableHead" style="width: fit-content;">
+                      <div class="table-head border-top">
+                        <table>
+                          <tr>
+                            <th class="w50 text-center">S No</th>
+                            <th class="w100">Date Created</th>
+                            <th class="w150">Created By</th>
+                            <th class="w100">Branding Date</th>
+                            <th class="w150 text-center">Branding Created by</th>
+                            <th class="w150 text-center">Branding Category</th>
+                            <th class="w150 text-center">Branding Item</th>
+                            <th class="w120 text-center">Branding Amount</th>
+                            <th class="w100 text-center">Branding image</th>
+                            <th class="w80 text-center">Delete</th>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                    <div class="table-container" style="width: fit-content;">
+                      <div class="table-content">
+                        <table>
+                          <ng-container *ngFor="let branding_data of branding_list,let i = index">
+                            <tr>
+                              <td class="w50 text-center">{{i+1}}</td>
+                              <td class="w100">{{branding_data.date_created | date : 'd MMM, y'}}</td>
+                              <td class="w150">{{branding_data.created_by_name}}</td>
+                              <td class="w100">{{branding_data.branding_date | date : 'd MMM, y'}}</td>
+                              <td class="w150 text-center">{{branding_data.branding_created_by}}</td>
+                              <td class="w150 text-center">{{branding_data.branding_category}}</td>
+                              <td class="w150 text-center">{{branding_data.branding_item}}</td>
+                              <td class="w120 text-center"> &#8377; {{branding_data.branding_amount}}</td>
+                              <td class="w100 text-center" *ngIf="branding_data.branding_doc_exist == 'true'">
+                                <a class="img-avtar">
+                                  <img *ngIf="branding_data.file_extension == 'pdf'" src="./assets/img/pdf_icon.jpeg"
+                                    (click)="imageModel(branding_data.file_path)">
+                                  <img
+                                    *ngIf="branding_data.file_extension == 'jpg' || branding_data.file_extension == 'jpeg' || branding_data.file_extension == 'png'"
+                                    src="{{branding_data.file_path}}" (click)="imageModel(branding_data.file_path)">
+                                  <img
+                                    *ngIf="branding_data.file_extension != 'pdf' && branding_data.file_extension != 'jpg' && branding_data.file_extension != 'jpeg' && branding_data.file_extension != 'png'"
+                                    src="./assets/img/data-found-pic.jpg" (click)="imageModel(branding_data.file_path)">
+                                </a>
+                              </td>
+                              <td class="w100 text-center" *ngIf="branding_data.branding_doc_exist == 'false'">
+                                <a class="img-avtar">
+                                  <img src="./assets/img/no-data-pic.jpg"
+                                    (click)="imageModel('./assets/img/no-data-pic.jpg')">
+                                </a>
+                              </td>
+                              <td class="w80 text-center">
+                                <button mat-button class="delete-mat"
+                                  (click)="delete_branding_data(branding_data.id)"><i
+                                    class="material-icons red-clr">delete_sweep</i></button>
+                              </td>
+                            </tr>
+                          </ng-container>
+                        </table>
+                      </div>
+                      <div class="data-not-available" *ngIf="!branding_list.length">
+                        <div class="outer">
+                          <div class="iinear">
+                            <div class="figure" matRipple>
+                              <div class="header">
+                                <img src="assets/img/data-not-available-header.svg" alt="">
+                              </div>
+
+                              <div class="description">
+                                <div class="cs-heading">
+                                  <h2>BRANDING</h2>
+                                </div>
+                                <div class="img">
+                                  <i class="material-icons">error_outline</i>
+                                </div>
+                                <div class="psc">
+                                  <p>Data Not Available</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="fix-btn">
+                  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="download_excel()"><img src="assets/img/excel.svg"></a>
+              </div> -->
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+      <!-- Inside Team Activtiy Start Here  -->
+
+      <div class="row" *ngIf="view_tab=='Activity'">
+
+        <div class="col s12">
+
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <th class="w50 text-center">S.NO.</th>
+                    <th class="w100">DATE CREATED</th>
+                    <th class="w150">CREATED BY</th>
+                    <th class="w100">ACTIVITY TYPE</th>
+                    <th class="w150 text-center">DISPOSITION TYPE</th>
+                    <th class="w150 text-center">DISPOSITION NAME</th>
+                    <th class="w150 text-center">REMARK</th>
+                  </tr>
+                </table>
+
+                <!-- <div class="table-head bdrt">
+                    <table >
+                        <tr>
+                            <th class="w50 text-center"></th>
+                            <th class="w100">
+                                <div class="th-search-acmt">
+                                    <mat-form-field class="example-full-width cs-input select-input">
+                                        <input matInput placeholder="Company Name" name="company_name" (keyup.enter)="getDealersData()" [(ngModel)]="dealers_filter.company_name">
+                                    </mat-form-field>
+                                </div>
+                            </th>
+                            <th  class="w150" >
+                                <div class="th-search-acmt">
+                                    <mat-form-field class="example-full-width cs-input select-input">
+                                        <input matInput placeholder="Contact Person" name="contact_person" (keyup.enter)="getDealersData()" [(ngModel)]="dealers_filter.contact_person" >
+                                    </mat-form-field>
+                                </div>
+                            </th>
+                            <th class="w100">
+                                <div class="th-search-acmt">
+                                    <mat-form-field class="example-full-width cs-input select-input">
+                                        <input matInput placeholder="Mobile Number/Landine Number" name="mobile" onkeypress="return event.charCode>=48 && event.charCode<=57"  (keyup.enter)="getDealersData()" [(ngModel)]="dealers_filter.mobile" >
+                                    </mat-form-field>
+                                </div>
+                            </th>
+                            <th class="w150 text-center"></th>
+                            <th class="w150 text-center"></th>
+                            <th class="w150 text-center"></th>
+                        </tr>
+                    </table>
+                </div> -->
+
+
+              </div>
+
+
+
+            </div>
+
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let get_dr_activity_list_data of get_dr_activity_list,let i = index">
+                    <td class="w50 text-center">{{i+1}}</td>
+                    <td class="w100">{{get_dr_activity_list_data.date_created | date:' d MMM , y, hh:mm aa '}}
+                    </td>
+                    <td class="w150">{{get_dr_activity_list_data.created_by_name}}</td>
+                    <td class="w100">{{get_dr_activity_list_data.activity_type}}</td>
+                    <td class="w150 text-center">{{get_dr_activity_list_data.disposition_type_value}}</td>
+                    <td class="w150 text-center">{{get_dr_activity_list_data.disposition_name}}</td>
+                    <td class="w150 text-center">{{get_dr_activity_list_data.remark}}</td>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="data-not-available mt50" *ngIf="!get_dr_activity_list.length">
+                <div class="outer">
+                  <div class="iinear">
+                    <div class="figure" matRipple>
+                      <div class="header">
+                        <img src="assets/img/data-not-available-header.svg" alt="">
+                      </div>
+
+                      <div class="description">
+                        <div class="cs-heading">
+                          <h2>Activity</h2>
+                        </div>
+                        <div class="img">
+                          <i class="material-icons">error_outline</i>
+                        </div>
+                        <div class="psc">
+                          <p>Data Not Available</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- <div class="fix-btn">
+                <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="download_excel()"><img src="assets/img/excel.svg"></a>
+            </div> -->
+
+          </div>
+
+        </div>
+
+
+      </div>
+
+      <!-- Inside Team Activtiy End Here  -->
+
+
+
+    </div>
+  </div>
+
+  <div class="fix-btn" *ngIf="login_data.user_type == 'Inside Sales Team'">
+    <a *ngIf="view_tab=='Activity'" class="bottom-btn" matTooltip="ADD NEW" matTooltipPosition="above" mat-raised-button
+      routerLink="/add-activity/{{lead_id}}/{{lead_type_id}}/lead_detail_page"><i class="material-icons">add</i></a>
+  </div>
+</div>
+
+<div class="h50"></div>

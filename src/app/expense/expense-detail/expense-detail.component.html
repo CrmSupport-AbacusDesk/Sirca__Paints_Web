@@ -1,0 +1,572 @@
+<div class="main-container">
+    
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div><p>Loading....</p></div>
+        </mat-spinner>
+    </div>
+    <div class="middle-container">
+        <div class="page-heading" >
+            <div class="heading-text bc-space">
+                <div class="back-btn" (click)="back()">
+                    <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+                </div>
+                <h2>Expense Detail</h2>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container-outer">
+        <div class="container" >
+            
+            <div class="row" >
+                <div class="col s12">
+                    <div class="details-info">
+                        <div class="basic-details">
+                            <div class="cs-heading">
+                                <h2>Basic Details</h2>
+                            </div>
+                            
+                            
+                            <div class="cs-figure">
+                                <ul>
+                                    
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Date Created</span>
+                                                <p>{{expense_detail.dateCreated | date : 'd MMM, y'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Created By</span>
+                                                <p>{{expense_detail.createdByName}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Designation</span>
+                                                <p>{{expense_detail.createdByType && expense_detail.createdByType!='' ?expense_detail.createdByType : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Ref Travel ID</span>
+                                                <p>{{expense_detail.reference_expense_id}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    
+                                    <li [ngClass]="expense_detail.seniorStatus == 'Pending' ? '': expense_detail.seniorStatus == 'Approved' ? 'green-bg' : expense_detail.seniorStatus == 'Reject'? 'red-bg':''">
+                                        <div class="outer">
+                                            
+                                            
+                                            <div class="inner">
+                                                <span [ngClass]="expense_detail.seniorStatus == 'Pending' ? '': expense_detail.seniorStatus == 'Approved' ? 'green-bg' : expense_detail.seniorStatus == 'Reject'? 'red-bg':''">Senior Status</span>
+                                                <p [ngClass]="expense_detail.seniorStatus == 'Pending' ? '': expense_detail.seniorStatus == 'Approved' ? 'green-bg' : expense_detail.seniorStatus == 'Reject'? 'red-bg':''">{{expense_detail.seniorStatus}}</p>
+                                                <a *ngIf="expense_detail.seniorStatus=='Pending'" class="edit-column" mat-button matTooltip="Edit senior status" (click)="change_expense_status('senior')"><i class="material-icons">create</i></a>
+
+                                            </div>
+
+
+                                        </div>
+                                    </li>
+                                    
+                                    <li  [ngClass]="expense_detail.acStatus == 'Pending' ? '': expense_detail.acStatus == 'Approved' ? 'green-bg' : expense_detail.acStatus == 'Reject'? 'red-bg':''">
+                                        <div class="outer">
+
+                                            <div class="inner">
+                                                <span [ngClass]="expense_detail.acStatus == 'Pending' ? '': expense_detail.acStatus == 'Approved' ? 'green-bg' : expense_detail.acStatus == 'Reject'? 'red-bg':''">Account Status</span>
+                                                <p [ngClass]="expense_detail.acStatus == 'Pending' ? '': expense_detail.acStatus == 'Approved' ? 'green-bg' : expense_detail.acStatus == 'Reject'? 'red-bg':''">{{expense_detail.acStatus}}</p>
+                                                <a *ngIf="expense_detail.acStatus=='Pending' && expense_detail.seniorStatus  == 'Approved'" class="edit-column" mat-button matTooltip="Edit senior status" (click)="change_expense_status('accounts')"><i class="material-icons">create</i></a>
+                                            </div>
+
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                                
+                                <ul>
+                                    
+                                    <li *ngIf="expense_detail.seniorStatus && expense_detail.seniorStatus  != 'Pending'">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Senior Status {{expense_detail.seniorStatus}} on</span>
+                                                <p>{{expense_detail.senior_status_update_date | date:'d MMM, y'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li *ngIf="expense_detail.seniorStatus && expense_detail.seniorStatus  != 'Pending'">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>{{expense_detail.seniorStatus}} By</span>
+                                                <p>{{expense_detail.senior_status_changed_name && expense_detail.senior_status_changed_name!='' ?expense_detail.senior_status_changed_name : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li *ngIf="expense_detail.seniorStatus && expense_detail.seniorStatus  != 'Pending'">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Senior Status Remark</span>
+                                                <p>{{expense_detail.seniorRemark && expense_detail.seniorRemark!='' ?expense_detail.seniorRemark : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    
+                                    
+                                    <li *ngIf="expense_detail.acStatus && expense_detail.acStatus != 'Pending'">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Account Status {{expense_detail.acStatus}} on</span>
+                                                <p>{{expense_detail.account_status_update_date | date:'d MMM, y'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li *ngIf="expense_detail.acStatus && expense_detail.acStatus != 'Pending'">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>{{expense_detail.acStatus}} By</span>
+                                                <p>{{expense_detail.account_status_changed_by_name && expense_detail.account_status_changed_by_name!='' ?expense_detail.account_status_changed_by_name : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li  *ngIf="expense_detail.acStatus && expense_detail.acStatus != 'Pending'">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Account Status Remark</span>
+                                                <p>{{expense_detail.acRemark && expense_detail.acRemark!='' ?expense_detail.acRemark : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                                
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <div class="cs-form mt10">
+                
+                <div class="row ">
+                    <div class="col s12">
+                        <div class="cs-collapse">
+                            <mat-accordion class="example-headers-align">
+                                
+                                <!-- Travelentitlement mat-expansion--->
+                                <mat-expansion-panel id='travel_expansion' *ngIf="expense_detail.travel && expense_detail.travel.length > 0 ? true : false" >
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Travel entitlement
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    
+                                    <div class="collapse-body pt0">
+                                        <div class="cs-form">
+                                            <div class="cs-table left-right-15">
+                                                <div class="table-head">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w300 text-center">Departure</th>
+                                                            <th class="w300 text-center">Arrival</th>
+                                                            <th>Class & Mode Of Travel</th>
+                                                            <th class="w100"></th>
+                                                            <th class="w100 text-right"></th>
+
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div class="table-head bdrt border-bottom">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w300 padding0">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th class="w85">Date</th>
+                                                                        <th class="w100">Station</th>
+                                                                        <th class="w70">Time</th>
+                                                                    </tr>
+                                                                </table>
+                                                            </th>
+                                                            <th class="w300 padding0">
+                                                                <table>
+                                                                    <tr>
+                                                                        <th class="w85">Date</th>
+                                                                        <th class="w100">Station</th>
+                                                                        <th class="w70">Time</th>
+                                                                    </tr>
+                                                                </table>
+                                                            </th>
+                                                            <th>Class & Mode Of Travel</th>
+                                                            <th class="w100">Ticket No</th>
+                                                            <th class="w100">K.M</th>
+                                                            <th class="w100 text-right">Amount</th>                                                                       
+                                                            
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr  *ngFor="let travel_data of expense_detail.travel ;let i = index">
+                                                                <td class="w300 padding0">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td class="w85">{{travel_data.depatureDate | date:'d MMM y'}}</td>
+                                                                            <td class="w100">{{travel_data.depatureStation}}</td>
+                                                                            <td class="w70">{{travel_data.depatureTime}}</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                                <td class="w300 padding0">
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td class="w85">{{travel_data.arrivalDate | date:'d MMM y'}}</td>
+                                                                            <td class="w100">{{travel_data.arrivalStation}}</td>
+                                                                            <td class="w70">{{travel_data.arrivalTime}}</td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                                <td>{{travel_data.travelClass}} & {{travel_data.modeOfTravel}}</td>
+                                                                <td class="w100">{{travel_data.ticket}}</td>
+                                                                <td class="w100">{{travel_data.distance +' KM'}}</td>
+                                                                <td class="w100 text-right">&#8377; {{travel_data.ticket_amount}}</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col s12 m4 offset-m8">
+                                                    <div class="summary">
+                                                        <table>
+                                                            <tr>
+                                                                <td>Total</td>
+                                                                <td class="text-center"><strong>:</strong></td>
+                                                                <td class="text-right">&#x20B9; {{expense_detail.travelEntitlementAmt}} /-</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                                <!-- Travelentitlement mat-expansion--->
+                                
+                                
+                                <!-- Hotel mat-expansion--->
+                                <mat-expansion-panel id='hotel_expansion' *ngIf="expense_detail.hotel && expense_detail.hotel.length > 0 ? true : false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Hotel
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div class="collapse-body pt0">
+                                        <div class="cs-form">
+                                            <div class="cs-table left-right-15">
+                                                <div class="table-head border-bottom">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w120">Check In Date</th>
+                                                            <th class="w120">Check Out Date</th>
+                                                            <th class="w150">City</th>
+                                                            <th class="w160 text-center">Hotel Name</th>
+                                                            <th class="w80 text-right">Amount</th>
+                                                            <th>Remark</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr *ngFor="let hotel_data of expense_detail.hotel ; let i = index;">
+                                                                <td class="w120">{{hotel_data.checkInDate | date:'d MMM y'}}</td>
+                                                                <td class="w120">{{hotel_data.checkOutDate | date:'d MMM y'}}</td>
+                                                                <td class="w150">{{hotel_data.city}}</td>
+                                                                <td class="w160 text-center">{{hotel_data.hotelName}}</td>
+                                                                <td class="w80 text-right">&#x20B9; {{hotel_data.amount}}</td>
+                                                                <td>{{hotel_data.remark != '' ? hotel_data.remark : '--' }}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col s12 m4 offset-m8">
+                                                    <div class="summary">
+                                                        <table>
+                                                            <tr>
+                                                                <td>Total</td>
+                                                                <td class="text-center"><strong>:</strong></td>
+                                                                <td class="text-right">&#x20B9; {{expense_detail.hotel_expense_total_amount}} /-</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                                <!-- Hotel mat-expansion--->
+                                
+                                <!-- Food mat-expansion--->
+                                <mat-expansion-panel id='food_expansion' *ngIf="expense_detail.food && expense_detail.food.length > 0 ? true : false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            food
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    
+                                    <div class="collapse-body pt0">
+                                        <div class="cs-form">
+                                            <div class="cs-table left-right-15">
+                                                <div class="table-head border-bottom">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w100">Date</th>
+                                                            <th class="w130">City</th>
+                                                            <th class="w80 text-right">Amount</th>
+                                                            <th>Remark</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr *ngFor="let food_data of expense_detail.food;let i = index;">
+                                                                <td class="w100">{{food_data.date | date:'d MMM y'}}</td>
+                                                                <td class="w130">{{food_data.city}}</td>
+                                                                <td class="w80 text-right">&#x20B9; {{food_data.amount}}</td>
+                                                                <td>{{food_data.remark != '' ? food_data.remark : '--' }}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col s12 m4 offset-m8">
+                                                    <div class="summary">
+                                                        <table>
+                                                            <tr>
+                                                                <td>Total</td>
+                                                                <td class="text-center"><strong>:</strong></td>
+                                                                <td class="text-right">&#x20B9; {{expense_detail.food_expense_total_amount}} /-</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                                <!-- Food mat-expansion--->
+                                
+                                <!-- Local Conveyance mat-expansion--->
+                                <mat-expansion-panel id='local_expansion' *ngIf="expense_detail.localConv && expense_detail.localConv.length > 0 ? true : false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            local conveyance
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <div class="collapse-body pt0">
+                                        <div class="cs-form">
+                                            <div class="cs-table left-right-15">
+                                                <div class="table-head border-bottom">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w150">Date</th>
+                                                            <th class="w100">Type</th>
+                                                            <th class="w150">Mode Of Travel</th>
+                                                            <th class="w100 text-right">Distance</th>
+                                                            <th class="w100 text-right">Food Amount</th>
+                                                            <th class="w100 text-right">Amount</th>
+                                                            <th>Remark</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr *ngFor="let data of expense_detail.localConv;let i = index">
+                                                                <td class="w150">
+                                                                    {{data.date | date:'d MMM y'}}
+                                                                </td>
+                                                                <td class="w100">
+                                                                    {{data.modeOfTravel}}
+                                                                </td>
+                                                                <td class="w150">
+                                                                    {{data.travelClass}}
+                                                                </td>
+                                                                <td class="w100">
+                                                                    {{data.distance + ' Km'}}
+                                                                </td>
+                                                                <td class="w100 text-right">&#x20B9; {{data.food_amount}}
+                                                                    
+                                                                </td>
+                                                                <td class="w100 text-right">&#x20B9; {{data.amount}}
+                                                                    
+                                                                </td>
+                                                                <td>{{data.remark != '' ? data.remark : '--' }}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col s12 m4 offset-m8">
+                                                    <div class="summary">
+                                                        <table>
+                                                            <tr>
+                                                                <td>Total</td>
+                                                                <td class="text-center"><strong>:</strong></td>
+                                                                <td class="text-right">&#x20B9; {{expense_detail.local_conveyance_expense_total_amount}} /-</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                                <!-- Local Conveyance mat-expansion--->
+                                
+                                <!-- Misc Expense mat-expansion--->
+                                <mat-expansion-panel id='misc_expansion' *ngIf="expense_detail.miscExp && expense_detail.miscExp.length > 0 ? true : false">
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            misc expense information
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    
+                                    <div class="collapse-body pt0">
+                                        <div class="cs-form">
+                                            <div class="cs-table left-right-15">
+                                                <div class="table-head border-bottom">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w100">Date</th>
+                                                            <th class="w130">Nature Of Exp.</th>
+                                                            <th class="w130">Place Of Expense</th>
+                                                            <th class="w80 text-right">Amount</th>
+                                                            <th>Remark</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                
+                                                <div class="table-container">
+                                                    <div class="table-content">
+                                                        <table>
+                                                            <tr *ngFor="let misc_data of expense_detail.miscExp;let i = index;">
+                                                                <td class="w100">{{misc_data.date | date:'d MMM y'}}</td>
+                                                                <td class="w130">{{misc_data.expName}}</td>
+                                                                <td class="w130">{{misc_data.placeOfExp}}</td>
+                                                                <td class="w80 text-right"> &#x20B9; {{misc_data.amount}}</td>
+                                                                <td>{{misc_data.remark != '' ? misc_data.remark : '--' }}
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            
+                                            <div class="row">
+                                                <div class="col s12 m4 offset-m8">
+                                                    <div class="summary">
+                                                        <table>
+                                                            <tr>
+                                                                <td>Total</td>
+                                                                <td class="text-center"><strong>:</strong></td>
+                                                                
+                                                                <td class="text-right">&#x20B9; {{expense_detail.misc_expense_total_amount}} /-</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                                <!-- Misc Expense mat-expansion--->
+                                
+                            </mat-accordion>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="row">
+                    <div class="col s8">
+                        <div class="cs-file" *ngIf="expense_detail.expBills && expense_detail.expBills.length > 0 ? true : false">
+                            <p>Upload File</p>
+                            <ul class="product-images">
+                                <li class="multi-images">
+                                    <label class="cs-file-img" *ngFor="let val of expense_detail.expBills">
+                                        <img (click)="imageModel(val.image)" src="{{val.image}}">
+                                    </label>
+                                </li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                    <div class="col s4">
+                        <div class="summary">
+                            <table>
+                                <tr *ngIf="expense_detail.acStatus == 'Approved'">
+                                    <td>Total Approved Amount</td>
+                                    <td class="text-center"><strong>:</strong></td>
+                                    
+                                    <td class="text-right">&#x20B9; {{expense_detail.total_approved_amount && expense_detail.total_approved_amount != '' && expense_detail.total_approved_amount != '0' ? expense_detail.total_approved_amount : '--'}} /-</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Claim Amount</td>
+                                    <td class="text-center"><strong>:</strong></td>
+                                    <td class="text-right">&#x20B9; {{expense_detail.expense_total_amount}} /-</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+</div>

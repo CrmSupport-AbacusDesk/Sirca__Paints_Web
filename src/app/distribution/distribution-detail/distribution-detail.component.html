@@ -1,0 +1,2163 @@
+<!-- <div class="{{login_data.view_dashboard=='1' ? 'main-container':'main-container pl0'}}"> -->
+<div class="{{login_data.view_dashboard=='1' ? 'main-container':'main-container'}}">
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div>
+                <p>Loading....</p>
+            </div>
+        </mat-spinner>
+    </div>
+    <div class="middle-container mb0">
+        <div class="page-heading">
+            <div class="{{login_data.view_dashboard=='1'  ?'heading-text bc-space':'heading-text pl0'}}"
+                *ngIf="login_data.type == ''">
+                <div *ngIf="dr_detail && dr_detail.type =='1' && login_data.access_level=='1' && login_data.type=='' "
+                    class="back-btn">
+                    <!-- <a mat-button routerLink="/distribution-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
+                    <a mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+
+                </div>
+                <div *ngIf="dr_detail && dr_detail.type =='3' && login_data.access_level=='1' && login_data.type==''" class="back-btn">
+                    <!-- <a mat-button routerLink="/dealer" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
+                    <a mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+
+                </div>
+                <div *ngIf="dr_detail && dr_detail.type =='7' && login_data.access_level=='1' && login_data.type==''"
+                    class="back-btn">
+                    <!-- <a mat-button routerLink="/direct-dealer" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
+                    <a mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+
+                </div>
+
+                <div *ngIf="login_data.view_dashboard!='1'"
+                    style="padding-left : 45px; display: flex; justify-content: center; align-items: center; word-break: break-all">
+                    <h2>{{dr_detail.company_name}}</h2>
+                </div>
+
+                <h2 *ngIf="login_data.view_dashboard=='1'">{{dr_detail.company_name}}</h2>
+
+            </div>
+        </div>
+
+        <div class="left-auto">
+            <div class="click-btn"
+                *ngIf="login_data.access_level=='1' && login_data.type=='' && login_data.user_type != 'Inside Sales Team'">
+                <button mat-button *ngIf="dr_detail?.type=='7'" (click)="convert_dr(1)">Convert To Channel
+                    Partner</button>
+                    <button mat-button *ngIf="dr_detail?.type=='7'" (click)="convert_dr(3)">Convert To Retail Partner</button>
+                <button mat-button *ngIf="dr_detail?.type=='1'" (click)="convert_dr(7)">Convert To Direct
+                    Dealer</button>
+                <button mat-button *ngIf="dr_detail?.type=='3'" (click)="convert_dr(3)">Convert To Channel
+                    Partner</button>
+                <button mat-button *ngIf="dr_detail?.type=='3'" (click)="convert_dr(7)" style="margin: 2px;">Convert To
+                    Direct Dealer</button>
+
+                <!-- <button mat-button *ngIf="dr_detail?.type=='3'" (click)="editDiscount(7)">Edit Discount</button> -->
+            </div>
+        </div>
+
+        <div class="tabs right-tab">
+            <ul class="dflex1">
+                <li *ngIf="login_data.view_dashboard!='1' && login_data.user_type != 'Inside Sales Team'"><a
+                        [ngClass]="{'active': view_tab=='Detail'}"
+                        (click)="count_data();related_tabs('Detail')">Dashboard</a></li>
+                <li><a [ngClass]="{'active': view_tab=='profile'}" (click)="related_tabs('profile')">Profile</a></li>
+                <li *ngIf="dr_detail?.type!='3' && login_data.user_type != 'Inside Sales Team'"><a
+                        [ngClass]="{'active': view_tab=='Discount'}" (click)="related_tabs('Discount')">Discount</a>
+                </li>
+                <li *ngIf="login_data.user_type != 'Inside Sales Team'"><a [ngClass]="{'active': view_tab=='Checkin'}"
+                        (click)="related_tabs('Checkin')">Check In</a></li>
+                <li *ngIf="login_data.user_type != 'Inside Sales Team'"><a [ngClass]="{'active': view_tab=='pOrder'}"
+                        (click)="getOrders('pOrder','Pending');related_tabs('pOrder')">Order To Gravity</a></li>
+                <li *ngIf="dr_detail?.type!='3' && login_data.user_type != 'Inside Sales Team'"><a
+                        [ngClass]="{'active': view_tab=='sOrder'}"
+                        (click)="getOrders('sOrder','Pending');related_tabs('sOrder')">Order From Dealer</a></li>
+                <li *ngIf="dr_detail?.type=='1' && login_data.user_type != 'Inside Sales Team'"><a
+                        [ngClass]="{'active': view_tab=='Executives'}"
+                        (click)="getExecutivesData();related_tabs('Executives')">My Executives</a></li>
+                <li *ngIf="dr_detail?.type=='1' && login_data.user_type != 'Inside Sales Team'"><a class="pr50"
+                        [ngClass]="{'active': view_tab=='Dealers'}"
+                        (click)="getDealersData();related_tabs('Dealers')">Retail Partners <span
+                            class="counter">{{dealersCount}}</span></a></li>
+                <li *ngIf="dr_detail?.type!='3' && login_data.user_type != 'Inside Sales Team'"><a
+                        [ngClass]="{'active': view_tab=='area_target'}"
+                        (click)="get_area_target();related_tabs('area_target')">Target Vs Achievement</a></li>
+                <li *ngIf="dr_detail?.type!='3' && login_data.user_type != 'Inside Sales Team'"><a
+                        [ngClass]="{'active': view_tab=='Billing'}"
+                        (click)="get_billing_list();related_tabs('Billing')">Billing</a></li>
+                <li><a [ngClass]="{'active': view_tab=='Activity'}"
+                        (click)="get_activity_data();related_tabs('Activity')">Activity</a></li>
+            </ul>
+        </div>
+        <div class="click-btn ml15" *ngIf="dr_detail?.type=='3' && login_data.user_type != 'Inside Sales Team'">
+            <button mat-button (click)="verify()">{{dr_detail.dealer_varify == '0' ? 'Verify' : 'Verified'}}</button>
+        </div>
+    </div>
+
+    <div class="container-outer">
+        <div class="container">
+
+            <div *ngIf="view_tab=='profile'">
+                <div class="row mt15">
+                    <div
+                        class="col {{login_data.access_level == '1' && login_data.type=='' ? ( dr_detail.type==1 ? 's9' : 's8') : 's12'}}">
+                        <div class="sprate-box padding0">
+                            <a class="edit-item" color="accent"
+                                *ngIf="login_data.access_level == '1' && login_data.type=='' && login_data.user_type != 'Inside Sales Team'"
+                                (click)="edit_dr_detail(dr_detail.company_name,dr_detail.mobile,dr_detail.email,dr_detail.gst,dr_detail.landline_no,dr_detail.name,dr_detail.date_of_birth,dr_detail.date_of_anniversary,dr_detail.password,'basic_detail',dr_detail.target,dr_detail.opening_balance,dr_detail.whatsapp_no,dr_detail.username)"><i
+                                    class="material-icons">edit</i></a>
+                            <div class="full-address">
+                                <div class="top-heading">
+                                    <h2>Basic Information</h2>
+                                </div>
+
+                                <div class="ds-from-fields">
+
+                                    <div class="cs-row">
+                                        <div class="static-info">
+                                            <p>Name</p>
+                                            <p>{{dr_detail.name && dr_detail.name!='' ? dr_detail.name : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Mobile No.</p>
+                                            <p>{{dr_detail.mobile && dr_detail.mobile!='' ? dr_detail.mobile : '--'}}
+                                            </p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Email</p>
+                                            <p>{{dr_detail.email && dr_detail.email!='' ? dr_detail.email : '--'}}</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="cs-row">
+                                        <div class="static-info">
+                                            <p>GST No.</p>
+                                            <p>{{dr_detail.gst && dr_detail.gst!='' ? dr_detail.gst : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Username</p>
+                                            <p>{{dr_detail.username && dr_detail.username!='' ? dr_detail.username :
+                                                '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Password</p>
+                                            <p>{{dr_detail.password && dr_detail.password!='' ? dr_detail.password :
+                                                '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Wallet Points</p>
+                                            <p>{{dr_detail.wallet_points && dr_detail.wallet_points!='' ?
+                                                dr_detail.wallet_points : '--'}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="sprate-box padding0 mt15">
+                            <a class="edit-item" color="accent"
+                                *ngIf="login_data.access_level == '1' && login_data.type=='' && login_data.user_type != 'Inside Sales Team'"
+                                (click)="editAddress(dr_detail.country,dr_detail.state,dr_detail.district,dr_detail.city,dr_detail.pincode,dr_detail.address,'address')"><i
+                                    class="material-icons">edit</i></a>
+                            <div class="full-address">
+                                <div class="top-heading">
+                                    <h2>ADDRESS</h2>
+                                </div>
+
+                                <div class="ds-from-fields">
+
+                                    <div class="cs-row">
+                                        <div class="static-info">
+                                            <p>Country</p>
+                                            <p>{{dr_detail.country && dr_detail.country!='' ? dr_detail.country : '--'}}
+                                            </p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>State</p>
+                                            <p>{{dr_detail.state && dr_detail.state!='' ? dr_detail.state : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>District</p>
+                                            <p>{{dr_detail.district && dr_detail.district!='' ? dr_detail.district :
+                                                '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>City</p>
+                                            <p>{{dr_detail.city && dr_detail.city!='' ? dr_detail.city : '--'}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="cs-row">
+                                        <div class="static-info w100">
+                                            <p>Pincode</p>
+                                            <p>{{dr_detail.pincode && dr_detail.pincode!='' ? dr_detail.pincode : '--'}}
+                                            </p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>address</p>
+                                            <p>{{dr_detail.address && dr_detail.address!='' ? dr_detail.address : '--'}}
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sprate-box padding0 mt15" *ngIf="login_data.user_type != 'Inside Sales Team'">
+                            <a class="edit-item" color="accent"
+                                *ngIf="(login_data.access_level == '1' && login_data.type=='') && login_data.user_type != 'Inside Sales Team'"
+                                (click)="edit_billing_details(dr_detail.credit_limit,dr_detail.credit_period,dr_detail.credit_opening_balance,dr_detail.dr_code,dr_detail.display_billing_status)"><i
+                                    class="material-icons">edit</i></a>
+                            <div class="full-address">
+                                <div class="top-heading">
+                                    <h2>Billing Information</h2>
+                                </div>
+
+                                <div class="ds-from-fields">
+
+                                    <div class="cs-row">
+                                        <div class="static-info">
+                                            <p>Credit Limit</p>
+                                            <p>{{dr_detail.credit_limit && dr_detail.credit_limit!='' ?
+                                                dr_detail.credit_limit : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Credit Period</p>
+                                            <p>{{dr_detail.credit_period && dr_detail.credit_period!='' ?
+                                                dr_detail.credit_period : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Opening Balance</p>
+                                            <p>{{dr_detail.credit_opening_balance &&
+                                                dr_detail.credit_opening_balance!='' ? dr_detail.credit_opening_balance
+                                                : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Party Code</p>
+                                            <p>{{dr_detail.dr_code && dr_detail.dr_code!='' ? dr_detail.dr_code : '--'}}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="cs-row">
+                                        <div class="static-info">
+                                            <p>Advance</p>
+                                            <p>{{dr_detail.advance_payment && dr_detail.advance_payment!='' ? '&#8377;
+                                                '+dr_detail.advance_payment : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Outstanding</p>
+                                            <p>{{limit_vs_outstanding_vs_overdue_data.Outstanding_balance &&
+                                                limit_vs_outstanding_vs_overdue_data.Outstanding_balance!='' ? '&#8377;
+                                                '+limit_vs_outstanding_vs_overdue_data.Outstanding_balance : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Overdue</p>
+                                            <p>{{limit_vs_outstanding_vs_overdue_data.Overdue_balance &&
+                                                limit_vs_outstanding_vs_overdue_data.Overdue_balance!='' ? '&#8377;
+                                                '+limit_vs_outstanding_vs_overdue_data.Overdue_balance : '--'}}</p>
+                                        </div>
+                                        <div class="static-info">
+                                            <p>Display Status</p>
+                                            <p>{{dr_detail.display_billing_status == '0' ? 'No' : 'Yes'}}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="sprate-box padding0 mt15" *ngIf="login_data.user_type != 'Inside Sales Team'">
+                            <div class="full-address">
+                                <div class="top-heading">
+                                    <h2>Over Due {{'&#8377;'+limit_vs_outstanding_vs_overdue_data.Overdue_balance}}</h2>
+                                </div>
+
+                                <div class="ds-from-fields">
+                                    <div class="pie-chart-grid">
+                                        <div class="chart">
+                                            <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels"
+                                                [chartType]="pieChartType" [options]="pieChartOptions"
+                                                [colors]="pieChartColors" [legend]="pieChartLegend">
+                                            </canvas>
+                                        </div>
+                                        <div class="chart-data">
+                                            <div class="button-block" matRipple
+                                                *ngFor="let overdue_data of outstanding_and_overdue_days_interval">
+                                                <div class="cs-data">
+                                                    <p>{{overdue_data.days}}</p>
+                                                    <span>Days</span>
+                                                </div>
+                                                <div class="cs-data">
+                                                    <p>&#8377; {{overdue_data.value}}</p>
+                                                    <span>Amount</span>
+                                                </div>
+                                                <i class="material-icons">keyboard_arrow_right</i>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="sprate-box padding0 mt15" *ngIf="login_data.user_type != 'Inside Sales Team'">
+                           
+                            
+                                
+                            
+                            <a class="edit-item" color="accent"
+                                *ngIf="(login_data.access_level == '1' && login_data.type=='') && login_data.user_type != 'Inside Sales Team'"
+                                (click)="add_branding_detail()"><i class="material-icons">edit</i></a>
+                            <div class="full-address">
+
+                                <div class="top-heading" style="display: flex;">
+                                    <a *ngIf="branding_list.length && login_data.user_type != 'Inside Sales Team'"
+                                        class="bottom-btn ecxel-btn" style="border: 2px solid green !important;"
+                                        matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button
+                                        (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+                                    <h2 class="mr10 ml20 pt12">Branding Detail</h2>
+                                    <div style="margin-left: 200px;display: flex;align-items: center;">
+                                        <!-- <strong style="padding-left: 15px;color: red;font-size: 25px;">Scroll Right to Left </strong> -->
+                                        <i class="material-icons">keyboard_arrow_left</i>
+                                        <span>&nbsp;</span>
+                                        <i class="material-icons">keyboard_arrow_right</i>
+
+                                    </div>
+                                </div>
+                                <div class="uppr-one m-right-data mr40 mb20"  *ngIf="dr_detail_type == '1'">
+                                    <div class="tabs">
+                                      <ul>
+                                          
+                                        <li><a [ngClass]="show_tab_branding_detail && show_tab_branding_detail=='Distributor' ? 'active':''" (click)="show_tab_branding_detail='Distributor';get_branding_data()">Distributor</a></li>
+                                        <li><a [ngClass]="show_tab_branding_detail && show_tab_branding_detail=='Retailer' ? 'active' : ''" (click)="show_tab_branding_detail='Retailer'; get_branding_data();">Retail Partner</a></li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                <!-- <mat-divider class="left-right-15 mt10 mb10 "></mat-divider> -->
+                                <div class="from-fields h400" >
+                                    <div class="cs-table cs-table-scroll">
+                                        <div class="stickyTableHead" style="width: fit-content;">
+                                            <div class="table-head border-top">
+                                                <table>
+                                                    <tr>
+                                                        <th class="w50 text-center">S No</th>
+                                                        <th class="w100">Date Created</th>
+                                                        <th class="w150" >Created By</th>
+                                                        <!-- <th class="w150" *ngIf="dr_detail_type != '3'">Created For</th> -->
+                                                        <th class="w150">Company Name</th>
+                                                        <th class="w100">Branding Date</th>
+                                                        <th class="w150 text-center">Branding Created by</th>
+                                                        <th class="w150 text-center">Branding Category</th>
+                                                        <th class="w150 text-center">Branding Item</th>
+                                                        <th class="w120 text-center">Branding Amount</th>
+                                                        <th class="w100 text-center">Branding image</th>
+                                                        <th class="w80 text-center">Delete</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class="table-container" style="width: fit-content;">
+                                            <div class="table-content">
+                                                <table>
+                                                    <ng-container
+                                                        *ngFor="let branding_data of branding_list,let i = index">
+                                                        <tr>
+                                                            <td class="w50 text-center">{{i+1}}</td>
+                                                            <td class="w100">{{branding_data.date_created | date : 'd
+                                                                MMM, y'}}</td>
+                                                            <td class="w150">{{branding_data.created_by_name}}</td>
+                                                            <!-- <td class="w150" *ngIf="dr_detail_type != '3'">{{branding_data.created_for}}</td> -->
+                                                            <td class="w150" >
+                                                                {{branding_data.company_name ?
+                                                                branding_data.company_name : '--' }}</td>
+                                                            <td class="w100">{{branding_data.branding_date | date : 'd
+                                                                MMM, y'}}</td>
+                                                            <td class="w150 text-center">
+                                                                {{branding_data.branding_created_by}}</td>
+                                                            <td class="w150 text-center">
+                                                                {{branding_data.branding_category}}</td>
+                                                            <td class="w150 text-center">{{branding_data.branding_item}}
+                                                            </td>
+                                                            <td class="w120 text-center"> &#8377;
+                                                                {{branding_data.branding_amount}}</td>
+                                                            <td class="w100 text-center"
+                                                                *ngIf="branding_data.branding_doc_exist == 'true'">
+                                                                <a class="img-avtar">
+                                                                    <img *ngIf="branding_data.file_extension == 'pdf'"
+                                                                        src="./assets/img/pdf_icon.jpeg"
+                                                                        (click)="imageModel(branding_data.file_path)">
+                                                                    <img *ngIf="branding_data.file_extension == 'jpg' || branding_data.file_extension == 'jpeg' || branding_data.file_extension == 'png'"
+                                                                        src="{{branding_data.file_path}}"
+                                                                        (click)="imageModel(branding_data.file_path)">
+                                                                    <img *ngIf="branding_data.file_extension != 'pdf' && branding_data.file_extension != 'jpg' && branding_data.file_extension != 'jpeg' && branding_data.file_extension != 'png'"
+                                                                        src="./assets/img/data-found-pic.jpg"
+                                                                        (click)="imageModel(branding_data.file_path)">
+                                                                </a>
+                                                            </td>
+                                                            <td class="w100 text-center"
+                                                                *ngIf="branding_data.branding_doc_exist == 'false'">
+                                                                <a class="img-avtar">
+                                                                    <img src="./assets/img/no-data-pic.jpg"
+                                                                        (click)="imageModel('./assets/img/no-data-pic.jpg')">
+                                                                </a>
+                                                            </td>
+                                                            <td class="w80 text-center">
+                                                                <button mat-button class="delete-mat"
+                                                                    (click)="delete_branding_data(branding_data.id)"><i
+                                                                        class="material-icons red-clr">delete_sweep</i></button>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-container>
+                                                </table>
+                                            </div>
+                                            <div class="data-not-available" *ngIf="!branding_list.length">
+                                                <div class="outer">
+                                                    <div class="iinear">
+                                                        <div class="figure" matRipple>
+                                                            <div class="header">
+                                                                <img src="assets/img/data-not-available-header.svg"
+                                                                    alt="">
+                                                            </div>
+
+                                                            <div class="description">
+                                                                <div class="cs-heading">
+                                                                    <h2>BRANDING</h2>
+                                                                </div>
+                                                                <div class="img">
+                                                                    <i class="material-icons">error_outline</i>
+                                                                </div>
+                                                                <div class="psc">
+                                                                    <p>Data Not Available</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+
+                            <!-- <div class="fix-btn">
+                                <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="download_excel()"><img src="assets/img/excel.svg"></a>
+                            </div> -->
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="col {{dr_detail.type==1 ? 's3' : 's4'}}"
+                        *ngIf="login_data.user_type != 'Inside Sales Team'">
+                        <ng-container *ngIf="login_data.access_level == '1' && login_data.type==''">
+                            <div class="sprate-box mb15">
+                                <div class="territory-info" *ngIf="sales_executive_update!='true'">
+                                    <div class="head " [ngClass]="{'active':active.user==true}">
+                                        <h2>Market / Office User</h2>
+                                        <a class="edit-item" (click)="update_assigned_sales_executive('true')"><i
+                                                class="material-icons">create</i></a>
+                                    </div>
+                                    <div class="cs-checkbox" *ngIf="dr_detail.assign_user.length!=0">
+                                        <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                                            <section class="checkbox-inner bodr0">
+                                                <mat-checkbox class="check-list bg-none check-none" value="1"
+                                                    *ngFor="let row of dr_detail.assign_user">
+                                                    <div class="name-outer">
+                                                        <div class="outer">
+                                                            <div class="inner">
+                                                                <div class="name-inner">
+                                                                    {{row.sales_executive_name.charAt(0).toUpperCase()}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-box">
+                                                        <h2>{{row.sales_executive_name}}</h2>
+                                                        <p>{{row.role_name}}</p>
+                                                    </div>
+                                                </mat-checkbox>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="territory-info" *ngIf="sales_executive_update=='true'">
+
+                                    <div class="head" [ngClass]="{'active':active.user==true}">
+                                        <h2>Market / Office User</h2>
+                                        <i class="material-icons search-icon right20"
+                                            (click)="toggleterritory('user','open')" matRipple>search</i>
+                                        <input type="text" placeholder="search..." class="fix-search"
+                                            (input)="getItemsList(search.search)" #search="ngModel"
+                                            [(ngModel)]="search.search">
+                                        <i class="material-icons close-icon" (click)="toggleterritory('user','close')"
+                                            matRipple>clear</i>
+                                    </div>
+                                    <div class="cs-logs">
+                                        <div class="cs-checkbox">
+                                            <div class="checkbox-outer">
+                                                <section class="checkbox-inner">
+                                                    <ng-container *ngFor="let list of asmList;let index=index"
+                                                        aria-required="true">
+                                                        <mat-checkbox (scroll)="scrollHandler($event)"
+                                                            class="check-list" [checked]="list.check"
+                                                            (change)="product_Brand(list.id,index,$event)"
+                                                            value="{{list.name}}">{{list.name}} | {{list.role_name}}
+                                                        </mat-checkbox>
+                                                    </ng-container>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cs-btn text-right mb10 mr10">
+                                        <div class="in-btn sm-btn">
+                                            <button mat-raised-button color="accent"
+                                                (click)="update_assigned_executive(dr_detail.sales_executive)">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Assign Inside Sales Team Start Here -->
+                            <div class="sprate-box mb15">
+                                <div class="territory-info" *ngIf="inside_executive_update!='true'">
+                                    <div class="head ">
+                                        <h2>Inside Sales Team</h2>
+                                        <a class="edit-item" (click)="update_inside_sales_executive('true')"><i
+                                                class="material-icons">create</i></a>
+                                    </div>
+                                    <div class="cs-checkbox" *ngIf="dr_detail.assign_inside_user.length!=0">
+                                        <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                                            <section class="checkbox-inner bodr0">
+                                                <mat-checkbox class="check-list bg-none check-none" value="1"
+                                                    *ngFor="let row of dr_detail.assign_inside_user">
+                                                    <div class="name-outer">
+                                                        <div class="outer">
+                                                            <div class="inner">
+                                                                <div class="name-inner">
+                                                                    {{row.sales_executive_name.charAt(0).toUpperCase()}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-box">
+                                                        <h2>{{row.sales_executive_name}}</h2>
+                                                        <p>{{row.role_name}}</p>
+                                                    </div>
+                                                </mat-checkbox>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="territory-info" *ngIf="inside_executive_update=='true'">
+
+                                    <div class="head" [ngClass]="{'active':inside_search_box.inside_user==true}">
+                                        <h2>Inside Sales Team</h2>
+                                        <i class="material-icons search-icon right20"
+                                            (click)="toggleterritory2('inside_user','open')" matRipple>search</i>
+                                        <input type="text" placeholder="search..." class="fix-search"
+                                            (input)="getItemsList2(search.search)" #search="ngModel"
+                                            [(ngModel)]="search.search">
+                                        <i class="material-icons close-icon"
+                                            (click)="toggleterritory2('inside_user','close')" matRipple>clear</i>
+                                    </div>
+                                    <div class="cs-logs">
+                                        <div class="cs-checkbox">
+                                            <div class="checkbox-outer">
+                                                <section class="checkbox-inner">
+                                                    <ng-container *ngFor="let list of inside_sales_list;let j=index"
+                                                        aria-required="true">
+                                                        <mat-checkbox (scroll)="scrollHandler($event)"
+                                                            class="check-list" [checked]="list.check"
+                                                            (change)="product_Brand12(list.id,j,$event)"
+                                                            value="{{list.name}}">{{list.name}} | {{list.role_name}}
+                                                        </mat-checkbox>
+                                                    </ng-container>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cs-btn text-right mb10 mr10">
+                                        <div class="in-btn sm-btn">
+                                            <button mat-raised-button color="accent"
+                                                (click)="update_assigned_executive2(dr_detail.sales_executive)">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Assign Inside Sales Team End Here -->
+
+
+                            <div class="sprate-box mb15">
+                                <div class="territory-info">
+                                    <div class="head " [ngClass]="{'active':active.dealer}">
+                                        <h2>Channel Partner</h2>
+                                        <!-- <a class="edit-item" (click)="active.dealer = true;"><i class="material-icons">create</i></a> -->
+                                    </div>
+                                    <div class="cs-checkbox">
+                                        <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                                            <section class="checkbox-inner bodr0">
+                                                <mat-checkbox class="check-list bg-none check-none" value="1"
+                                                    *ngFor="let row of dr_detail.dealer_channel_partner">
+                                                    <div class="name-outer">
+                                                        <div class="outer">
+                                                            <div class="inner">
+                                                                <div class="name-inner">
+                                                                    {{row.company_name.charAt(0).toUpperCase()}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-box">
+                                                        <h2>{{row.company_name}}</h2>
+                                                    </div>
+                                                </mat-checkbox>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="sprate-box mb15">
+                                <div class="territory-info">
+                                    <div class="head " [ngClass]="{'active':active.dealer}">
+                                        <h2> Primary Sale</h2>
+                                        <!-- <a class="edit-item" (click)="active.dealer = true;"><i class="material-icons">create</i></a> -->
+                                    </div>
+                                    <div class="cs-checkbox">
+                                        <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                                            <section class="checkbox-inner bodr0">
+                                                <span>sum:- {{dr_detail.primary_sale.sum}}</span>
+                                                <div class="name-inner">
+                                                    <span> count:- {{dr_detail.primary_sale.count}}</span>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </ng-container>
+                        <ng-container
+                            *ngIf="login_data.access_level == '1' && dr_detail.type==1 && login_data.type==''">
+                            <div class="sprate-box">
+                                <div class="territory-info" *ngIf="!active.dealer">
+                                    <div class="head " [ngClass]="{'active':active.dealer}">
+                                        <h2>Retail Partner</h2>
+                                        <a class="edit-item" (click)="active.dealer = true;"><i
+                                                class="material-icons">create</i></a>
+                                    </div>
+                                    <div class="cs-checkbox" *ngIf="assignDelaerList.length!=0">
+                                        <div class="checkbox-outer" style="min-height: 115px; max-height: 115px;">
+                                            <section class="checkbox-inner bodr0">
+                                                <mat-checkbox class="check-list bg-none check-none" value="1"
+                                                    *ngFor="let row of assignDelaerList">
+                                                    <div class="name-outer">
+                                                        <div class="outer">
+                                                            <div class="inner">
+                                                                <div class="name-inner">
+                                                                    {{row.company_name.charAt(0).toUpperCase()}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-box">
+                                                        <h2>{{row.company_name}}</h2>
+                                                    </div>
+                                                </mat-checkbox>
+                                            </section>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="territory-info" *ngIf="active.dealer">
+                                    <div class="head" [ngClass]="{'active':active.dealer}">
+                                        <h2>Retail Partner List</h2>
+                                        <i class="material-icons search-icon right20"
+                                            (click)="toggleterritory('dealer','open')" matRipple>search</i>
+                                        <input type="text" placeholder="search..." class="fix-search" #search="ngModel"
+                                            [(ngModel)]="search.company_name">
+                                        <i class="material-icons close-icon" (click)="toggleterritory('dealer','close')"
+                                            matRipple>clear</i>
+                                    </div>
+                                    <div class="cs-logs">
+                                        <div class="cs-checkbox">
+                                            <div class="checkbox-outer">
+                                                <section class="checkbox-inner">
+                                                    <ng-container
+                                                        *ngFor="let list of deal_list| filterBy: {company_name : search.company_name}"
+                                                        aria-required="true">
+                                                        <mat-checkbox class="check-list" [checked]="list.check"
+                                                            name="check" [(ngModel)]="list.check"
+                                                            (change)="select_dealer(list,$event)"
+                                                            value="{{list.company_name}}">{{list.company_name}}
+                                                        </mat-checkbox>
+                                                    </ng-container>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cs-btn text-right mb10 mr10" *ngIf="assign_dealer.length">
+                                        <div class="in-btn sm-btn">
+                                            <button mat-raised-button color="accent"
+                                                (click)="save_assign_dealer()">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="view_tab=='Detail' && login_data.view_dashboard!='1'">
+                <div class="dashboard pt20" style="margin: 0px -30px;" ng-init="order_dashboard()">
+                    <div class="container-outer">
+                        <div class="container">
+                            <div class="row top-info">
+                                <figure class="col s2" style="width: 20%" (click)="related_tabs('Dealers')">
+                                    <div class="box">
+                                        <h1>My Retail Partners</h1>
+                                        <div class="bxe">
+                                            <div class="outer">
+                                                <div class="inner">
+                                                    <h2>
+                                                        <a>{{dashboardCounts.dealer}}</a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bt-bg">
+                                            <img src="assets/img/icon-lead.png" alt="" style="width: 150px;">
+                                        </div>
+                                    </div>
+                                </figure>
+
+                                <figure class="col s2" style="width: 20%" (click)="related_tabs('Executives')">
+                                    <div class="box">
+                                        <h1>My Executives</h1>
+                                        <div class="bxe">
+                                            <div class="outer">
+                                                <div class="inner">
+                                                    <h2>
+                                                        <a>{{dashboardCounts.myExecutivesCount}}</a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bt-bg">
+                                            <img src="assets/img/icon-distributer.png" alt="" style="width: 150px;">
+                                        </div>
+                                    </div>
+                                </figure>
+
+                                <figure class="col s2" style="width: 20%" (click)="related_tabs('Checkin')">
+                                    <div class="box">
+                                        <h1>Checkins</h1>
+                                        <div class="bxe">
+                                            <div class="outer">
+                                                <div class="inner">
+                                                    <h2>
+                                                        <a>{{dashboardCounts.checkin}}</a>
+                                                    </h2>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bt-bg">
+                                            <img src="assets/img/icon-retailer.png" alt="" style="width: 150px;">
+                                        </div>
+                                    </div>
+                                </figure>
+
+
+                                <figure class="col s2" style="width: 20%" (click)="related_tabs('pOrder')">
+                                    <div class="box">
+                                        <h1>Order To Gravity </h1>
+                                        <div class="bxe">
+                                            <div class="outer">
+                                                <div class="inner">
+                                                    <h2>
+                                                        <a>{{dashboardCounts.primary_order.count}}</a>
+                                                        <a> &#x20B9; {{dashboardCounts.primary_order.sum}}</a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bt-bg">
+                                            <img src="assets/img/icon-order.png" alt="" style="width: 150px;">
+                                        </div>
+                                    </div>
+                                </figure>
+
+                                <figure class="col s2" style="width: 20%" (click)="related_tabs('sOrder')">
+                                    <div class="box">
+                                        <h1>Order From Retail Partner </h1>
+                                        <div class="bxe">
+                                            <div class="outer">
+                                                <div class="inner">
+                                                    <h2>
+                                                        <a>{{dashboardCounts.secondary_order.count}}</a>
+                                                        <a> &#x20B9; {{dashboardCounts.secondary_order.sum}}</a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bt-bg">
+                                            <img src="assets/img/icon-order.png" alt="" style="width: 150px;">
+                                        </div>
+                                    </div>
+                                </figure>
+                            </div>
+
+
+                            <!-- <div class="row mt-15 graph-info">
+                                <div class="col s12 figure">
+
+                                    <div style="display: block">
+                                        <canvas baseChart
+                                        [datasets]="barChartData"
+                                        [labels]="barChartLabels"
+                                        [options]="barChartOptions"
+                                        [legend]="barChartLegend"
+                                        [chartType]="barChartType">
+                                    </canvas>
+                                </div>
+                            </div>
+                        </div> -->
+
+                            <div class="row mt-15 middle-info">
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col s4">
+                                    <div class="ds-box pink">
+                                        <div class="ds-head">
+                                            Latest Checkin
+                                        </div>
+                                        <div class="ds-body">
+                                            <div class="cs-information">
+                                                <div class="cs-border"
+                                                    *ngFor="let row of dashboardCounts.latestCheckin">
+                                                    <div class="top-srip">
+                                                        <ul>
+                                                            <li>
+                                                                <p><span>Date :</span> {{row.visit_start | date:
+                                                                    'dd/MMM/yy' }}</p>
+                                                            </li>
+                                                            <li>
+                                                                <p><span>Start :</span>{{row.visit_start | date: 'h:mm
+                                                                    a' }}</p>
+                                                            </li>
+                                                            <li *ngIf="row.visit_end!='0000-00-00 00:00:00'">
+                                                                <p><span>End :</span> {{row.visit_end | date: 'h:mm a'
+                                                                    }}</p>
+                                                            </li>
+                                                            <li *ngIf="row.visit_end=='0000-00-00 00:00:00'">
+                                                                <p><span>End :</span> N.A.</p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="flex-content">
+                                                        <div class="alfa-digit" *ngIf="row.d_name!=''">
+                                                            {{row.d_name.charAt(0).toUpperCase()}}</div>
+                                                        <div class="content">
+                                                            <p ng-click="dr_detail(row.dr_id,row.dr_type)">
+                                                                {{row.d_name}}</p>
+                                                            <span>Executive : {{row.user_name}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="remark">
+                                                        <strong>Remark : </strong>{{row.remark ? row.remark : 'N.A.'}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s4">
+                                    <div class="ds-box green">
+                                        <div class="ds-head">
+                                            Latest Order From Retail Partner
+                                        </div>
+                                        <div class="ds-body">
+                                            <div class="cs-information">
+                                                <div class="cs-border secondary"
+                                                    *ngFor="let row of dashboardCounts.latestSecondary">
+                                                    <div class="top-srip">
+                                                        <ul>
+                                                            <li>
+                                                                <p><span>Date :</span> {{row.date_created | date: 'MMM
+                                                                    d, y'}}</p>
+                                                            </li>
+                                                            <li class="amount">
+                                                                <p><span>Amount :</span> &#x20B9; {{row.order_total}}
+                                                                </p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="flex-content" style="margin-bottom: 0px;">
+                                                        <div class="alfa-digit">
+                                                            {{row.user_name.charAt(0).toUpperCase()}}</div>
+                                                        <div class="content">
+                                                            <p> {{row.user_name}}</p>
+                                                            <p *ngIf="row.type == 3"> Retail Partner : {{row.dr_name}}
+                                                            </p>
+                                                            <p *ngIf="row.type == 1"> Distributor : {{row.dr_name}}</p>
+                                                            <p *ngIf="row.type == 7"> Direct Dealer : {{row.dr_name}}
+                                                            </p>
+                                                            <a routerLink="/order-detail/{{row.id}}"
+                                                                style="color: #2f00ec;">{{row.order_no}}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col s4">
+                                    <div class="ds-box orange">
+                                        <div class="ds-head">
+                                            My Executive Information
+                                        </div>
+
+
+
+                                        <div class="dss-body">
+                                            <div class="dss-body-1" *ngFor="let row of dashboardCounts.execInfo">
+                                                <div class="dss-head">
+                                                    <h3>{{row.name}}</h3>
+                                                    <p>{{row.attendance}} days</p>
+                                                </div>
+
+                                                <div class="detail">
+                                                    <ul>
+                                                        <li>
+                                                            <h3>Check In</h3>
+                                                            <p><span>{{row.check_in}}</span></p>
+                                                        </li>
+
+                                                        <li>
+                                                            <h3>Primary Order</h3>
+                                                            <p><span>{{row.p_order}}</span> ₹ {{row.pri_order_value}}
+                                                            </p>
+                                                        </li>
+
+                                                        <li>
+                                                            <h3>Secondary Order</h3>
+                                                            <p><span>{{row.order}}</span> ₹ {{row.sec_order_value}}</p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="dr_detail.type && dr_detail.type != undefined && dr_detail.type!=3">
+                <div *ngIf="view_tab=='Discount'">
+                    <div class="col s12">
+                        <div class="cs-table left-right-20">
+                            <div class="sticky-head">
+                                <div class="table-head">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w50">&nbsp;</th>
+                                            <th>Category Name</th>
+                                            <th class="w200">Discount</th>
+                                        </tr>
+                                    </table>
+                                </div>
+
+
+                                <div class="table-head bdrt">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w50">&nbsp;</th>
+                                            <th>
+
+                                                <div class="th-search-acmt">
+                                                    <mat-form-field class="example-full-width cs-input select-input">
+                                                        <input matInput placeholder="Search...."
+                                                            (input)="getItemsdisc(search2.search1)" #search1="ngModel"
+                                                            [(ngModel)]="search2.search1">
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div>
+                                                </div>
+                                            </th>
+                                            <th class="w200">
+                                                <input type="text" name="dicount" [(ngModel)]="data.dicount">
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <div class="table-content">
+                                    <table class="sno-border">
+                                        <tr *ngFor="let list of dr_detail.discount_data;let i = index;">
+                                            <td class="w50">{{i+1}}</td>
+                                            <td> {{list.category}}</td>
+                                            <td class="w200">
+                                                <div class="td-input" [ngClass]="{'active':active[i]?.discount == '1'}">
+                                                    <input type="number" value="{{list.discount}}"
+                                                        (keypress)="MobileNumber($event)" [(ngModel)]="list.discount"
+                                                        maxlength="5" minlength="1"
+                                                        [readonly]="active[i]?.discount != '1'" class="input-bdr">
+                                                    <div class="edit"
+                                                        *ngIf="login_data.access_level == '1' && login_data.type==''">
+                                                        <a class="edit-icon edit" (click)="edit_discount(i)">
+                                                            <i class="material-icons">create</i>
+                                                        </a>
+                                                        <a class="edit-icon save" *ngIf="active[i]?.discount == '1'">
+                                                            <i class="material-icons"
+                                                                (click)="update_discount(list.category,list.id,list.discount)">save</i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="view_tab=='pOrder' || view_tab=='sOrder' ">
+
+                <div class="cube-bx mb10 wp30">
+                    <div class="detail-bx">
+                        <ng-container *ngIf="view_tab=='pOrder'">
+                            <p>Total Primary Sale :</p>
+                            <p>{{totalOrders.count}}</p>
+                        </ng-container>
+                        <ng-container *ngIf="view_tab=='sOrder'">
+                            <p>Total Secondary Sale :</p>
+                            <p>{{totalOrders.count}}</p>
+                        </ng-container>
+
+                    </div>
+                    <div class="detail-bx">
+                        <p>Amount :</p>
+                        <p>₹ {{totalOrders.sum}} /-</p>
+                    </div>
+                </div>
+
+                <div class="dflex1 space-btw mb15">
+                    <div class="tabs">
+                        <ul>
+                            <li><a class="pr50"
+                                    (click)="orderTabActive.active='Pending';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='Pending' } ">Order Placed <span
+                                        class="counter">{{orderTabCounters.pending}}</span></a></li>
+                            <li><a class="pr50"
+                                    (click)="orderTabActive.active='Approved';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='Approved' } ">Order Accepted <span
+                                        class="counter">{{orderTabCounters.approved}}</span></a></li>
+                            <li *ngIf="view_tab=='pOrder'"><a class="pr50"
+                                    (click)="orderTabActive.active='Hold';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='Hold' } ">Hold<span
+                                        class="counter">{{orderTabCounters.hold}}</span></a></li>
+                            <li *ngIf="view_tab=='pOrder'"><a class="pr50"
+                                    (click)="orderTabActive.active='readyToDispatch';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='readyToDispatch' } ">Ready to
+                                    Dispatch<span class="counter">{{orderTabCounters.readyToDispatch}}</span></a></li>
+                            <li><a class="pr50"
+                                    (click)="orderTabActive.active='PDispatch';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='PDispatch' } ">Partially Dispatched
+                                    <span class="counter">{{orderTabCounters.PDispatch}}</span></a></li>
+                            <li><a class="pr50"
+                                    (click)="orderTabActive.active='Dispatch';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='Dispatch' } ">Complete Dispatched
+                                    <span class="counter">{{orderTabCounters.dispatch}}</span></a></li>
+                            <li><a class="pr50"
+                                    (click)="orderTabActive.active='Reject';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='Reject' } ">Refered Back <span
+                                        class="counter">{{orderTabCounters.rejected}}</span></a></li>
+                            <li><a class="pr50"
+                                    (click)="orderTabActive.active='Pre Close';getOrders(view_tab,orderTabActive.active)"
+                                    [ngClass]="{'active' : orderTabActive.active=='Pre Close' } ">Pre Closed <span
+                                        class="counter">{{orderTabCounters.pre_close}}</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12">
+
+                        <div class="cs-table left-right-20" *ngIf="order_type==0 || view_tab=='sOrder' ">
+                            <div class="sticky-head">
+                                <div class="table-head">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w30">&nbsp;</th>
+                                            <th class="w100">Date</th>
+                                            <th class="w220">Created By</th>
+                                            <th *ngIf="view_tab=='sOrder'" class="w200">Retail Partner</th>
+                                            <th class="w120">Order No</th>
+                                            <th class="w100 text-center">Total Item</th>
+                                            <th class="w130 text-right">Order Value</th>
+                                            <!-- <th *ngIf="dr_detail.type!=3" class="w100">Status</th> -->
+                                            <!-- <th class="w70">Action</th> -->
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="table-head bdrt">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w30">&nbsp;</th>
+                                            <th class="w100"></th>
+                                            <th class="w220">
+                                                <div class="th-search-acmt">
+                                                    <mat-form-field class="example-full-width cs-input select-input">
+                                                        <input matInput placeholder="Search...."
+                                                            (input)="getOrders(view_tab,orderTabActive.active)"
+                                                            #search="ngModel" [(ngModel)]="search4.created_by">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div>
+                                                </div>
+                                            </th>
+                                            <th class="w200" *ngIf="view_tab=='sOrder'">
+                                                <div class="th-search-acmt">
+                                                    <mat-form-field class="example-full-width cs-input select-input">
+                                                        <input matInput placeholder="Search...."
+                                                            (input)="getOrders(view_tab,orderTabActive.active)"
+                                                            #search="ngModel" [(ngModel)]="search4.company_name">
+                                                    </mat-form-field>
+                                                </div>
+                                            </th>
+                                            <th class="w120">
+                                                <div class="th-search-acmt">
+                                                    <mat-form-field class="example-full-width cs-input select-input">
+                                                        <input matInput placeholder="Order No...."
+                                                            (input)="getOrders(view_tab,orderTabActive.active)"
+                                                            #search="ngModel" [(ngModel)]="search4.order_id">
+                                                    </mat-form-field>
+                                                </div>
+                                                <div>
+                                                </div>
+                                            </th>
+                                            <th class="w100">&nbsp;</th>
+                                            <th class="w130">&nbsp;</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <div class="table-content">
+                                    <table class="sno-border">
+                                        <tr *ngFor="let list of order_data;let i = index">
+                                            <td class="w30">{{i+1}}</td>
+                                            <td class="w100">{{list.date_created | date : 'd MMM, y'}}</td>
+                                            <td *ngIf="view_tab=='pOrder'" class="w220">{{list.created_by_type ==
+                                                'channel partner' ? list.ord_create_by : list.created_by_name}}</td>
+                                            <td *ngIf="view_tab=='sOrder'" class="w220">{{list.created_by_type ==
+                                                'channel partner' ? list.created_by_name2 : list.created_by_name}}</td>
+
+                                            <td *ngIf="view_tab=='sOrder'" class="w200">{{list.company_name}}</td>
+                                            <td class="w120"><a
+                                                    *ngIf="login_data.access_level == '1' && login_data.type==''"
+                                                    class="link-btn" mat-button routerLink="/order-detail/{{list.id}}"
+                                                    routerLinkActive="active">{{list.order_no}}</a>
+                                                {{login_data.access_level == '1' && login_data.type=='' ? '' :
+                                                list.order_no}}</td>
+                                            <td class="w100 text-center">{{list.order_item}}</td>
+                                            <td class="w130 text-right">&#8377; {{list.order_total}}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="data-not-available" *ngIf="order_data.length== '0'">
+                                <div class="outer">
+                                    <div class="iinear">
+                                        <div class="figure" matRipple>
+                                            <div class="header">
+                                                <img src="assets/img/data-not-available-header.svg" alt="">
+                                            </div>
+
+                                            <div class="description">
+                                                <div class="cs-heading">
+                                                    <h2>Order</h2>
+                                                </div>
+                                                <div class="img">
+                                                    <i class="material-icons">error_outline</i>
+                                                </div>
+                                                <div class="psc">
+                                                    <p>data not Available</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="cs-table left-right-20" *ngIf="order_type==1 && view_tab=='pOrder' ">
+                            <div class="sticky-head">
+                                <div class="table-head">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w30">&nbsp;</th>
+                                            <th class="w100">Date</th>
+                                            <th class="w250">User</th>
+                                            <th class="w190 text-right">Order Value</th>
+                                            <th class="w100"
+                                                *ngIf="login_data.access_level=='1' && login_data.type==''">Action</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="table-head bdrt">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w30">&nbsp;</th>
+                                            <th class="w100"></th>
+                                            <th class="w250"></th>
+                                            <th class="w190">
+                                            </th>
+                                            <th *ngIf="login_data.access_level=='1' && login_data.type==''"
+                                                class="w100">&nbsp;</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <div class="table-content">
+                                    <table class="sno-border">
+                                        <tr *ngFor="let list of primary_ord_data;let i = index">
+                                            <td class="w30">{{i+1}}</td>
+                                            <td class="w100">{{list.date_created | date : 'MMMM d, y'}}</td>
+                                            <td class="w250">{{list.name}}</td>
+                                            <td class="w190 text-right">&#8377;{{list.amount}}</td>
+                                            <td class="w100"
+                                                *ngIf="login_data.access_level=='1' && login_data.type==''">
+                                                <a class="del-btn" (click)="deleteOrder(list.id,i)">Delete <i
+                                                        class="material-icons">delete_sweep</i></a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="data-not-available" *ngIf="primary_ord_data.length== '0'">
+                                <div class="outer">
+                                    <div class="iinear">
+                                        <div class="figure" matRipple>
+                                            <div class="header">
+                                                <img src="assets/img/data-not-available-header.svg" alt="">
+                                            </div>
+
+                                            <div class="description">
+                                                <div class="cs-heading">
+                                                    <h2>Direct Orders</h2>
+                                                </div>
+                                                <div class="img">
+                                                    <i class="material-icons">error_outline</i>
+                                                </div>
+                                                <div class="psc">
+                                                    <p>data not Available</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="view_tab=='Checkin'">
+                <div class="col s12">
+                    <div class="cs-table left-right-20">
+                        <div class="sticky-head">
+                            <div class="table-head">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w40 text-center">&nbsp;</th>
+                                        <th class="w120">Date</th>
+                                        <th class="w200">Sales User</th>
+                                        <th class="w300">Company Name</th>
+                                        <th>Check in </th>
+                                        <th>Check out</th>
+                                        <th>Remark</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="table-head bdrt">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w40 text-center">&nbsp;</th>
+                                        <th class="w120"></th>
+                                        <th class="w200">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder="Search...."
+                                                        (input)="getItemscheckin(search3.search)" #search="ngModel"
+                                                        [(ngModel)]="search3.search">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w300"></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table class="sno-border">
+                                    <tr *ngFor="let row of dr_detail.checkin ; let i=index">
+                                        <td class="w40 text-center">{{i+1}}</td>
+                                        <td class="w120">{{row.date_created | date : 'MMMM d, y'}}</td>
+                                        <td class="w200">{{row.exec_name}}</td>
+                                        <td class="w300">{{row.company_name}}</td>
+                                        <td class=""><span style="font-weight: 500;">{{row.visit_start | date : 'h:mm
+                                                a'}}</span> {{row.start_address}}</td>
+                                        <td class=""><span style="font-weight: 500;">{{row.visit_start | date : 'h:mm
+                                                a'}}</span> {{row.address}}</td>
+                                        <td>{{row.remark}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- //////////////////////////////// -->
+            <ng-container *ngIf="view_tab=='area_target'">
+
+                <div class="details-info">
+                    <div class="basic-details">
+                        <div class="cs-heading">
+                            <h2>Target Vs. Achievement {{area_target_list.month && area_target_list.year &&
+                                area_target_list.month != '' && area_target_list.year != ''? '('+area_target_list.month
+                                +'-'+ area_target_list.year +')':'' }}</h2>
+                        </div>
+
+                        <div class="cs-figure">
+
+                            <div class="card-block">
+                                <div class="card red-gradient">
+                                    <span>&#x20B9; {{area_target_list.total_target}}</span>
+                                    <p>Current Target</p>
+                                </div>
+                                <div class="card green-gradient">
+                                    <span>&#x20B9; {{area_target_list.achievement}}</span>
+                                    <p>Current Achievement</p>
+                                </div>
+                                <div class="card orange-gradient">
+                                    <span> {{area_target_list.achievement_in_percentage + '%'}}</span>
+                                    <p>Percentage Of Achievement</p>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details-info mt15" *ngIf="assign_area_list.length">
+                    <div class="basic-details">
+                        <div class="cs-heading mb0">
+                            <h2>Assign Area Details</h2>
+                        </div>
+
+                        <div class="cs-table " style="margin:0px -10px">
+                            <div class="sticky-head">
+                                <div class="table-head">
+                                    <table>
+                                        <tr>
+                                            <th class="w50">S.no</th>
+                                            <th class="w150">State</th>
+                                            <th class="w150">District</th>
+                                            <th class="w150">Area</th>
+                                            <th class="w150">Assign Target </th>
+                                            <th class="w150">Assign Date </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <div class="table-content">
+                                    <table>
+                                        <tr *ngFor="let area_data of assign_area_list ; let i=index">
+                                            <td class="w50">{{i+1}}</td>
+                                            <td class="w150">{{area_data.state}}</td>
+                                            <td class="w150">{{area_data.district}}</td>
+                                            <td class="w150">{{area_data.area_name}}</td>
+                                            <td class="w150">&#8377; {{area_data.monthly_target}}</td>
+                                            <td class="w150">{{area_data.assigned_on | date : 'd MMM, y'}}</td>
+                                        </tr>
+
+                                        <ng-container *ngFor="let lead of skelton">
+                                            <tr class="sk-loading" *ngIf="loader">
+                                                <td class="w50">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="details-info mt15" *ngIf="previous_data_list.length">
+                    <div class="basic-details">
+                        <div class="cs-heading mb0">
+                            <h2>Previous Months Target Vs. Achievement</h2>
+                        </div>
+
+                        <div class="cs-table " style="margin:0px -10px">
+                            <div class="sticky-head">
+                                <div class="table-head">
+                                    <table>
+                                        <tr>
+                                            <th class="w50">S.no</th>
+                                            <th class="w150">Year</th>
+                                            <th class="w150">Month</th>
+                                            <th class="w150">Target</th>
+                                            <th class="w150">Achievement </th>
+                                            <th class="w150">% Of Achievement </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="table-container">
+                                <div class="table-content">
+                                    <table>
+                                        <tr *ngFor="let list of previous_data_list ; let i=index">
+                                            <td class="w50">{{i+1}}</td>
+                                            <td class="w150">{{list.year}}</td>
+                                            <td class="w150">{{list.month}}</td>
+                                            <td class="w150">&#8377; {{list.target}}</td>
+                                            <td class="w150">&#8377; {{list.achievement}}</td>
+                                            <td class="w150">{{list.achievement_in_percentage +' %'}}</td>
+                                        </tr>
+
+                                        <ng-container *ngFor="let lead of skelton">
+                                            <tr class="sk-loading" *ngIf="loader">
+                                                <td class="w50">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                                <td class="w150">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- ////////////////////////////// -->
+
+
+            <div *ngIf="view_tab=='Billing'">
+                <div class="dflex1 space-btw mb15">
+                    <div class="tabs">
+                        <ul>
+                            <li><a class="" (click)="billingTabActive.active='Billing';get_billing_list()"
+                                    [ngClass]="{'active' : billingTabActive.active=='Billing' } ">Billing </a></li>
+                            <li><a class="" (click)="billingTabActive.active='Payment';get_payment_list()"
+                                    [ngClass]="{'active' : billingTabActive.active=='Payment' } ">Payment </a></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <!-- <div class="row">
+                    <div class="col s12 dflex1 space-btw">
+                        <p *ngIf="billingTabActive.active=='Billing'">Total Billing Amount:&#8377;<span>{{total_billing_amount}}</span></p>
+                        <p *ngIf="billingTabActive.active=='Billing'">Total Billing Recieve Amount: &#8377;<span>{{total_billing_receive_amount}}</span></p>
+                        <p  *ngIf="billingTabActive.active=='Billing'">Total Pending Balance: &#8377;<span>{{total_pending_balance}}</span></p>
+                        <p  *ngIf="billingTabActive.active!='Billing'">Total Payment: &#8377;<span>{{total_payment}}</span></p>
+                    </div>
+                  
+                </div> -->
+                <div class="row">
+                    <div class="col s12">
+                        <div class="cs-table left-right-20">
+                            <div class="sticky-head">
+                                <div class="table-head">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w60">S. No.</th>
+                                            <th>Customer Name</th>
+                                            <th class="w120">Customer Code</th>
+                                            <th class="w150">{{billingTabActive.active == 'Billing'? 'Bill Date' :
+                                                'Payment Date'}}</th>
+                                            <th class="w150" *ngIf="billingTabActive.active != 'Billing'"> Payment Type
+                                            </th>
+                                            <th *ngIf="billingTabActive.active != 'Billing'" class="w150">RECEIPT NO.
+                                            </th>
+                                            <th class="w120">Bill Number</th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w110">Total Bill
+                                                Item</th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w80">Item Qty</th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w130">Bill Amount
+                                            </th>
+                                            <th class="w120">PAYMENT RECEIVED</th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w120">Pending Amount
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="table-head bdrt">
+                                    <table class="sno-border">
+                                        <tr>
+                                            <th class="w60"></th>
+                                            <th></th>
+                                            <th class="w120"></th>
+                                            <th class="w150"></th>
+                                            <th class="w150" *ngIf="billingTabActive.active != 'Billing'"></th>
+                                            <th *ngIf="billingTabActive.active != 'Billing'" class="w150"></th>
+                                            <th class="w120"></th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w110"></th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w80"></th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w130">&#8377; {{total_billing_amount}}
+                                            </th>
+                                            <th class="w120">&#8377; {{billingTabActive.active == 'Billing'?total_billing_receive_amount:total_payment}}</th>
+                                            <th *ngIf="billingTabActive.active == 'Billing'" class="w120">&#8377; {{total_pending_balance}}
+                                            </th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <!-- <div class="table-head bdrt">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w60"></th>
+                                        <th>
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder="Customer Name. . ." name="customer_name" [(ngModel)]="search.customer_name" (keyup.enter)="billingTabActive.active == 'Billing'?get_billing_data_list():get_payment_data_list()">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w120">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="Code. . ." name="customer_code" [(ngModel)]="search.customer_code" (keyup.enter)="billingTabActive.active == 'Billing'?get_billing_data_list():get_payment_data_list()">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w150">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input"  >
+                                                    <input matInput [matDatepicker]="picker" placeholder="Date" name="date" [(ngModel)]="search.date" (dateChange)="con_date(search.date)" readonly>
+                                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                    <mat-datepicker #picker></mat-datepicker>
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th  *ngIf="billingTabActive.active != 'Billing'" class="w150">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder=". . ." name="payment_id" [(ngModel)]="search.payment_id" (keyup.enter)="billingTabActive.active == 'Billing'?get_billing_data_list():get_payment_data_list()">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w120">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder=". . ." name="bill_number" [(ngModel)]="search.bill_number" (keyup.enter)="billingTabActive.active == 'Billing'?get_billing_data_list():get_payment_data_list()">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th *ngIf="billingTabActive.active == 'Billing'" class="w110"></th>
+                                        <th *ngIf="billingTabActive.active == 'Billing'" class="w80"></th>
+                                        <th *ngIf="billingTabActive.active == 'Billing'" class="w130"></th>
+                                        <th class="w120"></th>
+                                        <th *ngIf="billingTabActive.active == 'Billing'" class="w120"></th>
+                                    </tr>
+                                </table>
+                            </div> -->
+                            </div>
+
+                            <div class="table-container">
+                                <div class="table-content">
+                                    <table class="sno-border">
+                                        <tr
+                                            *ngFor=" let billing_data of (billingTabActive.active == 'Billing' ? billing_list : payment_list);let i = index">
+                                            <td class="w60">{{i+1}}</td>
+                                            <td>{{billing_data.customer_name && billing_data.customer_name!= '' &&
+                                                billing_data.customer_name!= null ? (billing_data.customer_name |
+                                                titlecase):'--'}}</td>
+                                            <td class="w120">{{billing_data.customer_code && billing_data.customer_code
+                                                != '' && billing_data.customer_code != null ? billing_data.customer_code
+                                                : '--'}}</td>
+                                            <td *ngIf="billingTabActive.active == 'Billing'" class="w150">
+                                                {{billing_data.billing_date && billing_data.billing_date != '' &&
+                                                billing_data.billing_date != null && billing_data.billing_date !=
+                                                '0000-00-00' ? (billing_data.billing_date | date :' d MMM, y '): '--'}}
+                                            </td>
+                                            <td *ngIf="billingTabActive.active != 'Billing'" class="w150">
+                                                {{billing_data.payment_date && billing_data.payment_date != '' &&
+                                                billing_data.payment_date != null && billing_data.payment_date !=
+                                                '0000-00-00' ? (billing_data.payment_date | date :' d MMM, y '): '--'}}
+                                            </td>
+                                            <td class="w150" *ngIf="billingTabActive.active != 'Billing'">
+                                                {{billing_data.payment_type && billing_data.payment_type!='' ?
+                                                billing_data.payment_type : '--' }}</td>
+                                            <td *ngIf="billingTabActive.active != 'Billing'" class="w150">
+                                                {{billing_data.payment_id}}</td>
+                                            <td class="w120">{{billing_data.bill_number && billing_data.bill_number !=
+                                                '' && billing_data.bill_number != null ? billing_data.bill_number :
+                                                '--'}}</td>
+                                            <td *ngIf="billingTabActive.active == 'Billing'" class="w110">
+                                                {{billing_data.total_billing_item && billing_data.total_billing_item !=
+                                                '' && billing_data.total_billing_item != null ?
+                                                billing_data.total_billing_item : '--'}}</td>
+                                            <td *ngIf="billingTabActive.active == 'Billing'" class="w80">
+                                                {{billing_data.total_billing_item_qty &&
+                                                billing_data.total_billing_item_qty != '' &&
+                                                billing_data.total_billing_item_qty != null ?
+                                                billing_data.total_billing_item_qty : '--'}}</td>
+                                            <td *ngIf="billingTabActive.active == 'Billing'" class="w130">&#8377;
+                                                {{billing_data.total_billing_amount && billing_data.total_billing_amount
+                                                != '' && billing_data.total_billing_amount != null ?
+                                                billing_data.total_billing_amount : '--'}}</td>
+                                            <td *ngIf="billingTabActive.active == 'Billing'" class="w120">&#8377;
+                                                {{billing_data.billing_receive_amount &&
+                                                billing_data.billing_receive_amount != '' &&
+                                                billing_data.billing_receive_amount != null ?
+                                                billing_data.billing_receive_amount : '--'}}</td>
+                                            <td *ngIf="billingTabActive.active != 'Billing'" class="w120">&#8377;
+                                                {{billing_data.payment_amount && billing_data.payment_amount != '' &&
+                                                billing_data.payment_amount != null ? billing_data.payment_amount :
+                                                '--'}}</td>
+                                            <td *ngIf="billingTabActive.active == 'Billing'" class="w120">&#8377;
+                                                {{billing_data.pending_balance && billing_data.pending_balance != '' &&
+                                                billing_data.pending_balance != null ? billing_data.pending_balance :
+                                                '--'}}
+                                                <div class="action-btns"
+                                                    *ngIf="login_data.access_level == '1' && login_data.type==''">
+                                                    <!-- <a mat-button class="view" routerLink="/invoice-billing-detail/{{billing_data.id+'billing'}}" routerLinkActive="active"><i class="material-icons">remove_red_eye</i> View</a> -->
+                                                    <a mat-button class="view"
+                                                        (click)="go_to(billing_data.id,'Billing')"><i
+                                                            class="material-icons">remove_red_eye</i> View</a>
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="data-not-available"
+                                *ngIf="billingTabActive.active == 'Billing' && billing_list.length== 0 ? true : (billingTabActive.active == 'Payment' && payment_list.length== 0 ? true : false)">
+                                <div class="outer">
+                                    <div class="iinear">
+                                        <div class="figure" matRipple>
+                                            <div class="header">
+                                                <img src="assets/img/data-not-available-header.svg" alt="">
+                                            </div>
+
+                                            <div class="description">
+                                                <div class="cs-heading">
+                                                    <h2>{{billingTabActive.active == 'Billing' ? 'Billing' : 'Payment'}}
+                                                    </h2>
+                                                </div>
+                                                <div class="img">
+                                                    <i class="material-icons">error_outline</i>
+                                                </div>
+                                                <div class="psc">
+                                                    <p>data not Available</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" *ngIf="view_tab=='Dealers'">
+                <div class="col s12">
+                    <div class="cs-table left-right-20">
+                        <div class="sticky-head">
+                            <div class="table-head">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w40 text-center">&nbsp;</th>
+                                        <th class="w250">Company Name</th>
+                                        <th class="w200">Contact Person</th>
+                                        <th class="w110">Mobile </th>
+                                        <th class="w110">Gst </th>
+                                        <th class="">Address</th>
+                                        <th class="">Secondary Sale</th>
+                                        <th class="w130" *ngIf="login_data.access_level == '1' && login_data.type==''">
+                                            Action</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="table-head bdrt">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w40 text-center">&nbsp;</th>
+                                        <th class="w250">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder="Company Name" name="company_name"
+                                                        (keyup.enter)="getDealersData()"
+                                                        [(ngModel)]="dealers_filter.company_name">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w200">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder="Contact Person" name="contact_person"
+                                                        (keyup.enter)="getDealersData()"
+                                                        [(ngModel)]="dealers_filter.contact_person">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w110">
+                                            <div class="th-search-acmt">
+                                                <mat-form-field class="example-full-width cs-input select-input">
+                                                    <input matInput placeholder="Mobile Number/Landine Number"
+                                                        name="mobile"
+                                                        onkeypress="return event.charCode>=48 && event.charCode<=57"
+                                                        (keyup.enter)="getDealersData()"
+                                                        [(ngModel)]="dealers_filter.mobile">
+                                                </mat-form-field>
+                                            </div>
+                                        </th>
+                                        <th class="w110"></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th class="w130" *ngIf="login_data.access_level == '1' && login_data.type==''">
+                                        </th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table class="sno-border">
+                                    <tr *ngFor="let row of assignedDealers ; let i=index">
+                                        <td class="w40 text-center">{{i+1}}</td>
+                                        <td class="w250">{{row.company_name}}</td>
+                                        <td class="w200">{{row.name}}</td>
+                                        <td class="w110">{{row.mobile}}</td>
+                                        <td class="w110">{{!row.gst ? 'N/A' : row.gst }}</td>
+                                        <td class=""
+                                            *ngIf="row.address || row.area || row.city || row.district || row.state || row.pincode">
+                                            {{row.address}} {{row.area}} {{row.city}} {{row.district}} {{row.state}}
+                                            {{row.pincode}}</td>
+                                        <td class=""
+                                            *ngIf="!row.address && !row.area && !row.city && !row.district && !row.state && !row.pincode">
+                                            N/A</td>
+                                        <td class="">{{row.secondary_sale.count}} | &#8377;{{row.secondary_sale.sum}}
+                                        </td>
+                                        <td class="w130" *ngIf="login_data.access_level == '1' && login_data.type==''">
+                                            <a class="link-btn" mat-button (click)="openDiscountModal(row.dr_id)">Manage
+                                                Discount</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="view_tab=='Executives'">
+                <div class="col s12">
+                    <div class="cs-table left-right-20">
+                        <div class="sticky-head">
+                            <div class="table-head">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w40 text-center">&nbsp;</th>
+                                        <th class="w250">Executive Name</th>
+                                        <th class="w110">Mobile </th>
+                                        <th class="">Address</th>
+                                        <th class="">Secondary Sale</th>
+                                        <th class="w90">Checkins</th>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- <div class="table-head bdrt">
+                            <table class="sno-border">
+                                <tr>
+                                    <th class="w40 text-center">&nbsp;</th>
+                                    <th class="w120">
+                                    </th>
+                                    <th  class="w200" >
+                                        <div class="th-search-acmt">
+                                            <mat-form-field class="example-full-width cs-input select-input">
+                                                <input matInput placeholder="Search...." (input)="getItemscheckin(search3.search)" #search="ngModel" [(ngModel)]="search3.search">
+                                            </mat-form-field>
+                                        </div>
+                                    </th>
+                                    <th class="w110"></th>
+                                    <th class="w120"></th>
+                                    <th></th>
+                                </tr>
+                            </table>
+                        </div> -->
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table class="sno-border">
+                                    <tr *ngFor="let row of assignedExecutives ; let i=index">
+                                        <td class="w40 text-center">{{i+1}}</td>
+                                        <td class="w250">{{row.name}}</td>
+                                        <td class="w110">{{row.mobile}}</td>
+                                        <td class=""
+                                            *ngIf="row.address || row.area || row.city || row.district || row.state || row.pincode">
+                                            {{row.address}} {{row.area}} {{row.city}} {{row.district}} {{row.state}}
+                                            {{row.pincode}}</td>
+                                        <td class=""
+                                            *ngIf="!row.address && !row.area && !row.city && !row.district && !row.state && !row.pincode">
+                                            N/A</td>
+                                        <td class="">{{row.secondary_sale.count}} | &#8377;{{row.secondary_sale.sum}}
+                                        </td>
+                                        <td class="w90">
+                                            {{row.checkins}}
+                                            <div class="action-btns"
+                                                *ngIf="login_data.access_level == '1' && login_data.type==''">
+                                                <a mat-button class="view"
+                                                    (click)="disExecutive('View',row.assigned_to)"><i
+                                                        class="material-icons">remove_red_eye</i>View</a>
+                                                <button mat-button class="edit"
+                                                    (click)="disExecutive('Edit',row.assigned_to)"><i
+                                                        class="material-icons">edit</i> Edit</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="view_tab=='legder'">
+                <div class="col s12">
+                    <div class="tab-strip">
+                        <div class="left-auto">
+                            <div class="cs-btn">
+                                <div class="in-btn"
+                                    *ngIf="ledger_data.length!='0' && login_data.access_level=='1' && login_data.type==''">
+                                    <button mat-button color="primary" (click)="add_ledger('add_amount')"
+                                        style="background: #2e8002;">Add Payment</button>
+
+                                    <button mat-button color="primary" (click)="add_ledger('add_invoice')"
+                                        style="background: #2e8002;">Add Invoice</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="cs-table left-right-20">
+                        <div class="sticky-head">
+                            <div class="table-head">
+                                <table class="sno-border">
+                                    <tr>
+                                        <th class="w30">&nbsp;</th>
+                                        <th class="w100">Last Update</th>
+                                        <th class="w220">Invoice No</th>
+                                        <th class="w300">Payment</th>
+                                        <th class="w100">Amount</th>
+                                        <th class="w120">Balance</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table class="sno-border">
+                                    <tr *ngFor="let list of ledger_data;let i = index">
+                                        <td class="w30">{{i+1}}</td>
+                                        <td class="w100">{{list.date_created | date:'d MMM, y'}}</td>
+                                        <td class="w220"><strong *ngIf="list.invoice_no">Invoice No:</strong>
+                                            {{list.invoice_no}}</td>
+                                        <td class="w300" *ngIf="list.payment_type==''"></td>
+                                        <td class="w300" *ngIf="list.payment_type=='Nfft'"><strong>Mode:
+                                            </strong>{{list.payment_type}} <strong>Transaction Id:</strong>
+                                            {{list.transaction_id}}</td>
+                                        <td class="w300" *ngIf="list.payment_type=='Cheque'"><strong>Mode:</strong>
+                                            {{list.payment_type}} <strong>Bank:</strong> {{list.cheque_bank}}
+                                            <strong>Cheque No:</strong> {{list.cheque_no}} <strong>Date:
+                                            </strong>{{list.cheque_date | date:'d MMM, y'}}
+                                        </td>
+                                        <td class="w100"> &#x20B9; {{list.amount}}</td>
+                                        <td class="w120"> &#x20B9; {{list.balance}}
+                                            <div class="action-btns">
+                                                <button mat-button class="delete"
+                                                    *ngIf="i==0 && login_data.access_level == '1' && login_data.type==''"
+                                                    (click)="deleteUser(list.id)"><i
+                                                        class="material-icons">delete_sweep</i> Delete</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="data-not-available" *ngIf="ledger_data.length== '0'">
+                            <div class="outer">
+                                <div class="iinear">
+                                    <div class="figure" matRipple>
+                                        <div class="header">
+                                            <img src="assets/img/data-not-available-header.svg" alt="">
+                                        </div>
+
+                                        <div class="description">
+                                            <div class="cs-heading">
+                                                <h2>Ledger</h2>
+                                            </div>
+                                            <div class="img">
+                                                <i class="material-icons">error_outline</i>
+                                            </div>
+                                            <div class="psc">
+                                                <p>data not Available</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inside Team Activtiy Start Here  -->
+            <ng-container class="tab-strip" *ngIf=" view_tab=='Activity'">
+                <mat-form-field class="search-select" style="margin-bottom:10px;" appearance="outline">
+                    <mat-select name="list_type" placeholder="Select.." [(ngModel)]="data.list_type"
+                        (ngModelChange)="get_activity_data()">
+                        <mat-option value="all">All Data</mat-option>
+                        <!-- <mat-option value="assign">Assigned Leads</mat-option> -->
+                        <!-- <mat-option value="not_assign">Not Assigned Leads</mat-option> -->
+                        <mat-option value="product_quality">Product Quality</mat-option>
+                        <mat-option value="working_tenure">Working Tenure</mat-option>
+                        <mat-option value="purchase_frequency">Purchase Frequency</mat-option>
+                        <mat-option value="segments_in_gravity">Segments in Gravity</mat-option>
+                        <mat-option value="why_not_all_segments_of_gravity">Why not all segments of Gravity</mat-option>
+                        <mat-option value="dealing_in_how_many_brands">Dealing in how many Brands</mat-option>
+                        <mat-option value="most_selling_brands">Most Selling Brands</mat-option>
+                        <mat-option value="status">Status</mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </ng-container>
+
+
+            <div class="row" *ngIf="view_tab=='Activity'">
+
+                <div class="col s12">
+
+
+                    <div class="cs-table cs-table-scroll">
+                        <div class="stickyTableHead" style="width: fit-content;">
+                            <div class="table-head">
+                                <table>
+                                    <tr>
+                                        <th class="w50 text-center">S.NO.</th>
+                                        <th class="w100">DATE CREATED</th>
+                                        <th class="w150">CREATED BY</th>
+                                        <th class="w100">ACTIVITY TYPE</th>
+                                        <th class="w150 text-center">DISPOSITION TYPE</th>
+                                        <th class="w150 text-center">DISPOSITION NAME</th>
+                                        <th class="w150 text-center">Product Quality</th>
+                                        <th class="w150 text-center">Working Tenure</th>
+                                        <th class="w150 text-center">Purchase Frequency</th>
+                                        <th class="w150 text-center">Segments in Gravity</th>
+                                        <th class="w150 text-center">Why not all segments of Gravity</th>
+                                        <th class="w150 text-center">Dealing in how many brands</th>
+                                        <th class="w150 text-center">Most Selling Brands</th>
+                                        <th class="w150 text-center">Status</th>
+                                        <th class="w150 text-center">REMARK</th>
+                                    </tr>
+                                </table>
+
+                                <!-- <div class="table-head bdrt">
+                      <table >
+                          <tr>
+                              <th class="w50 text-center"></th>
+                              <th class="w100">
+                                  <div class="th-search-acmt">
+                                      <mat-form-field class="example-full-width cs-input select-input">
+                                          <input matInput placeholder="Company Name" name="company_name" (keyup.enter)="getDealersData()" [(ngModel)]="dealers_filter.company_name">
+                                      </mat-form-field>
+                                  </div>
+                              </th>
+                              <th  class="w150" >
+                                  <div class="th-search-acmt">
+                                      <mat-form-field class="example-full-width cs-input select-input">
+                                          <input matInput placeholder="Contact Person" name="contact_person" (keyup.enter)="getDealersData()" [(ngModel)]="dealers_filter.contact_person" >
+                                      </mat-form-field>
+                                  </div>
+                              </th>
+                              <th class="w100">
+                                  <div class="th-search-acmt">
+                                      <mat-form-field class="example-full-width cs-input select-input">
+                                          <input matInput placeholder="Mobile Number/Landine Number" name="mobile" onkeypress="return event.charCode>=48 && event.charCode<=57"  (keyup.enter)="getDealersData()" [(ngModel)]="dealers_filter.mobile" >
+                                      </mat-form-field>
+                                  </div>
+                              </th>
+                              <th class="w150 text-center"></th>
+                              <th class="w150 text-center"></th>
+                              <th class="w150 text-center"></th>
+                          </tr>
+                      </table>
+                  </div> -->
+
+
+                            </div>
+
+
+
+                        </div>
+
+                        <div class="table-container" style="width: fit-content;">
+                            <div class="table-content">
+                                <table>
+                                    <tr *ngFor="let get_dr_activity_list_data of get_dr_activity_list,let i = index">
+                                        <td class="w50 text-center">{{i+1}}</td>
+                                        <td class="w100">{{get_dr_activity_list_data.date_created | date:' d MMM , y,
+                                            hh:mm aa '}}</td>
+                                        <td class="w150">{{get_dr_activity_list_data.created_by_name}}</td>
+                                        <td class="w100">{{get_dr_activity_list_data.activity_type}}</td>
+                                        <td class="w150 text-center">
+                                            {{get_dr_activity_list_data.disposition_type_value}}</td>
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.disposition_name}}</td>
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.product_quality}}</td>
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.working_tenure}}</td>
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.purchase_frequency}}
+                                        </td>
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.segments_in_gravity}}
+                                        </td>
+                                        <td class="w150 text-center">
+                                            {{get_dr_activity_list_data.why_not_all_segments_of_gravity}}</td>
+                                        <td class="w150 text-center">
+                                            {{get_dr_activity_list_data.dealing_in_how_many_brands}}</td>
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.most_selling_brands}}
+                                        </td>
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.status}}</td>
+
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.remark}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="data-not-available mt50" *ngIf="!get_dr_activity_list.length">
+                                <div class="outer">
+                                    <div class="iinear">
+                                        <div class="figure" matRipple>
+                                            <div class="header">
+                                                <img src="assets/img/data-not-available-header.svg" alt="">
+                                            </div>
+
+                                            <div class="description">
+                                                <div class="cs-heading">
+                                                    <h2>Activity</h2>
+                                                </div>
+                                                <div class="img">
+                                                    <i class="material-icons">error_outline</i>
+                                                </div>
+                                                <div class="psc">
+                                                    <p>Data Not Available</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+            <!-- Inside Team Activtiy End Here  -->
+
+        </div>
+    </div>
+    <div class="fix-btn" *ngIf="login_data.user_type == 'Inside Sales Team'">
+        <a *ngIf="view_tab=='Activity'" class="bottom-btn" matTooltip="ADD NEW" matTooltipPosition="above"
+            mat-raised-button routerLink="/add-activity/{{dr_id}}/{{dr_detail.type}}/dr_detail_page"><i
+                class="material-icons">add</i></a>
+    </div>
+</div>

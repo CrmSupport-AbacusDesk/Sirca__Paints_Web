@@ -1,0 +1,286 @@
+<div class="main-container pb0">
+
+  <div *ngIf="excel_loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+
+
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/report.svg" class="h-icon h20">
+      <div class="heading-text">
+        <h2>Area Target</h2>
+      </div>
+    </div>
+    
+    <div class="left-auto" >
+      
+      <ng-container>
+        <mat-form-field class="search-select" appearance="outline">
+          <mat-select name="list_type"  [(ngModel)]="search_val.list_type" (ngModelChange)="start = 0 ; get_area_target()">
+            <mat-option value="all">All Data</mat-option>
+            <mat-option value="assign">Assign Companies</mat-option>
+            <mat-option value="not_assign">Not Assign Areas</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+      
+      
+      <ul class="mr10">
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="get_area_target('refresh') "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      
+      
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; get_area_target()" [disabled]="pagenumber == 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; get_area_target()" [(ngModel)]="pagenumber"  min="1" max={{total_page}}>
+          </li>
+          
+          <li>
+            <button mat-button class="right-btn"  (click)="start=start+page_limit; get_area_target()" [disabled]="pagenumber == total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="update-block flat flat-block ml30" [ngClass]="selected_areas.length ? 'pl10' : ''" >
+        <ng-container *ngIf="selected_areas.length">
+          <p>Total : &#8377; {{selected_area_sum}}</p>
+          <mat-form-field class="search-select" appearance="outline">
+            <mat-select name="discount_type"  [(ngModel)]="selected_dr_id">
+              <div class="search-block">
+                <input type="text" placeholder="Search.." (input)="filter_dr(dr_name)" #dr_namee="ngModel" [(ngModel)]="dr_name">
+              </div>
+              <mat-option *ngFor="let dr_data of dr_list" value="{{dr_data.dr_id}}">{{dr_data.company_name}}</mat-option>
+              <mat-option disabled="" *ngIf="!dr_list.length">No data Found</mat-option>
+            </mat-select>
+            
+          </mat-form-field>
+          
+          <button mat-raised-button class="mr10" color="primary" [disabled]="!selected_dr_id" (click)="update_dr_area();selected_dr_id=''">Update</button>
+        </ng-container>
+        <button *ngIf="view_add" mat-raised-button color="accent"  (click)="upload_excel()"><i class="material-icons">backup</i> Upload File</button>
+      </div>
+      
+      
+    </div>
+  </div>
+  
+  
+  <div class="cs-table cs-table-scroll no-tab">
+    <div class="stickyTableHead" style="width: fit-content;">
+      <div class="table-head">
+        <table>
+          <tr>
+            <th class="w50">S No</th>
+            <th class="w40"></th>
+            <th class="w150">State</th>
+            <th class="w150">District</th>
+            <th class="w150">Area </th>
+            <th class="w140">Target Potential</th>
+            <th class="w140">Assign Target</th>
+            <th class="w100">Last Update</th>
+            <th class="w230"> Company Name</th>
+            <th class="w90">Assign Date</th>
+            <th class="w130 text-center">Action</th>      
+          </tr>
+        </table>
+      </div>
+      <div class="table-head bdrt" >
+        <table class="sno-border">
+          <tr>
+            <th class="w50"></th>
+            <th class="w40"></th>
+            
+            <th class="w150">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="State. . ." name="state" [(ngModel)]="search_val.state" (keyup.enter)="start = 0 ; get_area_target()">
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w150">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="District . ." name="district" [(ngModel)]="search_val.district" (keyup.enter)="start = 0 ;get_area_target()">
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w150">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Area . ." name="area" [(ngModel)]="search_val.area" (keyup.enter)="start = 0 ;get_area_target()">
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w140">
+              <span>
+                Total : &#8377; {{sum_of_filter_data.fixed_total_target && sum_of_filter_data.fixed_total_target!='' && sum_of_filter_data.fixed_total_target!= null ? sum_of_filter_data.fixed_total_target : '0'}} 
+              </span> 
+            </th>
+            
+            <th class="w140">
+              <span>
+                Total : &#8377; {{sum_of_filter_data.total_target && sum_of_filter_data.total_target!='' && sum_of_filter_data.total_target!= null ? sum_of_filter_data.total_target : '0'}} 
+              </span> 
+            </th>
+            
+            <th class="w100">
+              
+            </th>
+            
+            <th class="w230">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Company Name . ." name="company_name" [(ngModel)]="search_val.company_name" (keyup.enter)="start = 0 ;get_area_target()">
+                </mat-form-field>
+              </div>
+            </th>
+            
+            <th class="w90">
+              
+            </th>
+            
+            <th class="w130"></th>
+          </tr>
+        </table>
+      </div>
+    </div>
+    
+    <div class="table-container ">
+      <div class="table-content" style="width: fit-content;">
+        <table>
+          <tr *ngFor="let target_data of area_target_list; let i = index;">
+            <td  class="w50">{{index+i+1}}</td>
+            <td class="w40 text-center">
+              <mat-checkbox *ngIf="(target_data.this_area_assign_to_dr== '0' || target_data.this_area_assign_to_dr_secondary== '0') && view_edit" [checked]="target_data.this_area_assign_to_dr== '1'" (change)="select_areas_method(target_data.id);dr_name=''; dr_list = dr_UserList2;"></mat-checkbox>
+              <mat-checkbox *ngIf="target_data.this_area_assign_to_dr== '1' && target_data.this_area_assign_to_dr_secondary== '1'" [disabled]=true [indeterminate]=true></mat-checkbox>
+            </td>
+            <td class="w150">
+              <span *ngIf="edit_fields != target_data.id">
+                {{target_data.state}}
+              </span>
+              <div class="input-block" *ngIf="edit_fields == target_data.id">
+                <input placeholder="state" name="state" #state="ngModel" [(ngModel)]="target_data.state">
+              </div>
+            </td>
+            <td class="w150">
+              <span *ngIf="edit_fields != target_data.id">
+                {{target_data.district}}
+              </span>
+              <div class="input-block" *ngIf="edit_fields == target_data.id">
+                <input  placeholder="District" name="district" #district="ngModel" [(ngModel)]="target_data.district">
+              </div>
+            </td>
+            <td class="w150">
+              <span *ngIf="edit_fields != target_data.id">
+                {{target_data.area_name}}
+              </span>
+              <div class="input-block" *ngIf="edit_fields == target_data.id">
+                <input  placeholder="Area Name" name="area_name" #area_name="ngModel" [(ngModel)]="target_data.area_name">
+              </div>
+            </td>
+            <td  class="w140">&#8377; {{target_data.fixed_target}}</td>
+            <td class="w140">
+              <span *ngIf="edit_fields != target_data.id">
+                &#8377; {{target_data.monthly_target}}
+              </span>
+              <div class="input-block" *ngIf="edit_fields == target_data.id">
+                <input  placeholder="Target" name="monthly_target" #monthly_target="ngModel" onkeypress="return event.charCode >= 48 && event.charCode <= 57" [(ngModel)]="target_data.monthly_target">
+              </div>
+            </td>
+            <td  class="w100">{{target_data.last_updated_on && target_data.last_updated_on!='' && target_data.last_updated_on != '0000-00-00'  ? (target_data.last_updated_on | date : 'd MMM, y'):'--' }}</td>
+            <td class="w230">
+              <span>
+                {{target_data.company_name && target_data.company_name!= '' && target_data.company_name!= null  ? target_data.company_name : '--'}}
+              </span>
+            </td>
+            <td  class="w90">{{target_data.assigned_on && target_data.assigned_on!='' && target_data.assigned_on != '0000-00-00'  ? (target_data.assigned_on | date : 'd MMM, y'):'--' }}</td>
+            <td class="w130" >
+              <div class="action-btn-group">
+                <button *ngIf="edit_fields != target_data.id && view_edit" mat-button class="delete-mat" (click)="edit_fields = target_data.id">
+                  <i class="material-icons green-clr">edit </i>
+                </button>
+                
+                <button mat-button class="delete-mat" *ngIf="target_data.this_area_assign_to_dr== '1' && target_data.this_area_assign_to_dr_secondary== '1' && view_edit" (click)="remove_assign_dr(target_data.id)">
+                  <i class="material-icons green-clr" mat-button matTooltip="Re-assign">autorenew</i>
+                </button>
+                
+                <button *ngIf="edit_fields == target_data.id" mat-button class="delete-mat" (click)="target_data.monthly_target!='' && target_data.area_name!= '' && target_data.district!='' && target_data.state!='' ?update_area_details(i) : show_error()">
+                  <i class="material-icons green-clr" mat-button matTooltip="Save">save</i>
+                </button>
+                
+                <button *ngIf="view_delete"  mat-button class="delete-mat" (click)="delete_area_row(target_data.id)"><i class="material-icons red-clr">delete_sweep</i>
+                </button>
+              </div>
+            </td>
+          </tr>
+          
+          <ng-container *ngFor="let lead of skelton">
+            <tr class="sk-loading"  *ngIf="loader">
+              <td class="w50"><div>&nbsp;</div></td>
+              <td class="w40"><div>&nbsp;</div></td>
+              <td class="w150"><div>&nbsp;</div></td>
+              <td class="w150"><div>&nbsp;</div></td>
+              <td class="w150"><div>&nbsp;</div></td>
+              <td class="w140"><div>&nbsp;</div></td>
+              <td class="w140"><div>&nbsp;</div></td>
+              <td class="w100"><div>&nbsp;</div></td>
+              <td class="w230"><div>&nbsp;</div></td>
+              <td class="w90"><div>&nbsp;</div></td>
+              <td class="w130"><div>&nbsp;</div></td>
+            </tr>
+          </ng-container>
+        </table>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  <div class="data-not-available" *ngIf="data_not_found==true">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+          
+          <div class="description">
+            <div class="cs-heading">
+              <h2>Distributor Target</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>Data Not Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="fix-btn">
+    <a *ngIf="!excel_loader" class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="download_excel()"><img src="assets/img/excel.svg"></a>
+  </div>
+  
+</div>
+
+

@@ -1,0 +1,196 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/report.svg" class="h-icon h20">
+      <div class="heading-text">
+        <h2>ItemWise Monthly Sales Report</h2>
+      </div>
+    </div>
+    <div class="left-auto">
+      <div class="from-fields cs-flex">
+        <label>Type</label>
+        
+        <select  class="select-filter" name="type" [(ngModel)]="data.type">
+          <option selected disabled value="">Select Order Type</option>
+          <option _ngcontent-c1 value="Primary">Primary Order</option>
+          <option _ngcontent-c1 value="Secondry">Secondry Order</option>
+        </select>
+      
+      
+        <label>Month</label>
+       
+        <select class="select-filter" name ="month" [(ngModel)]="data.month">
+          <option selected disabled value="">Select Month</option>
+          <option value="01">January</option>
+          <option value="02">February</option>
+          <option value="03">March</option>
+          <option value="04">April</option>
+          <option value="05">May</option>
+          <option value="06">June</option>
+          <option value="07">july</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      
+      
+        <label>Year</label>
+       
+        <select class="select-filter" name ="year"  [(ngModel)]="data.year" >
+          <option selected disabled value="">Select Year</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+        </select>
+
+       <label>Category</label>
+         <select (change)="getSubCategoryList()" class="select-filter" name="category_id"  #val="ngModel" [(ngModel)]="data.val"> 
+           <option disabled="">Select category</option> 
+          <option *ngFor="let val of category_list"  (keyup.enter)=" getSubCategoryList()"  value="{{val}}">{{val}}</option>
+        </select>
+        <label>Series</label>
+        <select class="select-filter" name="subcategory_id" #use = "ngModel" [(ngModel)]="data.use">
+          <option value=" "  selected></option>
+          <option disabled value="null"></option>
+           <option  disabled ="">Select subcategory</option> 
+          <option *ngFor="let use of subCategory_list"  value="{{use.sub_category}}">{{use.sub_category}}</option>
+        </select> 
+        <!-- <div class="control-field mr15">
+          <mat-form-field class="cs-input date-column infix-bodr">
+            <input matInput [matDatepicker]="picker" placeholder="From" name="start_date" [(ngModel)]="data.start_date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div> -->
+<!--         
+        <div class="control-field mr15">
+          <mat-form-field class="cs-input date-column infix-bodr">
+            <input matInput [matDatepicker]="pickers" placeholder="To" name="end_date" [(ngModel)]="data.end_date">
+            <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+            <mat-datepicker #pickers></mat-datepicker>
+          </mat-form-field>
+        </div> -->
+      </div>
+      <div class="cs-btn mt5">
+        <div class="in-btn">
+          <button mat-raised-button color="accent"  >Go</button>
+        </div>
+      </div>
+    </div> 
+
+  </div>
+  
+  <div class="container-outer">
+    <mat-spinner class="loader" *ngIf="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head" style="top: 145px;">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    
+                    <th class="w150">Category</th>
+                    <th class="w150">Sub-category</th>
+                    <!-- <th class="w100">Primary sale</th>
+                    <th class="w100">Secondary sale</th> -->
+                    <th class="w150">Item Name</th>
+                    <th class="w100">Item Quantity</th>
+                    <th class="w100">Order Value </th>
+                    <th class="w100">Dispatch Value</th>
+                    <th class="w100">Pending value</th>
+
+                  </tr>
+                </table>
+              </div>
+
+             
+            </div>
+            
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr>
+                    <td class="w150">Showers</td>
+                    
+                    <td class="w150">Overhead Showers</td>
+                    <td class="w150">Gravity Shower 1</td>
+                    <td class="w100">575</td>
+                    <td class="w100">22000</td>
+                    <td class="w100">12000</td>
+                    <td class="w100">10000</td>
+
+                  </tr>
+                  <tr>
+                    <td class="w150">Faucets parts</td>
+                    
+                    <td class="w200">Disk</td>
+                    <td class="w100">Gravity shower 2</td>
+                    <td class="w100">222</td>
+                    <td class="w100">35000</td>
+                    <td class="w100">12000</td>
+                    <td class="w100">23000</td>
+                </tr>
+
+                <ng-container *ngFor="let lead of skelton">
+                  <tr class="sk-loading"  *ngIf="loader">
+                    <td><div>&nbsp;</div></td>
+                    <td><div>&nbsp;</div></td>
+                    <td><div>&nbsp;</div></td>
+                    <td><div>&nbsp;</div></td>
+                    <td><div>&nbsp;</div></td>
+                    <td><div>&nbsp;</div></td>
+                    <td><div>&nbsp;</div></td>
+                    <td><div>&nbsp;</div></td>
+                  </tr>
+                </ng-container>
+
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="data-not-available" *ngIf="data_not_found == true">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+          
+          <div class="description">
+            <div class="cs-heading">
+              <h2></h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>Data Not Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="fix-btn" *ngIf="product_data.length!='0'">
+  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+</div>
+<div class="h50"></div>

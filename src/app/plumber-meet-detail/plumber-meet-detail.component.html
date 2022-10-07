@@ -1,0 +1,314 @@
+<div class="main-container" >
+
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div><p>Loading....</p></div>
+        </mat-spinner>
+    </div>
+    <div class="middle-container">
+        <div class="page-heading" >
+            <div class="heading-text bc-space">
+                <div class="back-btn" (click)="back()">
+                    <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+                </div>
+                <h2>Plumber Meet Detail</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-outer">
+        <div class="container" >
+            <div class="row" >
+                <div class="pr10" [ngClass]="participents_list.length ? 'col s6':'col s12'"  >
+                    <div class="details-info" >
+                        <div class="basic-details">
+                            <div class="cs-heading">
+                                <h2>Basic Information</h2>
+                            </div>
+                            <div class="cs-figure">
+                                <ul class="minus-top">
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Company Name</span>
+                                                <p>{{plumber_meet_detail.company_name && plumber_meet_detail.company_name !='' ? plumber_meet_detail.company_name : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Contact Person</span>
+                                                <p>{{plumber_meet_detail.contact_person && plumber_meet_detail.contact_person !='' ? plumber_meet_detail.contact_person : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Mobile No.</span>
+                                                <p>{{plumber_meet_detail.contact_person_mobile && plumber_meet_detail.contact_person_mobile !='' ? plumber_meet_detail.contact_person_mobile : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="minus-top">
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Created By</span>
+                                                <p>{{plumber_meet_detail.created_by_type=='Executive' ?( plumber_meet_detail.created_by_name && plumber_meet_detail.created_by_name !='' ? plumber_meet_detail.created_by_name : '--') : ( plumber_meet_detail.created_by_dr_name && plumber_meet_detail.created_by_dr_name !='' ? plumber_meet_detail.created_by_dr_name : '--')}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Date Of Meeting</span>
+                                                <p>{{plumber_meet_detail.date_of_meeting && plumber_meet_detail.date_of_meeting !='' ? (plumber_meet_detail.date_of_meeting | date :' d MMM, y hh:mm a') : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li [ngClass]="plumber_meet_detail.status == 'Pending' ? '': plumber_meet_detail.status == 'Approved' ? 'green-bg' : plumber_meet_detail.status == 'Reject'? 'red-bg':'complete-bg'">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Status</span>
+                                                <p>{{plumber_meet_detail.status && plumber_meet_detail.status !='' ? plumber_meet_detail.status : '--'}}</p>
+                                                <a *ngIf="plumber_meet_detail.status && plumber_meet_detail.status !='' && plumber_meet_detail.status =='Pending'" class="edit-column" mat-button matTooltip="Edit senior status" (click)="change_plumber_meet_status(plumber_meet_id,plumber_meet_detail.status)"><i class="material-icons">create</i></a>
+
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="minus-top">
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Total (Budget Approx.)</span>
+                                                <p>&#8377; {{plumber_meet_detail.total_budget && plumber_meet_detail.total_budget !='' ? plumber_meet_detail.total_budget : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Total No. Of Plumber</span>
+                                                <p>{{plumber_meet_detail.total_member && plumber_meet_detail.total_member !='' ? plumber_meet_detail.total_member : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer" >
+                                            <div class="inner">
+                                                <!-- <span>Description</span> -->
+                                                <span>Suggestion N Feedback</span>
+                                                <p>{{plumber_meet_detail.description && plumber_meet_detail.description !='' ? plumber_meet_detail.description : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <!-- By Abhishek Mandal Start Here  -->
+                                <ul class="minus-top">
+                                  <li>
+                                      <div class="outer">
+                                          <div class="inner">
+                                              <span>Current Gravity Monthly Sale Average</span>
+                                              <p>&#8377; {{plumber_meet_detail.sale_average && plumber_meet_detail.sale_average !='' ? plumber_meet_detail.sale_average : '--'}}</p>
+                                          </div>
+                                      </div>
+                                  </li>
+                                  <li>
+                                      <div class="outer">
+                                          <div class="inner">
+                                              <span>Working Segment</span>
+                                              <p>{{plumber_meet_detail.working_segment_name && plumber_meet_detail.working_segment_name !='' ? plumber_meet_detail.working_segment_name : '--'}}</p>
+                                          </div>
+                                      </div>
+                                  </li>
+                                  <li>
+                                      <div class="outer" >
+                                          <div class="inner">
+                                              <!-- <span>Description</span> -->
+                                              <span>Cp fittings series dealing in gravity</span>
+                                              <p>{{plumber_meet_detail.how_many_cp_fitting && plumber_meet_detail.how_many_cp_fitting !='' ? plumber_meet_detail.how_many_cp_fitting : '--'}}</p>
+                                          </div>
+                                      </div>
+                                  </li>
+                                </ul>
+
+                              <ul class="minus-top">
+                                <!-- <li>
+                                    <div class="outer">
+                                        <div class="inner">
+                                            <span>Gravity Products Display</span>
+                                            <p>{{plumber_meet_detail.product_display && plumber_meet_detail.product_display !='' ? plumber_meet_detail.product_display : '--'}}</p>
+                                        </div>
+                                    </div>
+                                </li> -->
+                                <li>
+                                    <div class="outer">
+                                        <div class="inner">
+                                            <span>Gravity Branding In His Store</span>
+                                            <p>{{plumber_meet_detail.branding_item && plumber_meet_detail.branding_item !='' ? plumber_meet_detail.branding_item : '--'}}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="outer" >
+                                        <div class="inner">
+                                            <!-- <span>Description</span> -->
+                                            <span>Intrested In Other Segment</span>
+                                            <p>{{plumber_meet_detail.intrested_segment_name && plumber_meet_detail.intrested_segment_name !='' ? plumber_meet_detail.intrested_segment_name : '--'}}</p>
+                                        </div>
+                                    </div>
+                                </li>
+                              </ul>
+
+                              
+                              <ul class="minus-top">
+                                <li>
+                                    <div class="outer" >
+                                        <div class="inner">
+                                            <span>Organiser Name</span>
+                                            <p>{{plumber_meet_detail.organiser_name && plumber_meet_detail.organiser_name !='' ? plumber_meet_detail.organiser_name : '--'}}</p>
+                                        </div>
+                                        <div class="action-btns">
+                                            <a *ngIf="plumber_meet_detail.status && plumber_meet_detail.status == 'Approved'" class="edit-column" mat-button matTooltip="Change Organiser Name" matTooltipPosition="above" (click)="change_organiser_name(plumber_meet_detail.organiser_name)" ><i class="material-icons">create</i></a>
+                                          </div>
+                                    </div>
+                                </li>
+                            </ul>
+                                <!-- By Abhishek Mandal End Here  -->
+
+                                <ul class="minus-top" *ngIf="plumber_meet_detail.remarks && plumber_meet_detail.remarks !=''">
+                                    <li>
+                                        <div class="outer" >
+                                            <div class="inner">
+                                                <span>{{plumber_meet_detail.status =='Approved' || plumber_meet_detail.status =='Complete' ? 'Approved' : plumber_meet_detail.status =='Reject' ? plumber_meet_detail.status : '' }} Remark</span>
+                                                <p>{{plumber_meet_detail.remarks && plumber_meet_detail.remarks !='' && plumber_meet_detail.remarks !=null ? plumber_meet_detail.remarks : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="details-info mt15" *ngIf="plumber_meet_detail.status == 'Complete'" >
+                        <div class="basic-details">
+                            <div class="cs-heading">
+                                <h2>Expense Information</h2>
+                            </div>
+                            <div class="cs-figure">
+                                <ul class="minus-top">
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Expense</span>
+                                                <p>{{plumber_meet_detail.expense && plumber_meet_detail.expense !='' ? plumber_meet_detail.expense : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Expense Remark</span>
+                                                <p>{{plumber_meet_detail.expense_remark && plumber_meet_detail.expense_remark !='' ? plumber_meet_detail.expense_remark : '--'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col s6">
+                    <div class="details-info flat " *ngIf="participents_list.length" >
+                        <div class="basic-details">
+                            <div class="cs-heading mb0">
+                                <h2>Total Participants </h2>
+                            </div>
+
+                            <div class="cs-table left-right-10">
+                                <div class="table-head">
+                                    <table>
+                                        <tr>
+                                            <th class="w50">S.No</th>
+                                            <th>Participent Name</th>
+                                            <th class="w110">Mobile No.</th>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="table-container pb0" >
+                                    <div class="table-content none-shadow">
+                                        <table>
+                                            <tr *ngFor="let participent_data of participents_list ; let i = index">
+                                                <td class="w50">{{i+1}}</td>
+                                                <td>{{participent_data.participent_name && participent_data.participent_name !='' ? (participent_data.participent_name | titlecase): '--'}}</td>
+                                                <td class="w110">{{participent_data.participent_mobile && participent_data.participent_mobile !='' ? participent_data.participent_mobile : '--'}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row mb10" >
+              <div class="col s12">
+                  <div class="details-info" *ngIf="add_plumber_meet_images.length">
+                      <div class="basic-details">
+                          <div class="cs-heading">
+                              <h2>Upload Images</h2>
+                          </div>
+                          <div class="meet-gallery">
+                            <div class="img-video"  *ngFor="let images of add_plumber_meet_images">
+                                <img (click)="imageModel(images.images)" src="{{images.images}}">
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+            </div>
+
+            <div class="row" >
+                <div class="col s12">
+                    <div class="details-info" *ngIf="plumber_meet_images.length || plumber_meet_videos.length">
+                        <div class="basic-details">
+                            <div class="cs-heading">
+                                <h2>After Completed Plumber Meet Gallery </h2>
+                                <div class="uppr-one m-right-data">
+                                    <div class="tabs">
+                                      <ul>
+                                        <li><a [ngClass]="active_tab == 'Image' ? 'active' : ''" (click)="active_tab = 'Image'">Images</a></li>
+                                        <li><a [ngClass]="active_tab == 'Videos' ? 'active' : ''" (click)="active_tab = 'Videos'">Videos</a></li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                            </div>
+
+
+                            <div class="meet-gallery" *ngIf="active_tab == 'Image'">
+                                <div class="img-video"  *ngFor="let images of plumber_meet_images">
+                                    <img (click)="imageModel(images.img_path)" src="{{images.img_path}}">
+                                </div>
+
+                            </div>
+
+                            <div class="meet-gallery" *ngIf="active_tab == 'Videos'">
+                                <div class="img-video"  *ngFor="let video of plumber_meet_videos">
+                                    <video (playing)="onPlayingVideo($event)" width="100%" height="100%" controls><source target="_blank" [src]="video.video_path" type="video/mp4"></video><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

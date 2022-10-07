@@ -1,0 +1,167 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/report.svg" class="h-icon h20">
+      <div class="heading-text">
+        <h2>SalesPerson Wise Report</h2>
+      </div>
+    </div>
+    
+    
+    
+    <div class="left-auto">
+      
+      <div class="uppr-one m-right-data">
+        <ul>
+          <li class="refresh-area mr0 after-none">
+            <a class="refresh-btn" mat-raised-button (click)="refreshh() "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    <div class="filters">
+           
+      <mat-form-field  appearance="outline">
+        <mat-label>State</mat-label>
+        <mat-select (change)="sales_person_data()" class="select-filter" name="state" #state="ngModel"  [(ngModel)]="data.state">
+          <mat-option *ngFor="let state of state_list"(keyup.enter)="sales_person_data()"(click)="sales_person_data()" value="{{state}}">{{state}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+      <mat-form-field  appearance="outline">
+        <mat-label>SalesPerson</mat-label>
+        <mat-select  class="select-filter" name="person" #person="ngModel"  [(ngModel)]="data.person">
+          <mat-option  *ngFor="let person of sales_person" (keyup.enter)="sales_person_data()" (click)="sales_person_data()" value="{{person.id}}">{{person.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field  appearance="outline">
+        <mat-label>Date From</mat-label>
+        <input matInput [matDatepicker]="picker"  name="date_from" [(ngModel)]="data.date_from" readonly [max]="today" (ngModelChange)="date_flag = true">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field  appearance="outline">
+        <mat-label>Date To</mat-label>
+        <input matInput [matDatepicker]="pickers" placeholder="To" name="date_to" [(ngModel)]="data.date_to" readonly [min]="data.date_from" [max]="today" (ngModelChange)="date_flag = true">
+        <mat-datepicker-toggle matSuffix [for]="pickers"></mat-datepicker-toggle>
+        <mat-datepicker #pickers></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field  appearance="outline">
+        <mat-label>Data Type</mat-label>
+        <mat-select  class="select-filter" name="data_type" [(ngModel)]="data.data_type">
+          <mat-option  value="total_item">Total Item</mat-option>
+          <mat-option  value="total_qty">Total Quantity</mat-option>
+          <mat-option  value="dispatch_qty"> Dispatch Quantity</mat-option>
+          <mat-option  value="order_val">Order Value</mat-option>
+          <mat-option  value="dispatch_val">Dispatch Value</mat-option>
+          <!-- <option  value="pending_val">Pending Order Value</option> -->
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field  appearance="outline">
+        <mat-label>Type</mat-label>
+        <mat-select class="select-filter" name="order_type" #order_type="ngModel"  [(ngModel)]="data.order_type">
+          <mat-option value="" disabled>Select Type</mat-option>
+          <mat-option  value="Primary">Primary Type</mat-option>
+          <mat-option  value="Secondary">Secondary Type</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="accent" [disabled]="((!data.date_from)||(!data.date_to)||(!data.data_type) )" (click)="submit();date_flag = true">Go</button>
+      
+    </div>
+    <mat-spinner class="loader" *ngIf="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+    <div class="container" *ngIf="product_data.length != 0">
+      <div class="excel-table page-scroll">
+        <div class="cs-table">
+          <div class="stickyHead">
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th class="w45">Sr.No</th>
+                  <th class="w180">Sales Person</th>
+                  <th class="w100">State</th>
+                  <th class="w100">City</th>
+                  <th class="w200">Company Name</th>
+                  <th class="w200">Company Type</th>
+                  <th class="w130" *ngFor= "let data of allMonthsInPeriod"> {{data}}</th>
+                  <th class="w80">Grand Total</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+          
+          <div class="table-container">
+            <div class="table-content">
+              <table>
+                <tr *ngFor="let list of finalReportData;let i=index;">
+                  <!-- <ng-container *ngIf="list.Assigned_User_List && list.Assigned_User_List[0]!=null;let j=index;"> -->
+                    <td class="w45">{{i+1}}</td>
+                    <td class="w180">{{list.Assigned_User_List?list.Assigned_User_List:'--'}}</td>
+                    <td class="w100">{{list.state?list.state:'N/A'}}</td>
+                    <td class="w100">{{list.city?list.city:'N/A'}}</td>
+                    <td class="w200">{{list.company_name?list.company_name:'N/A'}}{{list.new_dr && list.new_dr!=''?(list.new_dr=='No') ? ' - OLD' : '- New':'N/A'}}</td>
+                    <td class="w200">{{list.type && list.type!= '' ?list.type == '1' ? 'Channel Partner' : list.type == '7' ? 'Direct Delaer' : 'Reatil Partner' :'N/A'}}</td>
+
+                    <td class="w130" *ngFor="let data of allMonthsInPeriod">
+                      <div *ngFor="let column of list | keyvalue "> 
+                        <div *ngIf= " column.key == data">{{column.value?column.value:0}} </div>
+                      </div>
+                    </td>
+                    <td class="w80">{{list.total?list.total:0}}</td>
+                    
+                    
+                  </tr>
+                  
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <div class="suggestion-box" *ngIf="product_data.length == 0 && data_not_found!=true">
+        <img src="assets/img/select_please.jpg">
+      </div>  
+      
+    </div>
+    
+    
+    <div class="data-not-available" *ngIf="data_not_found == true">
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            
+            <div class="description">
+              <div class="cs-heading">
+                <h2></h2>
+              </div>
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>Data Not Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="see-more-item" *ngIf="showSeeMore">
+      <button mat-raised-button color="accent" (click)="frontEndPagination(10)">
+        See more 
+        <i class="material-icons">keyboard_arrow_down</i>
+      </button>
+    </div>
+  </div>
+  <div class="fix-btn">
+    <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+    
+  </div>
+  

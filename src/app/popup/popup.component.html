@@ -1,0 +1,110 @@
+
+<div class="edit-modal" *ngIf = "!data.comes_from">
+
+
+
+  <p class="heading">Add Primary Order</p>
+
+  <div mat-dialog-content>
+
+
+<!--    <mat-list *ngFor="let row1 of lead_detail1.leaddata">-->
+<!--      <mat-list-item >-->
+<!--        {{row1.company_name}}ssssa-->
+<!--      </mat-list-item>-->
+<!--    </mat-list>-->
+
+
+    <div class="from-fields">
+      <div class="row">
+
+        <div class="col s12 padding0">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <mat-select placeholder="Lead Convert" name="lead_convert"  [(ngModel)]="lead_detail.lead_convert"  >
+                <mat-option value="1" ><small>Channel Partner</small></mat-option>
+                <mat-option value="7" ><small>Direct Dealers</small></mat-option>
+                <mat-option value="3" ><small>Retail Partner</small></mat-option>
+              </mat-select>
+
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="control-field col s12" >
+            <mat-form-field class="cs-input" *ngIf="lead_detail.lead_convert==='3'">
+
+              <mat-select placeholder="Channel Partner List"  name="dr_id" [(ngModel)]="lead_detail.dr_id">
+                 <mat-option [value]="row1.id" *ngFor="let row1 of lead_detail.leaddata"><small> {{row1.company_name}}</small>
+                 </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+
+
+
+        <!-- <th class="w200"> -->
+          <!-- <div class="th-search"> -->
+            <!-- <select (change)="distributorList()" name="state" [(ngModel)]="search_val.state"> -->
+              <!-- <option value="">Channel Partner List</option> -->
+              <!-- <option *ngFor="let val of all_distributors">{{val.company_name}}</option> -->
+            <!-- </select> -->
+          <!-- </div> -->
+        <!-- </th> -->
+
+
+
+
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="accent" (click)="submit_sales_invoice1()">Save</button>
+  </div>
+</div>
+  <!-- social media lead status edit button -->
+<div class="edit-modal" *ngIf = "data.comes_from == 'lead_detail_page_for_lead_status_update'">
+
+  <p class="heading">Update Lead Status</p>
+
+  <div mat-dialog-content>
+
+    <div class="from-fields">
+      <div class="row">
+
+        <div class="col s12 padding0">
+          <div class="control-field">
+            <mat-form-field class="cs-input">
+              <mat-select placeholder="Lead Status" name="lead_status" #lead_status="ngModel" [(ngModel)]="lead_status_data.lead_status" (click) = "get_dead_reason_list()">
+                <mat-option *ngFor="let lead_status_listing_data of lead_status_listing_array" [value] ="lead_status_listing_data.lead_status"><small>{{lead_status_listing_data.lead_status}}</small></mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="control-field col s12" >
+            <mat-form-field class="cs-input" *ngIf="lead_status_data.lead_status == 'Dead'">
+              <mat-select placeholder="Lead Dead Reason"  name="dr_id" #dead_reason="ngModel" [(ngModel)]="lead_status_data.dead_reason">
+                 <mat-option [value]="lead_dead_reason_data.dead_reason" *ngFor="let lead_dead_reason_data of dead_reason_listing_array"><small> {{lead_dead_reason_data.dead_reason}}</small>
+                 </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    <button mat-raised-button color="accent" (click)="update_lead_status()">Save</button>
+  </div>
+</div>
+<!-- social media lead status edit button end here-->

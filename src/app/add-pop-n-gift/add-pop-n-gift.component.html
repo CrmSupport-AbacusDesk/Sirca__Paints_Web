@@ -1,0 +1,128 @@
+
+<div class="main-container" >
+    <div class="middle-container">
+        <div class="page-heading">
+            <div class="heading-text bc-space">
+                <div class="back-btn" (click)="back()">
+                    <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+                </div>
+                <h2>Add Pop N Gifts</h2>
+            </div>
+        </div>
+    </div>
+    
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div><p>Loading....</p></div>
+        </mat-spinner>
+    </div>
+    <form #f="ngForm" (ngSubmit)=" f.valid && submitPopNGift()" >
+        <div class="container-outer">
+            <div class="container" >
+                <div class="row">
+                    <div class="col s12">
+                        <div class="sprate-box">
+                            <div class="cs-heading">
+                                <h2>ADD GIFT DETAILS</h2>
+                                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+                            </div>
+                            <mat-divider class="left-right-15 mt10"></mat-divider>
+                            <div class="from-fields">
+                                <div class="row pl10">
+                                    <div class="col s4 pl0">
+                                        <div class="row">
+                                            <div class="col s12 pl0">
+                                                <div class="control-field">
+                                                    <mat-form-field class="cs-input">
+                                                        <input matInput placeholder="Gift Name" name="gift_name" #gift_name="ngModel" [(ngModel)]="data.gift_name" [ngClass]="{'has-error' : gift_name.invalid } " required>
+                                                        <mat-autocomplete #auto="matAutocomplete">
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        
+                                        <div class="row">
+                                            
+                                            <div class="col s6 pl0">
+                                                <div class="control-field">
+                                                    <mat-form-field class="cs-input">
+                                                        <input matInput placeholder="Gift Points" onkeypress="return event.charCode >= 48 && event.charCode <= 57" name="gift_points" #gift_points="ngModel" [(ngModel)]="data.gift_points" [ngClass]="{'has-error' : gift_points.invalid } " required>
+                                                        <mat-autocomplete #auto="matAutocomplete">
+                                                        </mat-autocomplete>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div> 
+                                            
+                                            <div class="col s6 pl0">
+                                                <div class="control-field">
+                                                    <mat-form-field class="cs-input">
+                                                        <mat-label>Select UOM</mat-label>
+                                                        <mat-select name="u_o_m" placeholder="Unit Of Measurement" #u_o_m="ngModel"  [(ngModel)]="data.u_o_m" required>
+                                                            <mat-option disabled="">Select Unit Of Measurement</mat-option>
+                                                            <mat-option value="Person">Person</mat-option>
+                                                            <mat-option value="PCs.">PCs.</mat-option>
+                                                            <mat-option value="Sq. Feet">Sq. Feet</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div> 
+                                        
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col s8 pl0">
+                                        <div class="control-field">
+                                            <mat-form-field class="cs-input">
+                                                <!-- <mat-label>Description</mat-label> -->
+                                                <textarea matInput placeholder="Gift Description ..." class="h113" name="gift_description" #gift_description="ngModel" [(ngModel)]="data.gift_description"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col s4 pl0">
+                                        <div class="cs-file">
+                                            <ul class="product-images">
+                                                <li class="multi-images">
+                                                    
+                                                    <label class="cs-file-img" *ngFor="let val of urls; let i = index">
+                                                        <img [src]="val" alt="your image">
+                                                        <span class="cancel-icon">
+                                                            <a class="close"><i class="material-icons dp48" (click)="delete_img(i)">clear</i></a>
+                                                        </span>
+                                                    </label>
+                                                    
+                                                    <label class="cs-file-img default" *ngIf="urls.length != 1">
+                                                        <i class="material-icons">cloud_upload</i>
+                                                        <input type="file" name="image" placeholder="Upload file"
+                                                        accept=".png,.jpg,.jpeg" multiple style="display: none;"
+                                                        (change)="insertImage($event)">
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                            <p>Upload Image</p>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cs-btn fixedd mt32 text-right">
+                            <div class="in-btn mr25">
+                                <button *ngIf="this.pop_id == '0'" mat-raised-button color="accent" [disabled]="urls.length == 0">Save</button>
+                                <button *ngIf="this.pop_id != '0'" mat-raised-button color="accent" [disabled]="urls.length == 0">Update</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </form>
+</div>
+
+

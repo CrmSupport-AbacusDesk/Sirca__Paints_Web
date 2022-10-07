@@ -1,0 +1,15 @@
+a.add-list{
+    min-width: 50px;
+    width: 50px;
+    height: 40px;
+    background: #53af50;
+    color: #ffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column{
+    display: flex;
+    align-items: flex-end;
+}

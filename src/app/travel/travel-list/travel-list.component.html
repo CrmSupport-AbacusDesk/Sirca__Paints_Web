@@ -1,0 +1,277 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/person.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Travel Plan </h2>
+        <p>{{search.travel_date}} Travel Plan {{travel_list.length}}</p>
+      </div>
+    </div>
+
+    <div class="uppr-one m-right-data" *ngIf="search.travel_date!='' || search.sales_user!=''">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="getTravelList('refresh') " matTooltip="Refresh"><i
+              class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+
+      <div class="tabs ml15">
+        <ul>
+          <li><a class="pr50" [ngClass]="active_tab == 'Pending' ? 'active' : ''"
+              (click)="active_tab = 'Pending';getTravelList();">Pending <span
+                class="counter">{{travel_list_count.travel_plan_pending_count}}</span> </a></li>
+          <li><a class="pr50" [ngClass]="active_tab == 'Approved' ? 'active' : ''"
+              (click)="active_tab = 'Approved';getTravelList();">Approved <span
+                class="counter">{{travel_list_count.travel_plan_approved_count}}</span> </a></li>
+          <li><a class="pr50" [ngClass]="active_tab == 'Reject' ? 'active' : ''"
+              (click)="active_tab = 'Reject';getTravelList();">Reject <span
+                class="counter">{{travel_list_count.travel_plan_reject_count}}</span> </a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container-outer">
+    <div *ngIf="loader">
+      <mat-spinner class="loader">
+        <div>
+          <p>Loading....</p>
+        </div>
+      </mat-spinner>
+    </div>
+    <div class="">
+      <div class="">
+        <div class="">
+          <div class="">
+            <div class="">
+              <div class="">
+                <div class="cs-table cs-table-scroll">
+                  <div class="stickyTableHead" style="width: fit-content;">
+                    <div class="table-head">
+                      <table>
+                        <tr>
+                          <th class="w60">S No</th>
+                          <!-- <th class="w60"></th> -->
+                          <th class="w100">Date Created</th>
+                          <th class="w150">Created By</th>
+                          <th class="w100">Date From </th>
+                          <th class="w100">Date To</th>
+                          <th class="w80">Travel ID</th>
+                          <th class="w170">Travel type</th>
+                          <th class="w170">Updated By</th>
+                          <th class="w170">Updated Date</th>
+                          <th class="w270">Travel Plan</th>
+                        </tr>
+                      </table>
+                    </div>
+
+                    <div class="table-head bdrt">
+                      <table>
+                        <tr>
+                          <th class="w60">&nbsp;</th>
+                          <!-- <th class="w60">&nbsp;</th> -->
+                          <th class="w100">
+                            <div class="th-search-acmt">
+                              <mat-form-field class="example-full-width cs-input">
+                                <input matInput [matDatepicker]="picker" placeholder="" name="travel_date"
+                                  [(ngModel)]="search.travel_date" (dateChange)="onDate($event)" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker [(ngModel)]="search.travel_date" ngDefaultControl>
+                                </mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </th>
+                          <th class="w150">
+                            <div class="th-search-acmt">
+                              <mat-form-field class="example-full-width cs-input">
+                                <input matInput placeholder="Search" name="sales_user" [(ngModel)]="search.sales_user"
+                                  (keyup.enter)="getTravelList()">
+                              </mat-form-field>
+                            </div>
+                          </th>
+
+                          <th class="w100">
+                            <div class="th-search-acmt">
+                              <mat-form-field class="example-full-width cs-input">
+                                <input matInput [matDatepicker]="picker_date_from" placeholder="" name="date_from"
+                                  [(ngModel)]="search.date_from" (dateChange)="onDate($event)" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker_date_from"></mat-datepicker-toggle>
+                                <mat-datepicker #picker_date_from [(ngModel)]="search.date_from" ngDefaultControl>
+                                </mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </th>
+
+                          <th class="w100">
+                            <div class="th-search-acmt">
+                              <mat-form-field class="example-full-width cs-input">
+                                <input matInput [matDatepicker]="picker_date_to" placeholder="" name="date_to"
+                                  [(ngModel)]="search.date_to" (dateChange)="onDate($event)" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="picker_date_to"></mat-datepicker-toggle>
+                                <mat-datepicker #picker_date_to [(ngModel)]="search.date_to" ngDefaultControl>
+                                </mat-datepicker>
+                              </mat-form-field>
+                            </div>
+                          </th>
+
+                          <th class="w80">
+                            <div class="th-search-acmt">
+                              <mat-form-field class="example-full-width cs-input">
+                                <input matInput placeholder="Search" name="reference_travel_id"
+                                  [(ngModel)]="search.reference_travel_id" (keyup.enter)="getTravelList()">
+                              </mat-form-field>
+                            </div>
+                          </th>
+
+                          <th class="w170"></th>
+                          <th class="w170">
+                            <div class="th-search-acmt">
+                              <mat-form-field class="example-full-width cs-input">
+                                <input matInput placeholder="Search" name="updated_by"
+                                  [(ngModel)]="search.updated_by" (keyup.enter)="getTravelList()">
+                              </mat-form-field>
+                            </div>
+                          </th>
+                          <th class="w170">
+                            &nbsp;
+                          </th>
+                          <th class="w270">&nbsp;</th>
+                        </tr>
+                      </table>
+                    </div>
+
+                  </div>
+
+                  <div class="table-container" style="width: fit-content;">
+                    <div class="table-content">
+                      <table>
+                        <tr *ngFor="let list of travel_list; let i = index;">
+                          <td class="w60 text-center">{{i+1}}</td>
+                          <!-- <td class="w60 text-center">
+                            <button mat-button class="verify-mat">
+                              <i *ngIf="list.check_in_flag == 1" class="material-icons verify-button">verified</i>
+                              <i *ngIf="list.check_in_flag == 0" class="material-icons cancel-button">cancel</i>
+                            </button>
+                          </td> -->
+                          <td class="w100">{{list.date_created | date : 'd MMM y'}}
+                            <!-- <div class="action-btns" *ngIf="login_id == '206'"> -->
+                              <!-- <div class="action-btns">
+                              <button mat-button class="delete-mat"><i class="material-icons red-clr"
+                                  (click)="editTravelPlanDate(list.date_created)">edit</i></button>
+                            </div> -->
+                          </td>
+                          <td class="w150">{{list.created_by_name | titlecase}}</td>
+                          <td class="w100">{{list.travel_date_from | date : 'd MMM y'}} </td>
+                          <td class="w100">{{list.travel_date_to | date : 'd MMM y'}} </td>
+                          <td class="w80">
+                            <a *ngIf="view_edit" class="link-btn" mat-button
+                              routerLink="/travel-plan-detail/{{list.id}}" routerLinkActive="active"
+                              (click)="goToDetailPage()">{{list.reference_travel_id}}</a>
+                            {{!view_edit?list.reference_travel_id:''}}
+                          </td>
+                          <td class="w170">{{list.travel_type}}</td>
+                          <td class="w170">{{list.updated_by}}</td>
+                          <td class="w170">{{list.updated_on =='0000-00-00' ? '':list.updated_on | date : 'd MMM y'}}</td>
+                          <td class="w270" *ngIf="list.travel_type=='Channel Partner Visit'"><b>{{list.travel_type}} -
+                            </b>
+                            <!-- <span *ngFor="let dr_data of list.selected_data"> {{dr_data.company_name}} </span> -->
+                            <mat-chip-list>
+                              <ng-container *ngFor="let dr_data of list.selected_data">
+                                <mat-chip>{{dr_data.company_name}}</mat-chip>
+                              </ng-container>
+                            </mat-chip-list>
+                            <div class="action-btns" *ngIf="login_id == '206'">
+                              <button mat-button class="delete-mat"><i class="material-icons red-clr"
+                                  (click)="deleteTravelPlan(list.id)">delete_sweep</i></button>
+                            </div>
+                          </td>
+                          <td class="w270" *ngIf="list.travel_type=='Area Visit'"><b>{{list.travel_type}} - </b>
+                            <!-- <span *ngFor="let area_data of list.selected_data"> {{area_data.state}} / {{area_data.district}}</span> -->
+
+                            <mat-chip-list>
+                              <ng-container *ngFor="let area_data of list.selected_data">
+                                <mat-chip>{{area_data.state}} / {{area_data.district}} / {{area_data.city}}</mat-chip>
+                              </ng-container>
+
+                            </mat-chip-list>
+                            <div class="action-btns" *ngIf="login_id == '206'">
+                              <button mat-button class="delete-mat"><i class="material-icons red-clr"
+                                  (click)="deleteTravelPlan(list.id)">delete_sweep</i></button>
+                            </div>
+                          </td>
+                        </tr>
+                        <ng-container *ngFor="let lead of skelton">
+                          <tr class="sk-loading" *ngIf="loader">
+                            <td class="w60">
+                              <div>&nbsp;</div>
+                            </td>
+                            <!-- <td class="w60"><div>&nbsp;</div></td> -->
+                            <td class="w150">
+                              <div>&nbsp;</div>
+                            </td>
+                            <td class="w170">
+                              <div>&nbsp;</div>
+                            </td>
+                            <td class="w150">
+                              <div>&nbsp;</div>
+                            </td>
+                            <td class="w150">
+                              <div>&nbsp;</div>
+                            </td>
+                            <td class="w170">
+                              <div>&nbsp;</div>
+                            </td>
+                            <td class="w170">
+                              <div>&nbsp;</div>
+                            </td>
+                            <td class="w170">
+                              <div>&nbsp;</div>
+                            </td>
+                            <td class="w270">
+                              <div>&nbsp;</div>
+                            </td>
+                          </tr>
+                        </ng-container>
+                      </table>
+                      <div class="search-results" data-infinite-scroll debounce [infiniteScrollDistance]="1"
+                        [infiniteScrollUpDistance]="2" [infiniteScrollThrottle]="10" (scrolled)="getTravelList()">
+                      </div>
+                      <div *ngIf="loader" class="lazy-loading">
+                        <img src="../../../assets/img/lazy_loader.gif" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-not-available" *ngIf="data_not_found==true">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+
+          <div class="description">
+            <div class="cs-heading">
+              <h2>Travel</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>Data Not Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

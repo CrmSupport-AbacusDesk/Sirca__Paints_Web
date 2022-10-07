@@ -1,0 +1,25 @@
+.survey-container {
+    width: 1024px;
+    margin: 0 auto;
+    padding: 10px;
+    background-image: linear-gradient(to top, #9b2450, #9d224f, #9e1f4e, #a01d4d, #a11a4c);
+    height: 100vh;
+    overflow: auto;
+
+    .survey-header{
+        padding: 0px 10px 10px 10px;
+    }
+}
+
+mat-form-field{
+    &.input-outline{
+        width: 100%;
+        font-size: 12px;
+
+        .mat-form-field-wrapper{
+            padding-bottom: 0px;
+        }
+    }
+}
+
+

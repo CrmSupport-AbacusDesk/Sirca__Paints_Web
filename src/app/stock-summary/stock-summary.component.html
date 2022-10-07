@@ -1,0 +1,146 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text  bc-space">
+        <div class="back-btn" (click)="go_back()">
+          <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+        </div>
+        <h2>{{product_name}}</h2>
+      </div>
+    </div>
+    
+    <div class="uppr-one m-right-data"> 
+      
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="get_selected_stock_summary('refresh')"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; get_selected_stock_summary()" [disabled]="pagenumber == 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; get_selected_stock_summary()" [(ngModel)]="pagenumber" (ngModelChange)="pagenumber > total_page ? pagenumber = total_page : ''"  min="1" max={{total_page}} [disabled]="false && total_page == 1">
+          </li>
+          
+          <li>
+            <button mat-button class="right-btn"  (click)="start=start+page_limit; get_selected_stock_summary()" [disabled]="pagenumber == total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+  
+  <div class="container-outer padding0">
+    <div class="container">
+      <div class="cs-table cs-table-scroll">
+        <div class="stickyTableHead" style="width: fit-content;">
+          <div class="table-head">
+            <table>
+              <tr>
+                <th class="w60">S.No.</th>
+                <th class="w150">Date</th>
+                <th class="w150 text-center">Incoming/Outgoing</th>
+                <th class="w100 text-center">Qty</th>
+                <th class="">Remark</th>
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+            <table>
+              <tr>
+                <th class="w60"></th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input">
+                      <input matInput [matDatepicker]="picker" placeholder="" name="date" [(ngModel)]="search_data.date" (dateChange)="format_date($event,'date')" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                      <mat-datepicker #picker [(ngModel)]="search_data.date" ngDefaultControl></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150 text-center">
+                  <div class="th-search-acmt" *ngIf="false">
+                    <mat-form-field class="cs-input">
+                      <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="search_data.summary_type" (ngModelChange)="get_selected_stock_summary()">
+                        <mat-option value="all">ALL</mat-option>
+                        <mat-option value="incoming">Incoming</mat-option>
+                        <mat-option value="outgoing">Outgoing</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w100 text-center"></th>
+                <th class=""></th>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <div class="table-container" style="width: fit-content;">
+          <div class="table-content">
+            <table>
+              <tr *ngFor="let summary_data of product_summary_data; let i = index">
+                
+                <td class="w60">{{i+1}}</td>
+                <td class="w150">{{summary_data.date_created | date :'d MMM, y'}}</td>
+                <td class="w150 text-center">{{summary_data.status && summary_data.status!= '' ? summary_data.status : '--'}}</td>
+                <td class="w100 text-center">{{summary_data.item_qty && summary_data.item_qty!= '' ? summary_data.item_qty : '--'}}</td>
+                <td class="">{{summary_data.remark && summary_data.remark!= '' ? summary_data.remark : '--'}}</td>
+              </tr>
+              
+              <ng-container *ngFor="let lead of skelton">
+                <tr class="sk-loading"  *ngIf="loader">
+                  <td class="w60"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w100"><div>&nbsp;</div></td>
+                  <td class=""><div>&nbsp;</div></td>
+                </tr>
+              </ng-container>
+              
+            </table>
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    
+    <div class="data-not-available"  *ngIf="data_not_found">
+      <div class="outer">
+        <div class="iinear">
+          <div class="figure" matRipple>
+            <div class="header">
+              <img src="assets/img/data-not-available-header.svg" alt="">
+            </div>
+            
+            <div class="description">
+              <div class="cs-heading">
+                <h2>Stock Summary</h2>
+              </div>
+              <div class="img">
+                <i class="material-icons">error_outline</i>
+              </div>
+              <div class="psc">
+                <p>Data Not Available</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+</div>

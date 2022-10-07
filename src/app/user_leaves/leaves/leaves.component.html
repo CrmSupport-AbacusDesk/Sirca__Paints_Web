@@ -1,0 +1,152 @@
+<div class="main-container" >
+  <div class="middle-container mb0">
+    <div class="page-heading w250">
+      <img src="assets/img/leads_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Leaves</h2>
+        <p>Total Leaves - {{leave_list.length}}</p>
+      </div>
+    </div>
+
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="leaveList('refresh') "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+     
+    </div>
+
+  </div>
+
+  <div class="container-outer">
+    <!-- <div *ngIf="loader">
+      <mat-spinner class="loader">
+        <div><p>Loading....</p></div>
+      </mat-spinner>
+    </div> -->
+    <div class="container">
+      <div class="row">
+        <div class="col s12">
+          <div class="cs-table left-right-20">
+            <div class="sticky-head">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <th class="w50">S NO</th>
+                    <th class="w110">Date Created</th>
+                    <th class="w110">Created By</th>
+                    <th>Subject</th>
+                    <th class="w100">Start Date</th>
+                    <th class="w100">End Date</th>
+                    <th class="w100 text-center">Total Days</th>
+                    <th>Description</th>
+                    <th class="w80">Status</th>
+                    <th *ngIf="view_edit" class="w120 text-center">Action</th>
+                  </tr>
+                </table>
+              </div>
+
+              <div class="table-head bdrt" >
+                <table>
+                  <tr>
+                    <th class="w50"></th>
+                    <th class="w110">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input">
+                          <input matInput [matDatepicker]="picker" placeholder="Choose a date" name="date_created" [(ngModel)]="search.date_created" (dateChange)="leaveList()" readonly>
+                          <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+                          <mat-datepicker #picker [(ngModel)]="search.date_created" ngDefaultControl></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </th>
+
+                    <th class="w110">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input">
+                          <input matInput placeholder="Search" name="created_by" [(ngModel)]="search.created_by" (keyup.enter)="leaveList()" >
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th></th>
+
+                    <th class="w100"></th>
+                    <th class="w100"></th>
+                    <th class="w100"></th>
+                    <th></th>
+                    <th class="w80">
+                      <div class="th-search-acmt">
+                        <mat-form-field class="example-full-width cs-input">
+                          <input matInput placeholder="Search" name="status" [(ngModel)]="search.status" (keyup.enter)="leaveList()" >
+                        </mat-form-field>
+                      </div>
+                    </th>
+                    <th *ngIf="view_edit" class="w120"></th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let leave of leave_list;let i=index;">
+                    <td class="w50">{{i+1}}</td>
+                    <td class="w110">{{leave.date_created | date :' d MMM, y'}}</td>
+                    <td class="w110" >{{leave.created_by_name}}</td>
+                    <td >{{leave.subject}}</td>
+                    <td class="w100">{{leave.leave_start_date | date :' d MMM, y'}}</td>
+                    <td class="w100">{{leave.leave_end_date | date :' d MMM, y'}}</td>
+                    <td class="w100 text-center">{{leave.total_days}}</td>
+                    <td >{{leave.description}}</td>
+                    <td class="w80 yellow-clr">{{leave.status}} <span *ngIf="leave.reject_remark !=''"> ({{leave.reject_remark}})</span></td>
+                    <td *ngIf="view_edit" class="w120 text-center">
+                      <a style ="cursor: pointer" (click)="openDialog(leave.id)" class="ankr-clr">Change Status</a>
+                    </td>
+                  </tr>
+                  <ng-container *ngFor="let lead of skelton">
+                      <tr class="sk-loading"  *ngIf="loader">
+                        <td class="w50"><div>&nbsp;</div></td>
+                        <td class="w110"><div>&nbsp;</div></td>
+                        <td class="w110"><div>&nbsp;</div></td>
+                        <td><div>&nbsp;</div></td>
+                        <td class="w100"><div>&nbsp;</div></td>
+                        <td class="w100"><div>&nbsp;</div></td>
+                        <td><div>&nbsp;</div></td>
+                        <td class="w80"><div>&nbsp;</div></td>
+                        <td *ngIf="view_edit" class="w120"><div>&nbsp;</div></td>
+                      </tr>
+                    </ng-container>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-not-available" *ngIf="data_not_found == true">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+
+          <div class="description">
+            <div class="cs-heading">
+              <h2>Leaves</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>Data Not Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

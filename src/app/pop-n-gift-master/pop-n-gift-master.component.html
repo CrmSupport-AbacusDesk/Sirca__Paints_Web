@@ -1,0 +1,200 @@
+<div class="main-container pb0" >
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/order_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Pop N Gift Items </h2>
+      </div>
+    </div>
+    <div class="uppr-one m-right-data">
+      <div class="action-menu">
+        <button mat-raised-button  color="accent" (click)="goTo_scheme_master()" >
+          Scheme Master
+        </button>
+      </div>
+      
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="giftList('refresh') " matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      
+      <!-- <div class="top-pagination">
+        <ul>
+          <li><p>Pages 1 Of 1</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber">
+          </li>
+          
+          <li>
+            <button mat-button class="right-btn">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div> -->
+      
+      
+    </div>
+   
+  </div>
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+        <div><p>Loading....</p></div>
+    </mat-spinner>
+</div>
+  
+  <div class="cs-table cs-table-scroll no-tab">
+    <div class="stickyTableHead" style="width: fit-content;">
+      <div class="table-head">
+        <table>
+          <tr>
+            <th class="w180">Date Created</th>
+            <th class="w160">Created By</th>
+            <th class="w130">Gift Name</th>
+            <th class="w200">Gift Description</th>
+            <th class="w130">Gift points</th>
+            <th class="w150">Unit Of Measurement</th>
+            <th class="w90">Gift Image</th>
+            <th *ngIf="view_edit" class="w70">Status</th>
+            <th *ngIf="view_edit || view_delete" class="w130 text-center" >Update</th>
+          </tr>
+        </table>
+      </div>
+      <div class="table-head bdrt" >
+        <table class="sno-border">
+          <tr>
+            
+            <th class="w180">
+              <div class="th-search-acmt">
+                <mat-form-field class="cs-input date-column infix-bodr">
+                  <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" [(ngModel)]="search_val.date_created" (dateChange)="onDate($event)" readonly>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w160">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Created By. . ." name="created_by" [(ngModel)]="search_val.created_by" (keyup.enter)="giftList()">
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w130">
+              <div class="th-search-acmt">
+                <mat-form-field class="example-full-width cs-input select-input">
+                  <input matInput placeholder="Title. . ." name="title" [(ngModel)]="search_val.title" (keyup.enter)="giftList()">
+                </mat-form-field>
+              </div>
+            </th>
+            <th class="w200"></th>
+            <th class="w130"></th>
+            <th class="w150"></th>
+            <th class="w90"></th>
+            <th *ngIf="view_edit" class="w70"></th>
+            <th *ngIf="view_edit || view_delete" class="w130"></th>
+          </tr>
+        </table>
+      </div>
+    </div>
+    
+    <div class="table-container mb60">
+      <div class="table-content" style="width: fit-content;">
+        <table>
+          <tr *ngFor="let gift of gift_List;let i=index;">
+            <td class="w30">{{i+1}}</td>
+            <td class="w150">{{gift.date_created?(gift.date_created | date:' d MMM , y, hh:mm aa '):'--'}}</td>
+            <td class="w160">{{gift.created_by_name ? (gift.created_by_name | titlecase ) : '--'}}</td>
+            <td class="w130">{{gift.gift_name ? (gift.gift_name | titlecase) : '--'}}</td>
+            <td class="w200">{{gift.gift_description?gift.gift_description:'--'}}</td>
+            <td  class="w130">{{gift.gift_points?gift.gift_points:'--'}}</td>
+            <td  class="w150">{{gift.u_o_m?gift.u_o_m:'--'}}</td>
+            
+            <td class="w90 text-center">
+              <a class="img-avtar"> 
+                <img src="{{gift.image == ''? 'assets/img/NoPopNGift.png':gift.image }}" (click)="imageModel(gift.image)">
+              </a>
+            </td>
+            
+            <td *ngIf="view_edit"  class="w70"> 
+              <mat-slide-toggle [checked]="gift.status == '0'?'false':'true'" (click)="update_status(gift.id,gift.status)" (dragChange)="update_status(gift.id,gift.status)" ></mat-slide-toggle>
+            </td>
+            
+            <td *ngIf="view_edit || view_delete" class="w130 text-center" >
+              <button *ngIf="view_edit" mat-button class="delete-mat" (click)="viewDetails(gift.id)">
+                <i class="material-icons green-clr">edit </i>
+              </button>
+              <button *ngIf="view_delete" mat-button class="delete-mat" (click)="deleteGift(gift.id)"><i class="material-icons red-clr">delete_sweep</i>
+              </button>
+            </td>
+            
+          </tr>
+          <ng-container *ngFor="let lead of skelton">
+            <tr class="sk-loading"  *ngIf="loader">
+              <td class="w150"><div>&nbsp;</div></td>
+              <td class="w160"><div>&nbsp;</div></td>
+              <td class="w130"><div>&nbsp;</div></td>
+              <td class="w200"><div>&nbsp;</div></td>
+              <td class="w130"><div>&nbsp;</div></td>
+              <td class="w150"><div>&nbsp;</div></td>
+              
+              <td class="w90"><div>&nbsp;</div></td>
+              <td *ngIf="view_edit" class="w70"><div>&nbsp;</div></td>
+              <td *ngIf="view_edit || view_delete" class="w130"><div>&nbsp;</div></td>
+              
+            </tr>
+          </ng-container>
+        </table>
+        
+      </div>
+    </div>
+    <div
+    class="search-results"
+    data-infinite-scroll
+    debounce
+    [infiniteScrollDistance]="1"
+    [infiniteScrollUpDistance]="2"
+    [infiniteScrollThrottle]="10"
+    (scrolled)="giftList()"
+    >
+  </div>
+</div>
+
+
+
+
+<div class="data-not-available" *ngIf="data_not_found==true">
+  <div class="outer">
+    <div class="iinear">
+      <div class="figure" matRipple>
+        <div class="header">
+          <img src="assets/img/data-not-available-header.svg" alt="">
+        </div>
+        <div class="description">
+          <div class="cs-heading">
+            <h2>Gift List</h2>
+          </div>
+          <div class="img">
+            <i class="material-icons">error_outline</i>
+          </div>
+          <div class="psc">
+            <p>data not Found</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="fix-btn">
+  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+  <a *ngIf="view_add" class="bottom-btn"  matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/add-pop-n-gift/0" routerLinkActive="active"><i class="material-icons">add</i></a>
+</div>
+</div>

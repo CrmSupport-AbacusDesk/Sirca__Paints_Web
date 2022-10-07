@@ -1,0 +1,329 @@
+<!-- <div class="{{login_data.view_dashboard=='1' ? 'main-container':'main-container'}}"> -->
+<div class="main-container">
+
+    <div *ngIf="loader">
+        <mat-spinner class="loader">
+            <div>
+                <p>Loading....</p>
+            </div>
+        </mat-spinner>
+    </div>
+    <div class="middle-container">
+        <div class="page-heading">
+            <div class="heading-text bc-space">
+
+
+                <div class="back-btn" (click)="back()">
+                    <a mat-button><i class="material-icons">arrow_right_alt</i></a>
+                </div>
+                <h2>Quotation Detail</h2>
+            </div>
+        </div>
+
+        <div class="left-auto">
+            <div class="action-menu">
+                <button mat-raised-button  color="accent" (click)="emailModal(quotation_detail )">
+                    Send Email
+                </button>
+                <button mat-raised-button  color="primary" (click)="openPdf(quotation_detail.id)" >
+                    Print
+              </button>
+
+                <!-- <button mat-raised-button [matMenuTriggerFor]="menu" color="primary" >
+                  Print
+              </button> -->
+
+                <!-- <div class="action-menu">
+                  
+                  <mat-menu #menu="matMenu" class="drop-down-menu">
+                      <button mat-menu-item>
+                          <span>Download With Image</span>
+                      </button>
+                      <button mat-menu-item>
+                          <span>Download Without Image</span>
+                      </button>
+                  </mat-menu>
+              </div> -->
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-outer">
+        <div class="container">
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="details-info">
+                        <div class="basic-details">
+                            <div class="cs-heading">
+                                <h2>Basic Details</h2>
+                            </div>
+                            <div class="cs-figure">
+                                <ul>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Created By</span>
+                                                <p>{{quotation_detail.created_by_name}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Daate Created</span>
+                                                <p>{{quotation_detail.date_created | date : 'yyyy-MM-dd'}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Name</span>
+                                                <p>{{quotation_detail.name}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+
+
+
+
+
+                                </ul>
+                                <ul class="mt10">
+                                    
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Mobile</span>
+                                                <p>{{quotation_detail.contact_no}}</p>
+                                                <!-- <a  class="one-edit" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(order_detail.created_by,'order_cp_edit')" *ngIf="login_data.access_level == '1'"><i class="material-icons">create</i></a> -->
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Company Name</span>
+                                                <p>{{quotation_detail.company_name}}</p>
+                                                <!-- <a  class="one-edit" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(order_detail.created_by,'order_cp_edit')" *ngIf="login_data.access_level == '1'"><i class="material-icons">create</i></a> -->
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    <li >
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Total Items</span>
+                                                <p>
+
+                                                    <ng-container>
+                                                        {{quotation_detail.item_count}}
+                                                    </ng-container>
+
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="mt10">
+                                    <li style="border: 1px solid #B29D9D;">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Customer Billing Address</span>
+
+                                                <p>{{quotation_detail.customer_billing_address}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li style="border: 1px solid #B29D9D;">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Customer Shipping Address</span>
+                                                <p>{{quotation_detail.customer_shipping_address}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li style="border: 1px solid #B29D9D;">
+                                        <div class="outer">
+                                            <div class="inner">
+                                                <span>Quotation Remark</span>
+                                                <p>{{quotation_detail.quotation_remark}}</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                                <!-- <ul class="mt10" >
+                                <li style="border: 1px solid #B29D9D;" >
+                                    <div class="outer">
+                                        <div class="inner">
+                                            <span>Term And Condtitons</span>
+                                           <p [innerHTML]="quotation_detail.term_condition"></p>
+                                        </div>
+                                    </div>
+                                </li> 
+                                 
+                              
+                                  
+                                  
+                              </ul> -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <div class="row mt25">
+                <div class="col s12">
+                    <div class="cs-collapse">
+                        <mat-accordion class="example-headers-align">
+
+                            <mat-expansion-panel>
+
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Quotation Items
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+
+                                <div class="collapse-body pt0">
+                                    <div class="cs-form">
+
+                                        <div class="cs-table left-right-20">
+                                            <div class="table-head">
+                                                <table class="sno-border">
+                                                    <tr>
+                                                        <th class="w40 text-center"></th>
+                                                        <th>Product Description</th>
+                                                        <!-- <th class="w130">Stock Availability</th> -->
+                                                        <th class="w110">Product Code</th>
+                                                        <th class="w80">QTY</th>
+                                                        <th class="w100">MRP</th>
+                                                        <th class="w95">SUB-TOTAL</th>
+                                                        <th class="w90">Discount(%) </th>
+                                                        <th class="w90">AMOUNT</th>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+                                            <div class="table-container">
+                                                <div class="table-content">
+                                                    <table class="sno-border">
+                                                        <tr *ngFor="let row of quotation_summary; let i=index">
+                                                            <td class="w40 text-center">{{i+1}}</td>
+                                                            <td>{{row.category}}/{{row.sub_category}}/{{row.product_name}}
+                                                            </td>
+                                                            <!-- <td class="w130"></td> -->
+                                                            <td class="w110">{{row.material_code}}</td>
+                                                            <td class="w80">{{row.qty}}</td>
+                                                            <td class="w100">&#8377;{{row.price}}</td>
+                                                            <td class="w95">&#8377; {{row.subTotal}}</td>
+                                                            <td class="w90">&#8377;{{row.discountedAmount}} ({{row.discount}})% </td>
+                                                            <td class="w90">&#8377; {{row.subtotal_discounted}}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </mat-expansion-panel>
+
+
+                        </mat-accordion>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s8">
+                    <table>
+                        <tr>
+                            <th>Term And Conditions</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div [innerHTML]="quotation_detail.term_condition">
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col s4">
+                    <!--  -->
+
+                    <div class="invoice-table">
+                        <table>
+
+                            <tr>
+                                <td>Total Qty</td>
+                                <td class="w30 text-center">:</td>
+                                <td class="w200 text-right "> {{quotation_detail.total_quantity}}</td>
+                            </tr>
+
+
+                            <tr>
+                                <td>Sub Total</td>
+                                <td class="w30 text-center">:</td>
+                                <td class="w200 text-right ">&#8377; {{quotation_detail.sub_total}}</td>
+                            </tr>
+                            <tr>
+                                <td>Discount</td>
+                                <td class="text-center">:</td>
+                                <td class="text-right ">&#8377; {{quotation_detail.dis_amt}} </td>
+                            </tr>
+                            <tr>
+                                <td>Net Total</td>
+                                <td class="text-center">:</td>
+                                <td class="text-right ">&#8377; {{quotation_detail.net_total}} </td>
+                            </tr>
+
+                            <!-- <tr *ngIf="order_detail.sp_type">
+                                <td *ngIf="order_detail.sp_type=='Discount'">Special Discount</td>
+                                <td *ngIf="order_detail.sp_type=='Premium'">Additional Charges</td>
+                                <td class="text-center">:</td>
+                                <td class="text-right ">&#8377; {{order_detail.special_discount_amount}}</td>
+                            </tr> -->
+
+
+                            <tr>
+                                <td>Grand Total</td>
+                                <td class="text-center">:</td>
+                                <td class="text-right ">&#8377; {{quotation_detail.grand_total}} </td>
+                            </tr>
+                         
+                            <tr>
+                                <td>Breakup of Grand Total</td>
+                                <td class="text-center">:</td>
+                                <td class="text-right ">(&#8377;{{quotation_detail.netBreakup | number : '1.2-2'}},GST(18%) : &#8377;{{quotation_detail.gstBreakup | number : '1.2-2'}} ) </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="h50"></div>

@@ -1,0 +1,288 @@
+<div class="main-container" >
+  <div class="" *ngIf="loader">
+    <div class="middle-container mb0">
+      
+    </div>
+    
+    <div class="container-outer">
+      <app-master-tab-list></app-master-tab-list>
+      <div class="container tab-container" >
+        <div class="row">
+          <div class="col s12">
+            <div class="cs-table left-right-20">
+              <div class="table-head">
+                <table>
+                  <tr>
+                    <th class="w60">S No.</th>
+                    <th class="w180">Category</th>
+                    <th class="w170">Sub Category</th>
+                    <th>Product Name</th>
+                    <th class="w170">Product Code</th>
+                    <th class="w170">Price</th>
+                    <th class="w170">Availability</th>
+                    <th class="w170">Stock Status Updated On</th>
+                    <th class="w120" *ngIf="tab_active=='scheme'">Coupon Point</th>
+                    <th class="w120" *ngIf="tab_active=='scheme'">Available Coupon Code</th>
+                    <th class="w120" *ngIf="tab_active=='scheme'">Scheme Status</th>
+                  </tr>
+                </table>
+              </div>
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let lead of skelton" class="sk-loading">
+                      <td class="w60"><div>&nbsp;</div></td>
+                      <td class="w180"><div>&nbsp;</div></td>
+                      <td class="w170"><div>&nbsp;</div></td>
+                      <td><div>&nbsp;</div></td>
+                      <td class="w170"><div>&nbsp;</div></td>
+                      <td class="w170"><div>&nbsp;</div></td>
+                      <td class="w170"><div>&nbsp;</div></td>
+                      <td class="w170"><div>&nbsp;</div></td>
+                      <td class="w120" *ngIf="tab_active=='scheme'"><div>&nbsp;</div></td>
+                      <td class="w120" *ngIf="tab_active=='scheme'"><div>&nbsp;</div></td>
+                      <td class="w120" *ngIf="tab_active=='scheme'"><div>&nbsp;</div></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+    </div>
+  </div>
+  
+  <div *ngIf="!loader">
+    <div class="middle-container mb0">
+      <!-- <div class="tabs">
+        <ul>
+          <li><a class="pr50" [ngClass]="tab_active=='all' ? 'active' : ''"  (click)="getProductList('all')">All<span class="counter">{{count}}</span></a></li>
+          <li><a class="pr50" [ngClass]="tab_active=='scheme' ? 'active' : ''" (click)="getProductList('scheme')">Scheme<span class="counter">{{scheme_active_count}}</span></a></li>
+        </ul>
+      </div> -->
+      <!-- <div class="page-heading w250">
+        <img src="assets/img/pipes.svg" class="h-icon h20">
+        <div class="heading-text">
+          <h2> Product</h2>
+          <p>Total Product - {{count}}</p>
+        </div>
+      </div> -->
+      
+      <div class="top-pagination">
+        
+        <!-- <div class="click-btn ml15" *ngIf="true">
+          <button mat-button (click)="go_to('production_plan')">Production Plan</button>
+        </div> -->
+        
+        <ul>
+          <li class="refresh-area">
+            <a class="refresh-btn" mat-raised-button  matTooltip="Refresh" (click)="refresh()"><i class="material-icons"> refresh</i></a>
+          </li>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p></li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; getProductList()" [disabled]="pagenumber == 1">
+              <i class="material-icons">keyboard_arrow_left</i></button>
+            </li>
+            <li>
+              <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; getProductList()" [(ngModel)]="pagenumber"  min="1" max={{total_page}}>
+            </li>
+            
+            <li>
+              <button mat-button class="right-btn"  (click)="start=start+page_limit; getProductList()" [disabled]="pagenumber == total_page">
+                <i class="material-icons">keyboard_arrow_right</i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="container-outer">
+        <app-master-tab-list></app-master-tab-list>
+        <div class="container tab-container" >
+          <div class="row">
+            <div class="col s12">
+              <div class="cs-table left-right-20">
+                <div class="sticky-head">
+                  <div class="table-head">
+                    <table>
+                      <tr>
+                        <th class="w60">S No.</th>
+                        <th class="w180">Category</th>
+                        <th class="w170">Sub Category</th>
+                        <th>Product Name</th>
+                        <th class="w170">Product Code</th>
+                        <th class="w170">Price</th>
+                        <th class="w170">Availability</th>
+                        <th class="w170">Stock Status Updated On</th>
+                        
+                        <th class="w120" *ngIf="tab_active=='scheme'">Coupon Point</th>
+                        <th class="w120" *ngIf="tab_active=='scheme'">Available Coupon Code</th>
+                        <th class="w120" *ngIf="tab_active=='scheme'">Scheme Status</th>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="table-head bdrt" >
+                    <table>
+                      <tr>
+                        <th class="w60"></th>
+                        <th class="w180">
+                          <div class="th-search-acmt">
+                            <mat-form-field class="example-full-width cs-input select-input">
+                              <input matInput placeholder="Enter Category...." [matAutocomplete]="category" (keyup.enter)="getSubCategoryList();getProductList()" (input)="category_array_filter(data.category,tmp_category)" name="category" #category="ngModel" [(ngModel)]="data.category">
+                              <mat-autocomplete #category="matAutocomplete">
+                                <mat-option *ngFor="let category of category_list" (click)="getSubCategoryList() || getProductList()" value="{{category}}">
+                                  <small>{{category}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                        </th>
+                        <th class="w170">
+                          <div class="th-search-acmt">
+                            <mat-form-field class="example-full-width cs-input select-input">
+                              <input matInput placeholder="Enter Sub Category..." [matAutocomplete]="subCategory" (keyup.enter)="getProductList()" (input)="sub_categoryy_array_filter(data.sub_category,tmp_subcategory)" name="subCategory" #subCategory="ngModel" [(ngModel)]="data.sub_category" >
+                              <mat-autocomplete #subCategory="matAutocomplete">
+                                <mat-option *ngFor="let subCategory of subCategory_list" (click)="getProductList()" value="{{subCategory.sub_category}}">
+                                  <small>{{subCategory.sub_category}}</small>
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="th-search-acmt">
+                            <mat-form-field>
+                              <input type="text"  matInput placeholder="Enter Product Name...." name="type" (keyup.enter)="getProductList()" #type="ngModel" [(ngModel)]="data.product_name" >
+                              <mat-autocomplete #search="matAutocomplete" >
+                                <mat-option >
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                        </th>
+                        
+                        <th class="w170">
+                          <div class="th-search-acmt">
+                            <mat-form-field>
+                              <input type="text"  matInput placeholder="Enter Product Code...." name="cattype" (keyup.enter)="getProductList()" #cattype="ngModel" [(ngModel)]="data.cat_no" >
+                              <mat-autocomplete #search="matAutocomplete" >
+                                <mat-option >
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                        </th>
+                        
+                        <th class="w170">&nbsp;</th>
+                        <th class="w170">
+                          
+                          <div class="th-search-acmt">
+                            <mat-form-field class="cs-input">
+                              <mat-label>Select Type</mat-label>
+                              <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="data.stock_type" (ngModelChange)="getProductList()">
+                                <mat-option value="all">ALL</mat-option>
+                                <mat-option value="in_stock">In Stock</mat-option>
+                                <mat-option value="out_of_stock">Out Of Stock</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                          
+                        </th>
+                        <th class="w170">
+                          </th>
+                        
+                        <th class="w120" *ngIf="tab_active=='scheme'"></th>
+                        
+                        <th class="w120" *ngIf="tab_active=='scheme'"></th>
+                        
+                        <th class="w120" *ngIf="tab_active=='scheme'">
+                          <div class="th-search-acmt">
+                            <mat-form-field>
+                              <input type="text"  matInput placeholder="Enter Scheme Status...." name="scheme_status" (keyup.enter)="getProductList()" #scheme_status="ngModel" [(ngModel)]="data.scheme_status" >
+                              <mat-autocomplete #search="matAutocomplete" >
+                                <mat-option >
+                                </mat-option>
+                              </mat-autocomplete>
+                            </mat-form-field>
+                          </div>
+                        </th>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <div class="table-container">
+                  <div class="table-content">
+                    <table>
+                      <tr *ngFor="let p of productlist; let i = index">
+                        <td class="w60">{{start+i+1}}</td>
+                        <td class="w180">{{p.category}}</td>
+                        <td class="w170">{{p.sub_category}}</td>
+                        <td><a *ngIf="view_edit" class="link-btn" mat-button routerLink="/product-detail/{{(p.id)}}" routerLinkActive="active">{{p.product_name}}</a> {{!view_edit?p.product_name:''}}</td>
+                        <td class="w170">{{p.cat_no}}
+                          <div class="action-btns" *ngIf="tab_active=='all'">
+                            <a *ngIf="view_edit" mat-button class="view" (click)="detailProduct(p.id)"><i class="material-icons">remove_red_eye</i> View</a>
+                            <button *ngIf="view_delete" mat-button class="delete" (click)="deleteProduct(p.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                          </div>
+                        </td>
+                        <td class="w170">{{p.price}}</td>
+                        <td class="w170" [ngClass]="p.stock_status && p.stock_status == 'Out Of Stock' ? 'stock-alert' : 'stock-green'" >{{p.stock_status && p.stock_status == 'Out Of Stock' ? p.stock_status +', Available in '+ p.stock_incoming_days+' Days': 'In Stock'}}</td>
+                        <!--  <td class="w170" [ngClass]="p.stock_status && p.stock_status == 'Out Of Stock' ? 'stock-alert' : 'stock-green'" >{{p.stock_status && p.stock_status == 'Out Of Stock' ? p.stock_status +', Available in '+ data_dif(today_date,p.stock_incoming_days) +' Days': 'In Stock'}}</td> -->
+                        <td class="w170">{{p.stock_status_updated_on | date:'dd-MM-yyyy'}}</td>
+
+                        <td class="w120" *ngIf="tab_active=='scheme'">{{p.scheme_value_points}}</td>
+                        <td class="w120" *ngIf="tab_active=='scheme'">{{p.available_qrcode}}</td>
+                        <td class="w120" *ngIf="tab_active=='scheme'">{{p.scheme_status}}
+                          <div class="action-btns">
+                            <a *ngIf="view_edit" mat-button class="view" (click)="detailProduct(p.id)"><i class="material-icons">remove_red_eye</i> View</a>
+                            <button *ngIf="view_delete" mat-button class="delete" (click)="deleteProduct(p.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="data-not-available" *ngIf="data_not_found==true">
+            <div class="outer">
+              <div class="iinear">
+                <div class="figure" matRipple>
+                  <div class="header">
+                    <img src="assets/img/data-not-available-header.svg" alt="">
+                  </div>
+                  <div class="description">
+                    <div class="cs-heading">
+                      <h2>Product List</h2>
+                    </div>
+                    <div class="img">
+                      <i class="material-icons">error_outline</i>
+                    </div>
+                    <div class="psc">
+                      <p>data not Found</p>
+                      <!-- <p>Tap on <a href="">ADD NEW</a> for Service Plan</p> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+      </div>
+      <div class="fix-btn">
+        <!-- <a class="bottom-btn" mat-raised-button routerLink="/add-product"><i class="material-icons">add</i></a> -->
+      </div>
+      <!-- <pagination-controls class="myPagination" (pageChange)=" p = $event "></pagination-controls> -->
+    </div>
+  </div>
+  <div class="fix-btn">
+    <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+  </div>
+  <div class="h50"></div>
+  <!-- <div class="h70"></div> -->
+  

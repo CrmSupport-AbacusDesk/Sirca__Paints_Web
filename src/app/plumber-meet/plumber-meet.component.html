@@ -1,0 +1,228 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>Plumber Meet</h2>
+      </div>
+    </div>
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a  class="refresh-btn" mat-raised-button (click)="get_plumber_meet_List('refresh') "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+      <div class="tabs ml15">
+        <ul>
+          <li><a  class="" [ngClass]="active_tab == 'All' ? 'active' : ''" (click)="active_tab = 'All';get_plumber_meet_List();">All</a></li>
+          <li><a  class="" [ngClass]="active_tab == 'Pending' ? 'active' : ''" (click)="active_tab = 'Pending';get_plumber_meet_List();">Pending</a></li>
+          <li><a  class="" [ngClass]="active_tab == 'Approved' ? 'active' : ''" (click)="active_tab = 'Approved';get_plumber_meet_List();">Approved</a></li>
+          <li><a  class="" [ngClass]="active_tab == 'Complete' ? 'active' : ''" (click)="active_tab = 'Complete';get_plumber_meet_List();">Complete</a></li>
+          <li><a  class="" [ngClass]="active_tab == 'Reject' ? 'active' : ''" (click)="active_tab = 'Reject';get_plumber_meet_List();">Reject</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-outer padding0">
+    <div class="container">
+      <div class="cs-table cs-table-scroll">
+        <div class="stickyTableHead" style="width: fit-content;">
+          <div class="table-head">
+            <table>
+              <tr>
+                <th class="w150">Date Created</th>
+                <th  class="w150">Created By</th>
+                <th  class="w150">Type</th>
+                <th class="w150">Company Name</th>
+                <th class="w150">State</th>
+                <th class="w150">District</th>
+                <th class="w150">Address</th>
+                <th class="w150">Contact Person Name</th>
+                <th class="w150">Meeting Date</th>
+                <th class="w100">Total Member </th>
+                <th class="w100">Total Budget </th>
+                <th *ngIf="active_tab == 'Pending'" class="w100">Pending Days </th>
+                <th class="w150" >Description</th>
+                <th class="w150" *ngIf="active_tab != 'All' && active_tab != 'Pending'"> {{active_tab =='Approved' || active_tab =='Complete' ? 'Approved' : active_tab =='Reject' ? active_tab : '' }} Remark </th>
+                <th *ngIf="active_tab == 'All'" class="w150" >Status</th>
+                <th *ngIf="active_tab == 'Complete'" class="w150" >Complete on</th>
+
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+            <table>
+              <tr>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input"  >
+                      <input matInput [matDatepicker]="date_created_picker" placeholder="Date" name="date_created" [(ngModel)]="search.date_created" (dateChange)="con_date(search.date_created,'date_created')" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="date_created_picker"></mat-datepicker-toggle>
+                      <mat-datepicker #date_created_picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th  class="w150" >
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Name. . ." name="created_by_name" [(ngModel)]="search.created_by_name" (keyup.enter)="get_plumber_meet_List();">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150" ></th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Company Name. . ." name="company_name" [(ngModel)]="search.company_name" (keyup.enter)="get_plumber_meet_List();">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150">
+                  <div class="th-search">
+                    <select (change)="get_plumber_meet_List()" name="state" [(ngModel)]="search.state">
+                      <option value="">Select...</option>
+                      <option *ngFor="let val of state_values">{{val.state_name}}</option>
+                    </select>
+                  </div>
+                </th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="District Name. . ." name="district_name" [(ngModel)]="search.district" (keyup.enter)="get_plumber_meet_List();">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Address. . ." name="Address_name" [(ngModel)]="search.address" (keyup.enter)="get_plumber_meet_List();">
+                    </mat-form-field>
+                  </div>
+                </th>
+
+
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Contact Name. . ." name="contact_person_name" [(ngModel)]="search.contact_person_name" (keyup.enter)="get_plumber_meet_List();">
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w150">
+                  <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input"  >
+                      <input matInput [matDatepicker]="picker" placeholder="Date" name="date_of_meeting" [(ngModel)]="search.date_of_meeting" (dateChange)="con_date(search.date_of_meeting,'date_of_meeting')" readonly>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </th>
+                <th class="w100"></th>
+                <th class="w100"></th>
+                <th class="w100"*ngIf="active_tab == 'Pending'"></th>
+                <th class="w150"></th>
+                <th class="w150" *ngIf="active_tab != 'All' && active_tab != 'Pending'"></th>
+                <th *ngIf="active_tab == 'All'" class="w150" ></th>
+                <th *ngIf="active_tab == 'Complete'" class="w150" ></th>
+
+              </tr>
+            </table>
+          </div>
+        </div>
+
+        <div class="table-container" style="width: fit-content;">
+          <div class="table-content">
+            <table>
+              <tr *ngFor="let plumber_data of plumber_meet_List;let i = index">
+                <td class="w150">{{plumber_data.date_created && plumber_data.date_created!='' ? (plumber_data.date_created | date :' d MMM, y hh:mm a') : '--'}}</td>
+                <td class="w150">{{plumber_data.created_by_type=='Executive' ? (plumber_data.created_by_name && plumber_data.created_by_name!='' ? plumber_data.created_by_name : '--'):(plumber_data.created_by_dr_name && plumber_data.created_by_dr_name!='' ? plumber_data.created_by_dr_name : '--')}}</td>
+                <td class="w150" >{{plumber_data.created_by_type=='Executive' ? 'Executive' : (plumber_data.type && plumber_data.type !='' && plumber_data.type != null ? plumber_data.type == '1' ? 'Channel Partner' : plumber_data.type == '3' ? 'Retail Partner' : 'Direct Dealer' : '--')}}</td>
+                <td class="w150" >{{plumber_data.company_name && plumber_data.company_name !='' ? plumber_data.company_name : '--'}}</td>
+                <td class="w150" >{{plumber_data.state && plumber_data.state !='' ? plumber_data.state : '--'}}</td>
+                <td class="w150" >{{plumber_data.district && plumber_data.district !='' ? plumber_data.district : '--'}}</td>
+                <td class="w150" >{{plumber_data.address && plumber_data.address !='' ? plumber_data.address : '--'}}</td>
+
+                <td class="w150" >{{plumber_data.contact_person_name && plumber_data.contact_person_name !='' ? plumber_data.contact_person_name : '--'}}</td>
+                <td class="w150">
+                  <a *ngIf="view_edit" class="link-btn" mat-button routerLink="/plumber-meet-detail/{{plumber_data.id}}" routerLinkActive="active">{{plumber_data.date_of_meeting && plumber_data.date_of_meeting !='' ? (plumber_data.date_of_meeting | date :' d MMM, y') : '--'}}</a>
+                  {{!view_edit ? plumber_data.date_of_meeting && plumber_data.date_of_meeting !='' ? (plumber_data.date_of_meeting | date :' d MMM, y') : '--' : ''}}
+                </td>
+                <td class="w100">{{plumber_data.total_member && plumber_data.total_member !='' ? plumber_data.total_member : '--'}}</td>
+                <td class="w100">&#8377; {{plumber_data.total_budget && plumber_data.total_budget !='' ? plumber_data.total_budget : '--'}}</td>
+                <td class="w100" *ngIf="active_tab == 'Pending'"> {{plumber_data.day_difference && plumber_data.day_difference !='' ? plumber_data.day_difference : '--'}}</td>
+                <td class="w150">{{plumber_data.description && plumber_data.description !='' ? plumber_data.description : '--'}}
+                  <div class="action-btns">
+                    <a *ngIf="active_tab == 'Pending' && plumber_data.status=='Pending'" class="edit-column" mat-button matTooltip="Change status" (click)="change_plumber_meet_status(plumber_data.id,plumber_data.status)" ><i class="material-icons">create</i></a>
+                  </div>
+                </td>
+                <td class="w150" *ngIf="active_tab != 'All' && active_tab != 'Pending'">{{plumber_data.remarks && plumber_data.remarks!='' && plumber_data.remarks != null ? plumber_data.remarks : '--'}}</td>
+                <td *ngIf="active_tab == 'All'" class="w150" [ngClass]="plumber_data.status == 'Pending' ? '': plumber_data.status == 'Approved' ? 'green-bg' : plumber_data.status == 'Reject'? 'red-bg':'complete-bg'"  >{{plumber_data.status && plumber_data.status !='' ? plumber_data.status : '--'}}
+                  <div class="action-btns">
+                    <a *ngIf=" view_edit && plumber_data.status=='Pending'" class="edit-column" mat-button matTooltip="Change status" (click)="change_plumber_meet_status(plumber_data.id,plumber_data.status)" ><i class="material-icons">create</i></a>
+                    <!-- && login_id == '206' -->
+                    <button mat-button *ngIf="plumber_data.status=='Pending' && login_id == '206' "   class="delete-mat"><i class="material-icons red-clr"
+                      (click)="deletePlumberMeet(plumber_data.id)">delete_sweep</i></button>
+                    
+                  </div>
+                </td>
+                <td class="w150" *ngIf="active_tab == 'Complete'">{{plumber_data.status_updated_on && plumber_data.status_updated_on !='' ? (plumber_data.status_updated_on | date :' d MMM, y hh:mm a') : '--' }}
+
+                </td>
+
+              </tr>
+
+              <ng-container *ngFor="let lead of skelton">
+                <tr class="sk-loading" *ngIf="loader">
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td  class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w100"><div>&nbsp;</div></td>
+                  <td class="w100"><div>&nbsp;</div></td>
+                  <td class="w100" *ngIf="active_tab == 'Pending'"><div>&nbsp;</div></td>
+                  <td class="w150"><div>&nbsp;</div></td>
+                  <td class="w150" *ngIf="active_tab == 'Complete'"><div>&nbsp;</div></td>
+
+                  <td *ngIf="active_tab != 'All' && active_tab != 'Pending'" class="w150"><div>&nbsp;</div></td>
+                  <td *ngIf="active_tab == 'All'" class="w150"><div>&nbsp;</div></td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="data-not-available"  *ngIf="data_not_found">
+    <div class="outer">
+      <div class="iinear">
+        <div class="figure" matRipple>
+          <div class="header">
+            <img src="assets/img/data-not-available-header.svg" alt="">
+          </div>
+
+          <div class="description">
+            <div class="cs-heading">
+              <h2>Plumber Meet</h2>
+            </div>
+            <div class="img">
+              <i class="material-icons">error_outline</i>
+            </div>
+            <div class="psc">
+              <p>Data Not Available</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fix-btn">
+    <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+  </div>
+
+</div>

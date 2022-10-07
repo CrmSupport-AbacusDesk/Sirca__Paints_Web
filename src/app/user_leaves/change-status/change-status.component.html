@@ -1,0 +1,39 @@
+<div class="edit-modal">
+  <form validate #update_basic="ngForm" name="update_basic" (ngSubmit)="(update_basic.valid && update_basic.submitted)?changeStatus():''">
+
+<p class="heading">Update Status</p>
+<div mat-dialog-content>
+  <div class="from-fields">
+    <div class="row">
+      <div class="control-field col s4">
+        <mat-form-field class="cs-input">
+            <mat-select  name="status" placeholder="Status"  #status="ngModel" [(ngModel)]="data.status">
+                <mat-option value="Approved">
+                  Approved
+                </mat-option>
+                <mat-option  value="Reject">
+                  Reject
+                </mat-option>
+              </mat-select>
+        </mat-form-field>
+      </div>
+        <div class="example-container"  *ngIf="data.status=='Reject'">
+         
+        
+          <mat-form-field>
+            <textarea matInput  name="reason" placeholder="Reason Reject"  #reason="ngModel" [(ngModel)]="data.reason" [ngClass]="{'has-error' : reason.invalid } " required="true"></textarea>
+            <div class="alert alert-danger" *ngIf="!reason.valid && update_basic.submitted">
+                Reason is Required....
+            </div>
+          </mat-form-field>
+        
+        </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button color="warn"	 [mat-dialog-close]="false">Cancel</button>
+  <button mat-raised-button	 color="accent" type="submit" >Save</button>
+</div>
+</form>
+</div>

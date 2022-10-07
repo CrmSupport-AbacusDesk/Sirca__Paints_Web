@@ -1,0 +1,248 @@
+<div class="main-container">
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <img src="assets/img/leads_icon.svg" class="h-icon">
+      <div class="heading-text">
+        <h2>Channel Partner Leads</h2>
+        <p>Total Lead - {{lead_List.length}}</p>
+      </div>
+    </div>
+
+    <div class="uppr-one m-right-data">
+      <ul>
+        <li class="refresh-area mr0 after-none">
+          <a class="refresh-btn" mat-raised-button (click)="leadList('refresh') "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+        </li>
+      </ul>
+
+      <div class="top-pagination">
+        <ul>
+          <li><p>Pages {{pagenumber}} Of {{total_page}}</p>
+          </li>
+          <li>
+            <button mat-button class="left-btn" (click)="start=start-page_limit; leadList()" [disabled]="pagenumber <= 1">
+              <i class="material-icons">keyboard_arrow_left</i>
+            </button>
+          </li>
+          <li>
+            <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; leadList()" [(ngModel)]="pagenumber"  min="1" max={{total_page}} >
+          </li>
+
+          <li>
+            <button mat-button class="right-btn" (click)="start=start+page_limit; leadList()" [disabled]="pagenumber >= total_page">
+              <i class="material-icons">keyboard_arrow_right</i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+
+  </div>
+  <!-- <div class="left-auto">
+    <div class="top-search ml15">
+      <input type="text" placeholder="SEARCH. . ."  (input)="leadList()" #search="ngModel" [(ngModel)]="data.search">
+      <i class="material-icons">search</i>
+    </div>
+  </div>
+</div> -->
+
+<div class="container-outer padding0">
+  <!-- <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div> -->
+  <div class="container" >
+
+    <div class="row">
+      <div class="col s12">
+        <div class="cs-table cs-table-scroll">
+          <div class="stickyTableHead" style="width: fit-content;">
+            <div class="table-head">
+              <table>
+                <tr>
+                  <th class="w110">Date</th>
+                  <th class="w150">Created By</th>
+                  <th class="w150">Created By Type</th>
+                  <th class="w220">Company Name</th>
+                  <th class="w150">Contact Person</th>
+                  <th class="w110">Contact No.</th>
+                  <th class="w120">Assigned To</th>
+                  <th class="w120">Disposition Type</th>
+                  <th class="w120"> Disposition Name </th>
+                  <th class="w130">Total Activity Count</th>
+
+                  <th class="w200">Address</th>
+
+                  <th class="w200">Comment</th>
+                </tr>
+              </table>
+            </div>
+            <div class="table-head bdrt" >
+              <table>
+                <tr>
+                  <th class="w110">
+                    <div class="th-search-acmt">
+                    <mat-form-field class="cs-input date-column infix-bodr">
+                      <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" [(ngModel)]="search_val.date_created" (dateChange)="onDate($event)" >
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </th>
+                  <th class="w150">
+                    <div class="th-search-acmt">
+                      <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Created By. . ." type="text" name="created_by" [(ngModel)]="search_val.created_by" (keyup.enter)="leadList()">
+                      </mat-form-field>
+                    </div>
+                  </th>
+
+                  <th class="w150"></th>
+
+                  <th class="w220">
+                    <div class="th-search-acmt">
+                      <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Company Name. . ." name="company_name" (keyup.enter)="leadList()" [(ngModel)]="search_val.company_name"  >
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w150"></th>
+                  <th class="w110">
+                    <div class="th-search-acmt">
+                      <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Mobile Number/Landine Number" name="mobile" (keyup.enter)="leadList()" [(ngModel)]="search_val.mobile" >
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w120">
+                    <div class="th-search-acmt">
+                      <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Assigned to. . ." name="assign_user" (keyup.enter)="getItemsList('assigned_to',search_val.assign_user);leadList()" [(ngModel)]="search_val.assign_user">
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w120"></th>
+                  <th class="w120"></th>
+                  <th  class="w130"></th>
+
+                  <th  class="w200"></th>
+                  <th  class="w200">&nbsp;</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="table-container" style="width: fit-content;">
+            <div class="table-content">
+              <table>
+                <tr *ngFor="let lead of lead_List;let i=index;">
+                  <td class="w110">{{lead.date_created | date :' d MMM, y'}}</td>
+                  <td class="w150" *ngIf="lead.created_by!=0">{{lead.created_name}}</td>
+                  <td class="w150" *ngIf="lead.created_by==0">Self</td>
+                  <td class="w150">{{lead.created_by_type}}</td>
+
+
+                  <td class="w220" matTooltip="{{lead.company_name}}" matTooltipPosition="above">
+                    <div class="one-line">
+                      <a *ngIf="view_edit || login_data_2.user_type=='Inside Sales Team'" mat-button class="link-btn " routerLink="/lead-detail/{{lead.id}}/{{lead.type}}" routerLinkActive="active">{{lead.company_name}}</a>
+                    {{!view_edit?lead.company_name:''}}
+                    </div>
+                  </td>
+
+                  <td class="w150">{{lead.name && lead.name!='' ? lead.name : '--'}}</td>
+                  <td class="w110">{{lead.mobile && lead.mobile!='' ? lead.mobile : '--'}}</td>
+
+
+                  <td class="w120">{{lead.assigned_to}}</td>
+                  <td class="w120">{{lead.disposition_type}}</td>
+                  <td class="w120">{{lead.disposition_name}}</td>
+                  <td  class="w130">{{lead.total_activity_count}}</td>
+
+                  <td class="w200" matTooltip="  {{lead.address}}, {{lead.city}}, {{lead.district}}, {{lead.state}}, {{lead.pincode}}" matTooltipPosition="above"  *ngIf="lead.address ||lead.city ||lead.district  ||lead.state ||lead.pincode">
+                    <div class="one-line">
+                      {{lead.address}}, {{lead.city}}, {{lead.district}}, {{lead.state}}, {{lead.pincode}}
+                    </div>
+                    <div class="action-btns">
+                      <a *ngIf="view_edit" mat-button class="view" routerLink="/lead-detail/{{lead.id}}/{{lead.type}}" routerLinkActive="active"><i class="material-icons">remove_red_eye</i> View</a>
+                      <button *ngIf="view_delete" mat-button class="delete" (click)="deleteLead(lead.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                    </div>
+                  </td>
+
+                  <td class="w200"  *ngIf="!lead.address &&!lead.city &&!lead.district  &&!lead.state &&!lead.pincode" >
+                    <div class="one-line">
+                        N/A
+                    </div>
+                    <div class="action-btns">
+                      <a *ngIf="view_edit || login_data_2.user_type == 'Inside Sales Team'" mat-button class="view" routerLink="/lead-detail/{{lead.id}}/{{lead.type}}" routerLinkActive="active"><i class="material-icons">remove_red_eye</i> View</a>
+                      <button *ngIf="view_delete && login_data_2.user_type != 'Inside Sales Team'" mat-button class="delete" (click)="deleteLead(lead.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                    </div>
+                  </td>
+
+                  <td  class="w200">{{lead.comment}}</td>
+
+                </tr>
+
+
+                <ng-container *ngFor="let lead of skelton">
+                  <tr class="sk-loading"  *ngIf="loader">
+                    <td class="w110"><div>&nbsp;</div></td>
+                    <td class="w150"><div>&nbsp;</div></td>
+                    <td class="w150"><div>&nbsp;</div></td>
+                    <td class="w220"><div>&nbsp;</div></td>
+                    <td class="w150"><div>&nbsp;</div></td>
+                    <td class="w110"><div>&nbsp;</div></td>
+                    <td class="w120"><div>&nbsp;</div></td>
+                    <td class="w120"><div>&nbsp;</div></td>
+                    <td class="w120"><div>&nbsp;</div></td>
+                    <td class="w130"><div>&nbsp;</div></td>
+                    <td class="w200"><div>&nbsp;</div></td>
+                    <td class="w200"><div>&nbsp;</div></td>
+                  </tr>
+                </ng-container>
+              </table>
+              <!-- <div
+              class="search-results"
+              data-infinite-scroll
+              debounce
+              [infiniteScrollDistance]="1"
+              [infiniteScrollUpDistance]="2"
+              [infiniteScrollThrottle]="10"
+              (scrolled)="leadList()"
+              >
+            </div> -->
+
+            <!-- <div  class="lazy-loading" >
+              <img src="../../../assets/img/lazy_loader.gif" alt="">
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</div>
+<div class="fix-btn" *ngIf="login_data_2.user_type!='Inside Sales Team'">
+
+  <!-- <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a> -->
+
+  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" [matMenuTriggerFor]="download_excel" matTooltipPosition="above" mat-raised-button><img src="assets/img/excel.svg"></a>
+  <mat-menu #download_excel="matMenu" class="drop-down-menu">
+    <button mat-menu-item (click)="download_all_branding()">
+      <span>Download Branding Data</span>
+    </button>
+    <button mat-menu-item (click)="exportAsXLSX()">
+      <span>Download Full Data</span>
+    </button>
+  </mat-menu>
+
+
+  <a *ngIf="view_add" class="bottom-btn" matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/add-lead" routerLinkActive="active"><i class="material-icons">add</i></a>
+</div>
+
+
+<div class="h50"></div>

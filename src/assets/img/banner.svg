@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="12.5" viewBox="0 0 20 12.5">
+  <g id="banner" transform="translate(0 -92.223)">
+    <g id="Group_2" data-name="Group 2" transform="translate(0 92.223)">
+      <g id="Group_1" data-name="Group 1" transform="translate(0 0)">
+        <path id="Path_1" data-name="Path 1" d="M0,92.223v12.5H20v-12.5Zm4,1.5a1.5,1.5,0,1,1-1.5,1.5A1.5,1.5,0,0,1,4,93.723Zm5.5,9.5h-8l4-6,2.2,3.3,4.3-5.3,6.5,8Z" transform="translate(0 -92.223)" fill="#9b2450"/>
+      </g>
+    </g>
+  </g>
+</svg>
