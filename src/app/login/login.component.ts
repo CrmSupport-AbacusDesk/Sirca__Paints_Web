@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
           data['data']['view_dist_n_w_dealer'] = 1
 
         }
-        else if(data['assignModule'][i]['module_name'] == 'order to gravity' && data['assignModule'][i]['view'] == 'true'){
+        else if(data['assignModule'][i]['module_name'] == 'order to Sirca' && data['assignModule'][i]['view'] == 'true'){
           data['data']['view_orders'] = 1
           data['data']['view_orders_primary'] = 1
 

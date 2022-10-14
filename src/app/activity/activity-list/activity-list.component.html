@@ -41,8 +41,8 @@
             <mat-option value="product_quality">Product Quality</mat-option>
             <mat-option value="working_tenure">Working Tenure</mat-option>
             <mat-option value="purchase_frequency">Purchase Frequency</mat-option>
-            <mat-option value="segments_in_gravity">Segments in Gravity</mat-option>
-            <mat-option value="why_not_all_segments_of_gravity">Why not all segments of Gravity</mat-option>
+            <mat-option value="segments_in_Sirca">Segments in Sirca</mat-option>
+            <mat-option value="why_not_all_segments_of_Sirca">Why not all segments of Sirca</mat-option>
             <mat-option value="dealing_in_how_many_brands">Dealing in how many Brands</mat-option>
             <mat-option value="most_selling_brands">Most Selling Brands</mat-option>
             <mat-option value="status">Status</mat-option>
@@ -131,8 +131,8 @@
                     <th class="w150">Product Quality</th>
                     <th class="w150">Working Tenure</th>
                     <th class="w150">Purchase Frequency</th>
-                    <th class="w150">Segments in Gravity</th>
-                    <th class="w150">Why not all segments of Gravity</th>
+                    <th class="w150">Segments in Sirca</th>
+                    <th class="w150">Why not all segments of Sirca</th>
                     <th class="w150">Dealing in how many brands</th>
                     <th class="w150">Most Selling Brands</th>
                     <th class="w150">Status</th>
@@ -236,7 +236,7 @@
                         <mat-form-field class="example-full-width cs-input select-input">
                           <input matInput placeholder="Enter...."
                             (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
-                            name="segments_in_gravity" #segments_in_gravity="ngModel" [(ngModel)]="data.segments_in_gravity">
+                            name="segments_in_Sirca" #segments_in_Sirca="ngModel" [(ngModel)]="data.segments_in_Sirca">
                         </mat-form-field>
                       </div>
                     </th>
@@ -245,7 +245,7 @@
                         <mat-form-field class="example-full-width cs-input select-input">
                           <input matInput placeholder="Enter...."
                             (keyup.enter)="start = 0;distributorList(show_today ? 'get_today_activity_list' : 'get_all_activity_list', show_today ? '1' : '2')"
-                            name="why_not_all_segments_of_gravity" #why_not_all_segments_of_gravity="ngModel" [(ngModel)]="data.why_not_all_segments_of_gravity">
+                            name="why_not_all_segments_of_Sirca" #why_not_all_segments_of_Sirca="ngModel" [(ngModel)]="data.why_not_all_segments_of_Sirca">
                         </mat-form-field>
                       </div>
                     </th>
@@ -331,10 +331,10 @@
                       {{list.purchase_frequency?list.purchase_frequency:"NA"}}
                     </td>
                     <td class="w150">
-                      {{list.segments_in_gravity?list.segments_in_gravity:"NA"}}
+                      {{list.segments_in_Sirca?list.segments_in_Sirca:"NA"}}
                     </td>
                     <td class="w150">
-                      {{list.why_not_all_segments_of_gravity?list.why_not_all_segments_of_gravity:"NA"}}
+                      {{list.why_not_all_segments_of_Sirca?list.why_not_all_segments_of_Sirca:"NA"}}
                     </td>
                     <td class="w150">
                       {{list.dealing_in_how_many_brands?list.dealing_in_how_many_brands:"NA"}}

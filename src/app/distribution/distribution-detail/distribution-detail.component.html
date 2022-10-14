@@ -68,7 +68,7 @@
                 <li *ngIf="login_data.user_type != 'Inside Sales Team'"><a [ngClass]="{'active': view_tab=='Checkin'}"
                         (click)="related_tabs('Checkin')">Check In</a></li>
                 <li *ngIf="login_data.user_type != 'Inside Sales Team'"><a [ngClass]="{'active': view_tab=='pOrder'}"
-                        (click)="getOrders('pOrder','Pending');related_tabs('pOrder')">Order To Gravity</a></li>
+                        (click)="getOrders('pOrder','Pending');related_tabs('pOrder')">Order To Sirca</a></li>
                 <li *ngIf="dr_detail?.type!='3' && login_data.user_type != 'Inside Sales Team'"><a
                         [ngClass]="{'active': view_tab=='sOrder'}"
                         (click)="getOrders('sOrder','Pending');related_tabs('sOrder')">Order From Dealer</a></li>
@@ -780,7 +780,7 @@
 
                                 <figure class="col s2" style="width: 20%" (click)="related_tabs('pOrder')">
                                     <div class="box">
-                                        <h1>Order To Gravity </h1>
+                                        <h1>Primary Order</h1>
                                         <div class="bxe">
                                             <div class="outer">
                                                 <div class="inner">
@@ -2009,8 +2009,8 @@
                         <mat-option value="product_quality">Product Quality</mat-option>
                         <mat-option value="working_tenure">Working Tenure</mat-option>
                         <mat-option value="purchase_frequency">Purchase Frequency</mat-option>
-                        <mat-option value="segments_in_gravity">Segments in Gravity</mat-option>
-                        <mat-option value="why_not_all_segments_of_gravity">Why not all segments of Gravity</mat-option>
+                        <mat-option value="segments_in_Sirca">Segments in Sirca</mat-option>
+                        <mat-option value="why_not_all_segments_of_Sirca">Why not all segments of Sirca</mat-option>
                         <mat-option value="dealing_in_how_many_brands">Dealing in how many Brands</mat-option>
                         <mat-option value="most_selling_brands">Most Selling Brands</mat-option>
                         <mat-option value="status">Status</mat-option>
@@ -2039,8 +2039,8 @@
                                         <th class="w150 text-center">Product Quality</th>
                                         <th class="w150 text-center">Working Tenure</th>
                                         <th class="w150 text-center">Purchase Frequency</th>
-                                        <th class="w150 text-center">Segments in Gravity</th>
-                                        <th class="w150 text-center">Why not all segments of Gravity</th>
+                                        <th class="w150 text-center">Segments in Sirca</th>
+                                        <th class="w150 text-center">Why not all segments of Sirca</th>
                                         <th class="w150 text-center">Dealing in how many brands</th>
                                         <th class="w150 text-center">Most Selling Brands</th>
                                         <th class="w150 text-center">Status</th>
@@ -2103,10 +2103,10 @@
                                         <td class="w150 text-center">{{get_dr_activity_list_data.working_tenure}}</td>
                                         <td class="w150 text-center">{{get_dr_activity_list_data.purchase_frequency}}
                                         </td>
-                                        <td class="w150 text-center">{{get_dr_activity_list_data.segments_in_gravity}}
+                                        <td class="w150 text-center">{{get_dr_activity_list_data.segments_in_Sirca}}
                                         </td>
                                         <td class="w150 text-center">
-                                            {{get_dr_activity_list_data.why_not_all_segments_of_gravity}}</td>
+                                            {{get_dr_activity_list_data.why_not_all_segments_of_Sirca}}</td>
                                         <td class="w150 text-center">
                                             {{get_dr_activity_list_data.dealing_in_how_many_brands}}</td>
                                         <td class="w150 text-center">{{get_dr_activity_list_data.most_selling_brands}}

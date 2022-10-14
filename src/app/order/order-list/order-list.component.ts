@@ -60,7 +60,7 @@ export class OrderListComponent implements OnInit {
     this.assign_login_data = this.assign_login_data.value;
     this.assign_login_data = this.assign_login_data.assignModule;
     console.log(this.assign_login_data);
-    const index = this.assign_login_data.findIndex(row => row.module_name == 'order to gravity');
+    const index = this.assign_login_data.findIndex(row => row.module_name == 'order to Sirca');
     console.log(index);
 
     this.assign_login_data[index].add == 'true' ? this.view_add = true : this.view_add = false;

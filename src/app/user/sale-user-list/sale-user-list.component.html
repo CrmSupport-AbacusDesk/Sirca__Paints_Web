@@ -143,7 +143,7 @@
                                         <td class="w150"><a *ngIf="view_edit" class="link-btn" routerLink="/sale-user-detail/{{u.id}}" routerLinkActive="active" mat-button>{{u.name}}</a> {{!view_edit?u.name:''}}</td>
                                         <td class="w150">
                                             <ng-container *ngIf="(u.user_type=='Market' || u.user_type=='MARKET') && u.created_type!='drLogin'">
-                                                Gravity Sales Exec.
+                                                Sirca Sales Exec.
                                             </ng-container>
 
                                             <ng-container *ngIf="u.user_type=='Ware House'">
@@ -155,11 +155,11 @@
                                             </ng-container>
 
                                             <ng-container *ngIf="(u.user_type=='OFFICE' || u.user_type=='Office')">
-                                                Gravity Office Exec.
+                                                Sirca Office Exec.
                                             </ng-container>
 
                                             <ng-container *ngIf="(u.user_type=='Inside Sales Team')">
-                                              Gravity Inside Sales Exec.
+                                              Sirca Inside Sales Exec.
                                             </ng-container>
 
                                         </td>
