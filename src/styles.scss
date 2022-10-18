@@ -89,7 +89,7 @@ $avatar-offset: 52 + 16;
     40%, 100%{background-position: 140px + $avatar-offset}
 }
 
-$theme-clr : #9b2450;
+$theme-clr : #434348;
 $primary :#002341;
 $secondry : #DEDEDE;
 $tred: #ED3237;
@@ -11733,7 +11733,7 @@ input
                 right: 10px;
                 transform: translateY(-50%);
                 font-size: 28px;
-                color: #9b2450
+                color: #434348
             }
             
             &:last-child{
@@ -11823,7 +11823,7 @@ input
         height: 30px;
         
         &:focus{
-            border-color: #9b2450;
+            border-color: #434348;
             box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.2);
             outline: none;
         }
@@ -12160,7 +12160,7 @@ span.mat-option-text{
                     .login-right
                     {
                         width: 100%;
-                        background: #9b2450;
+                        background: #434348;
                         
                         .login-form
                         {
@@ -12284,7 +12284,7 @@ span.mat-option-text{
                     &:first-child
                     {
                         font-weight: 500;
-                        color: #9b2450;
+                        color: #434348;
                     }
                     
                     &:last-child
