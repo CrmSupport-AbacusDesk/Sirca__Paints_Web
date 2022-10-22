@@ -13,13 +13,9 @@
     @Injectable({ providedIn: 'root' })
     export class DatabaseService implements OnInit {
         
-        
-        // myurl = 'http://localhost/github_d/pearl_api/gravity/dd_api/';
-        myurl = 'https://app.gravitybath.com/dd_api/';
-        // myurl = 'http://localhost/gravity_api/';
-        
 
-        myurl2= 'http://app.gravitybath.com/crm/api/index.php/';
+        myurl = 'https://devcrm.abacusdesk.com/sircapaints/dd_api/';
+        myurl2= 'https://devcrm.abacusdesk.com/sircapaints/crm/api/index.php/';
 
         can_active = '';
         datauser: any = {};

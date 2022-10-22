@@ -43,7 +43,7 @@ export class StatusModalComponent implements OnInit {
   
   formData = new FormData();
 
-  branding_items : any = ["Glow signboard","Nonlit board","Vinyl","ACP (LED Board)","One way vision","Gravity display"];
+  branding_items : any = ["Glow signboard","Nonlit board","Vinyl","ACP (LED Board)","One way vision","Sirca display"];
 
   lists: any;
   retail_partner_array :any =[];

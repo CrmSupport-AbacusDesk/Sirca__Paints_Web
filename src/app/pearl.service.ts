@@ -35,29 +35,11 @@ export class PearlService {
   travelPlanTab:any='';
 
   // Live Links
-  myurl="https://app.gravitybath.com/crm/";
-  myimgurl="https://app.gravitybath.com/";
-  myimgurl2="https://app.gravitybath.com/";
-  dbUrl="https://app.gravitybath.com/crm/api/index.php/";
-  pdf_url="https://app.gravitybath.com/crm/api/uploads/quotaion/"
-
-  // Test Links
-  // myurl="http://phpstack-83335-2448668.cloudwaysapps.com/crm/";
-  // myimgurl="http://phpstack-83335-2448668.cloudwaysapps.com/";
-  // myimgurl2="http://phpstack-83335-2448668.cloudwaysapps.com/";
-  // dbUrl="http://phpstack-83335-2448668.cloudwaysapps.com/crm/api/index.php/";
-
-  // New Test Link
-  // myurl="https://apps.abacusdesk.com/gravity2k21/crm/";
-  // myimgurl="https://apps.abacusdesk.com/gravity2k21/";
-  // myimgurl2="https://apps.abacusdesk.com/gravity2k21/";
-  // dbUrl="https://apps.abacusdesk.com/gravity2k21/crm/api/index.php/";
-  // pdf_url="https://apps.abacusdesk.com/gravity2k21/crm/api/uploads/quotaion/"
-  
-
-
-
-
+  myurl="https://devcrm.abacusdesk.com/sircapaints/crm/";
+  myimgurl="https://devcrm.abacusdesk.com/sircapaints/";
+  myimgurl2="https://devcrm.abacusdesk.com/sircapaints/";
+  dbUrl="https://devcrm.abacusdesk.com/sircapaints/crm/api/index.php/";
+  pdf_url="https://devcrm.abacusdesk.com/sircapaints/crm/api/uploads/quotaion/"
 
   constructor(public http:HttpClient) { }
 

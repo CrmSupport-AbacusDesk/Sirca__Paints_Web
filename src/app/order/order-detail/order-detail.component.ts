@@ -343,7 +343,7 @@ export class OrderDetailComponent implements OnInit {
         this.cd_amount = (this.subtotal * this.order_detail.cd_percentage) / 100;
         this.second_subtotal = this.subtotal - this.cd_amount;
         
-        if (this.order_detail.delivery_from == 'Gravity') {
+        if (this.order_detail.delivery_from == 'Sirca') {
             this.gst_amount = (this.second_subtotal * 18) / 100;
         } else {
             this.gst_amount = 0;

@@ -19,7 +19,7 @@
             
             <div class="left-auto" >
                 
-                <button mat-raised-button color="accent" class="mr15"  color="accent"*ngIf="((login_data.access_level == '1' && order_detail.delivery_from=='Gravity') || (login_data.access_level != '1' && order_detail.delivery_from != 'Gravity')) && order_detail.order_status!='Dispatch'&&order_detail.order_status!='Reject'&&order_detail.order_status!='Pre Close'" (click)="openDialog()">
+                <button mat-raised-button color="accent" class="mr15"  color="accent"*ngIf="((login_data.access_level == '1' && order_detail.delivery_from=='Sirca') || (login_data.access_level != '1' && order_detail.delivery_from != 'Sirca')) && order_detail.order_status!='Dispatch'&&order_detail.order_status!='Reject'&&order_detail.order_status!='Pre Close'" (click)="openDialog()">
                     Change Status
                 </button>
                 
@@ -107,7 +107,7 @@
                                         </li>
                                         
                                         
-                                        <li *ngIf="order_detail.delivery_from!='Gravity'">
+                                        <li *ngIf="order_detail.delivery_from!='Sirca'">
                                             <div class="outer">
                                                 <div class="inner">
                                                     <span>Channel Partner</span>
@@ -264,8 +264,8 @@
                         <div class="details-info">
                             <div class="basic-details">
                                 <div class="cs-heading">
-                                    <h2 *ngIf="order_detail.delivery_from=='Gravity'">Channel Partner Detail</h2>
-                                    <h2 *ngIf="order_detail.delivery_from!='Gravity'">Retail Partner Detail</h2>
+                                    <h2 *ngIf="order_detail.delivery_from=='Sirca'">Channel Partner Detail</h2>
+                                    <h2 *ngIf="order_detail.delivery_from!='Sirca'">Retail Partner Detail</h2>
                                 </div>
                                 <div class="cs-figure">
                                     <ul>
@@ -625,7 +625,7 @@
                 
                 <div class="row">
                     <div class="col s8">
-                        <div class="details-info" *ngIf="order_detail.delivery_from!='Gravity' && order_billing_details.length > 0">
+                        <div class="details-info" *ngIf="order_detail.delivery_from!='Sirca' && order_billing_details.length > 0">
                             <div class="basic-details" >
                                 <div class="cs-heading">
                                     <h2>Invoice Details</h2>
@@ -744,7 +744,7 @@
                         <div>
                             <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Address:-</strong>28/3/2, Site IV Industrial Area, Sahibabad, Ghaziabad, Uttar Pradesh 201001</p>
                             <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Contact Us:-</strong>+91- 86-87-300-400</p>
-                            <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>E-Mail Address:-</strong>info@gravitybath.com</p>
+                            <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>E-Mail Address:-</strong>info@Sircabath.com</p>
                         </div>
                     </td>
                 </tr>
@@ -906,7 +906,7 @@
                                 <div>
                                     <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Address:-</strong>28/3/2, Site IV Industrial Area, Sahibabad, Ghaziabad, Uttar Pradesh 201001</p>
                                     <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Contact Us:-</strong>+91- 86-87-300-400</p>
-                                    <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>E-Mail Address:-</strong>info@gravitybath.com</p>
+                                    <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>E-Mail Address:-</strong>info@Sircabath.com</p>
                                 </div>
                             </td>
                         </tr>
