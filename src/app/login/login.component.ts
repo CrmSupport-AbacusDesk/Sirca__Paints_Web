@@ -171,30 +171,30 @@ export class LoginComponent implements OnInit {
 
       }
 
-      else if (data.data.user_type == 'OFFICE' || data.data.user_type == 'office' || data.data.user_type == 'Office' || data.data.user_type == 'Inside Sales Team') {
-        this.system_user = true;
+      // else if (data.data.user_type == 'OFFICE' || data.data.user_type == 'office' || data.data.user_type == 'Office' || data.data.user_type == 'Inside Sales Team') {
+      //   this.system_user = true;
 
-        this.st_user = data;
+      //   this.st_user = data;
 
-        if(this.st_user.data.contact_01 == '9896356568') {
+      //   if(this.st_user.data.contact_01 == '9896356568') {
 
-          this.cp_otp = '123456';
+      //     this.cp_otp = '123456';
 
-        } else {
+      //   } else {
 
-          this.cp_otp =  Math.floor(100000 + Math.random() * 900000);
+      //     this.cp_otp =  Math.floor(100000 + Math.random() * 900000);
 
-        }
+      //   }
 
 
-        const value = {'mobile': this.st_user.data.contact_01, 'otp': this.cp_otp};
+      //   const value = {'mobile': this.st_user.data.contact_01, 'otp': this.cp_otp};
 
-        this.serve.fetchData(value, 'login/verify_otp').subscribe((data: any) => {
-          console.log(data);
+      //   this.serve.fetchData(value, 'login/verify_otp').subscribe((data: any) => {
+      //     console.log(data);
 
-        });
+      //   });
 
-      }
+      // }
 
 
       else {
