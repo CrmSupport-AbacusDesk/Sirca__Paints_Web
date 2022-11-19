@@ -104,7 +104,7 @@ export class PlumberMeetReportComponent implements OnInit {
       
       for(let i=0;i<this.plumber_meet_data_for_excel_download.length;i++){
         this.excel_data.push({
-          'CHANNEL PARTNER':this.plumber_meet_data_for_excel_download[i].created_by_type == 'dr_login' ? (this.plumber_meet_data_for_excel_download[i].type == '1' ? this.plumber_meet_data_for_excel_download[i].created_by_dr_name : this.plumber_meet_data_for_excel_download[i].distributor_name) : (this.plumber_meet_data_for_excel_download[i].company_name && this.plumber_meet_data_for_excel_download[i].company_name!= '' ? this.plumber_meet_data_for_excel_download[i].company_name : '--'),
+          'Distributor':this.plumber_meet_data_for_excel_download[i].created_by_type == 'dr_login' ? (this.plumber_meet_data_for_excel_download[i].type == '1' ? this.plumber_meet_data_for_excel_download[i].created_by_dr_name : this.plumber_meet_data_for_excel_download[i].distributor_name) : (this.plumber_meet_data_for_excel_download[i].company_name && this.plumber_meet_data_for_excel_download[i].company_name!= '' ? this.plumber_meet_data_for_excel_download[i].company_name : '--'),
           'DEALER':this.plumber_meet_data_for_excel_download[i].created_by_type == 'dr_login' && this.plumber_meet_data_for_excel_download[i].type == '3' ?  this.plumber_meet_data_for_excel_download[i].created_by_dr_name : '--',
           'PLUMBER COUNT':this.plumber_meet_data_for_excel_download[i].total_member,
           'DATE OF MEETING':this.plumber_meet_data_for_excel_download[i].date_of_meeting,

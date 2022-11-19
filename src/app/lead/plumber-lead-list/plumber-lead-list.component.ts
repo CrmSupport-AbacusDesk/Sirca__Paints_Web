@@ -106,7 +106,7 @@ export class PlumberLeadListComponent implements OnInit {
     excel_data:any=[];
     exportAsXLSX():void {
       for(let i=0;i<this.lead_List.length;i++){
-        this.excel_data.push({'Name':this.lead_List[i].name,'Mobile':this.lead_List[i].mobile,'WhatsApp No.':this.lead_List[i].whatsapp_no,'Email':this.lead_List[i].email,'State ':this.lead_List[i].state,'District ':this.lead_List[i].district,'City ':this.lead_List[i].city,'Pincode ':this.lead_List[i].pincode,'Retail Partner':this.lead_List[i].dealer_name,'Retail Partner Mobile':this.lead_List[i].dealer_mobile});
+        this.excel_data.push({'Name':this.lead_List[i].name,'Mobile':this.lead_List[i].mobile,'WhatsApp No.':this.lead_List[i].whatsapp_no,'Email':this.lead_List[i].email,'State ':this.lead_List[i].state,'District ':this.lead_List[i].district,'City ':this.lead_List[i].city,'Pincode ':this.lead_List[i].pincode,'Dealer':this.lead_List[i].dealer_name,'Dealer Mobile':this.lead_List[i].dealer_mobile});
       }
       this.serve.exportAsExcelFile(this.excel_data, 'PLUMBER LEAD SHEET');
     }

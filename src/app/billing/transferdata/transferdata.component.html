@@ -1,0 +1,183 @@
+<div class="main-container">
+  
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading" >
+      <div class="heading-text bc-space">
+        <!-- <div class="back-btn" (click)="back()">
+          <a mat-button ><i class="material-icons">arrow_right_alt</i></a>
+        </div> -->
+        <h2>Dispatch Bill</h2>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      
+      <div class="row" >
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Basic Details</h2>
+              </div>
+              
+              
+              <div class="cs-figure">
+                <ul class="mb10">
+                  
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Customer Name</span>
+                        <p>{{invoice_bill_detail.customer_name && invoice_bill_detail.customer_name!= '' ? invoice_bill_detail.customer_name : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Customer Code</span>
+                        <p>{{invoice_bill_detail.customer_code && invoice_bill_detail.customer_code!= '' ? invoice_bill_detail.customer_code : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Billing Date</span>
+                        <p>{{invoice_bill_detail.billing_date && invoice_bill_detail.billing_date!= '' ? (invoice_bill_detail.billing_date | date : 'd MMM y' ) : '--' }}</p>
+                      </div>
+                    </div>
+                  </li> 
+                  </ul>
+                
+                <ul class="mb10">
+                  
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Bill Number</span>
+                        <p>{{invoice_bill_detail.bill_number && invoice_bill_detail.bill_number!= '' ? invoice_bill_detail.bill_number : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Bill Item</span>
+                        <p>{{invoice_bill_detail.total_billing_item && invoice_bill_detail.total_billing_item!= '' ? invoice_bill_detail.total_billing_item : '--'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Item Quantity</span>
+                        <p>{{invoice_bill_detail.total_billing_item_qty && invoice_bill_detail.total_billing_item_qty!= '' ? invoice_bill_detail.total_billing_item_qty : '--'}}</p>
+                      </div>
+                    </div>
+                  </li> 
+                </ul>
+
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row mt25">
+        <div class="col s6">
+          <div class="heading-bg mb0">
+            <h2>Scan code</h2>
+          </div>
+         
+          <div mat-dialog-content>
+    
+            <mat-form-field class="example-full-width wp100 cs-field">
+              <input matInput #barcode name="barcode" type="text" [(ngModel)]="scannedData.barcode" (change)="checkBarcode()">
+
+            </mat-form-field>
+             
+          </div>
+          <div class="cs-table left-right-20">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th class="w60 text-center">S. No.</th>
+                  <th class="w110">Product Description</th>
+                  <th class="w110">QR Code</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let item_data of barcode_list; let i=index">
+                    <td class="w60 text-center">{{i+1}}</td>
+                    <td class="w110">{{item_data.material_code ? (item_data.material_code | titlecase) : '--' }}</td>
+                    <td class="w110">{{item_data.secondary_qr_code  ? item_data.secondary_qr_code: '--' }}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="heading-bg mb0">
+            <h2>Bill Item</h2>
+          </div>
+          <div class="cs-table left-right-20">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th class="w60 text-center">S. No.</th>
+                  <th>Product Description</th>
+                  <th class="w110">Product Code</th>
+                  <th class="w80">Sale QTY</th>                  
+                  <th class="w90" >Dispatch QTY</th>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let item_data of invoice_bill_item; let i=index">
+                    <td class="w60 text-center">{{i+1}}</td>
+                    <td>{{item_data.material_description && item_data.material_description != '' ? (item_data.material_description | titlecase) : '--' }}</td>
+                    <td class="w110">{{item_data.material_code && item_data.material_code != '' ? (item_data.material_code | uppercase) : '--' }}</td>
+                    <td class="w80">{{item_data.sale_qty && item_data.sale_qty != '' ? item_data.sale_qty : '--'}}</td>                  
+                    <td class="w90">{{item_data.barcode_list.length}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+         
+              <div class="cs-btn fixedd mt32 text-right">
+                  <div class="in-btn">
+                     <button mat-raised-button color="accent" [disabled]="!barcode_list.length" (click)=" dispatchTransferItem()">Save</button>
+                  </div>
+              </div>
+            
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+</div>

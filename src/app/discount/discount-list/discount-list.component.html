@@ -48,9 +48,9 @@
                   <tr>
                     <!-- <th class="w30">&nbsp;</th> -->
                     <th>Category</th>
-                    <th class="w250 text-center">Channel Partner (%)</th>
+                    <th class="w250 text-center">Distributor (%)</th>
                     <th class="w250 text-center">Direct Dealer(%)</th>
-                    <th class="w250 text-center">Retail Partner(%)</th>
+                    <th class="w250 text-center">Dealer(%)</th>
                     <th class="w80 text-center">GST (%)</th>
                   </tr>
                 </table>
@@ -67,11 +67,11 @@
                     </th>
                     <th class="w250" >
                       <span *ngIf="view_edit">
-                      <div class="th-search-acmt" *ngIf="!selected_category_list.length || selected_list_dr_type == 'Channel Partner'">
+                      <div class="th-search-acmt" *ngIf="!selected_category_list.length || selected_list_dr_type == 'Distributor'">
                         <mat-form-field class="cs-input">
                           <mat-label>Select Category</mat-label>
                           <mat-select name="selected_category_distributor" [formControl]="lists" multiple>
-                            <mat-option *ngFor="let category of discountList " placeholder="Select Category" (click)="selected_category('Channel Partner')" [value]="category.id">{{category.category}}</mat-option>
+                            <mat-option *ngFor="let category of discountList " placeholder="Select Category" (click)="selected_category('Distributor')" [value]="category.id">{{category.category}}</mat-option>
                           </mat-select>
                         </mat-form-field>
                       </div>

@@ -20,7 +20,7 @@ export class BannerAddComponent implements OnInit {
       this.banner_id = params.id;
       console.log(this.banner_id);
       this.data.banner = [];
-      // this.data.banner.push('Channel Partner');
+      // this.data.banner.push('Distributor');
       console.log('banner_detail');
       this.serve.fetchData({banner_id:this.banner_id},"category_master/banner_detail").subscribe((result=>{
         console.log(result);
@@ -29,11 +29,11 @@ export class BannerAddComponent implements OnInit {
         
         const bannerData = [];
         if(this.banner_detail_data.channel_partner == 1) {
-          bannerData.push('Channel Partner')
+          bannerData.push('Distributor')
         }
         
         if(this.banner_detail_data.dealer == 1) {
-          bannerData.push('Retail Partner')
+          bannerData.push('Dealer')
         }
         
         if(this.banner_detail_data.plumber == 1) {
@@ -50,7 +50,7 @@ export class BannerAddComponent implements OnInit {
         
         this.data.banner = bannerData;
         
-        // this.data.banner = [this.banner_detail_data.channel_partner==1?'Channel Partner':'',this.banner_detail_data.dealer==1?'Retail Partner':'',this.banner_detail_data.plumber==1?'Plumbing Man':'',this.banner_detail_data.consumer==1?'Consumer':'',this.banner_detail_data.employee_login==1?'Employee Login':''];
+        // this.data.banner = [this.banner_detail_data.channel_partner==1?'Distributor':'',this.banner_detail_data.dealer==1?'Dealer':'',this.banner_detail_data.plumber==1?'Plumbing Man':'',this.banner_detail_data.consumer==1?'Consumer':'',this.banner_detail_data.employee_login==1?'Employee Login':''];
         console.log(this.data.banner); 
         
       }))
@@ -77,7 +77,7 @@ export class BannerAddComponent implements OnInit {
       console.log('employeelogin');
       this.data.emp=1;
     }
-    if(this.data.banner.includes('Channel Partner')){
+    if(this.data.banner.includes('Distributor')){
       console.log('channel_partner');
       this.data.channel_partner=1;
       
@@ -169,7 +169,7 @@ export class BannerAddComponent implements OnInit {
   }
   check_all(){
     this.data.banner = ['Employee Login'];
-    // 'Channel Partner','Dealer','Plumbing Man','Consumer',
+    // 'Distributor','Dealer','Plumbing Man','Consumer',
     console.log(this.data.banner);
   }
   uncheckall(){
@@ -182,7 +182,7 @@ export class BannerAddComponent implements OnInit {
   //   this.serve.fetchData({banner_id:this.banner_id},"category_master/banner_detail").subscribe((result=>{
   //     console.log(result);
   //     this.banner_detail_data = result;
-  //     this.data.banner.push(this.banner_detail_data.channel_partner==1?'Channel Partner':'',this.banner_detail_data.consumer==1?'Consumer':'',this.banner_detail_data.employee_login==1?'Employee Login':'',this.banner_detail_data.dealer==1?'Dealer':'',this.banner_detail_data.plumber==1?'Plumbing Man':'');
+  //     this.data.banner.push(this.banner_detail_data.channel_partner==1?'Distributor':'',this.banner_detail_data.consumer==1?'Consumer':'',this.banner_detail_data.employee_login==1?'Employee Login':'',this.banner_detail_data.dealer==1?'Dealer':'',this.banner_detail_data.plumber==1?'Plumbing Man':'');
   //         // this.data.banner.push('Consumer');
   //         console.log(this.data.banner);
   
@@ -200,7 +200,7 @@ export class BannerAddComponent implements OnInit {
       console.log('employeelogin');
       this.data.emp=1;
     }
-    if(this.data.banner.includes('Channel Partner')){
+    if(this.data.banner.includes('Distributor')){
       console.log('channel_partner');
       this.data.channel_partner=1;
       

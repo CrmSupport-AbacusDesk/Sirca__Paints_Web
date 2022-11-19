@@ -71,8 +71,8 @@
                           <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="search_filter.type" (ngModelChange)="scheme_list_method()">
                             <mat-option disabled="">Select Type</mat-option>
                             <mat-option value="all">ALL</mat-option>
-                            <mat-option value="3">Retail Partner</mat-option>
-                            <mat-option value="1">Channel Partner</mat-option>
+                            <mat-option value="3">Dealer</mat-option>
+                            <mat-option value="1">Distributor</mat-option>
                             <mat-option value="7">Direct Dealer</mat-option>
                           </mat-select>
                         </mat-form-field>
@@ -122,8 +122,8 @@
                     <td class="w50">{{ i + 1 }}</td>
                     <td class="w150" [ngClass]="scheme_data.end_date < today_formatted? 'red-bgclr' : '' ">{{scheme_data.date_created | date:' d MMM , y, hh:mm aa '}}</td>
                     <td class="w160">{{scheme_data.created_by_name}}</td>
-                    <td class="w160" *ngIf="scheme_data.type == '1'">Channel Partner</td>
-                    <td class="w160" *ngIf="scheme_data.type == '3'">Retail Partner</td>
+                    <td class="w160" *ngIf="scheme_data.type == '1'">Distributor</td>
+                    <td class="w160" *ngIf="scheme_data.type == '3'">Dealer</td>
                     <td class="w160" *ngIf="scheme_data.type == '7'">Direct Dealer</td>
 
                     <td class="w160">{{scheme_data.point_percentage ? scheme_data.point_percentage +' %' : '--'}}</td>

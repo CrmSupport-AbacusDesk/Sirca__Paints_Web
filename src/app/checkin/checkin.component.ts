@@ -216,7 +216,7 @@ export class CheckinComponent implements OnInit {
           'Check In':this.excel_checkins_from_api[i].visit_start +' '+ this.excel_checkins_from_api[i].start_address  ,
           'Check Out':this.excel_checkins_from_api[i].visit_end+' '+ this.excel_checkins_from_api[i].address,
           'Remark':this.excel_checkins_from_api[i].description,
-          'Type':this.excel_checkins_from_api[i].dr_type==3?'Retail Partner':(this.excel_checkins_from_api[i].dr_type==''?'other':'Channel Partner'),
+          'Type':this.excel_checkins_from_api[i].dr_type==3?'Dealer':(this.excel_checkins_from_api[i].dr_type==''?'other':'Distributor'),
           // 'Verification':this.excel_checkins_from_api[i].checkin_verification_status && this.excel_checkins_from_api[i].checkin_verification_status!= '' && this.excel_checkins_from_api[i].checkin_verification_status != 'Pending'?(this.excel_checkins_from_api[i].checkin_verification_status == 'to_be_re_verified' ? 'To Be Verified' : 'Verified'):'Pending',
           'Verification': this.verification_status,
           'Verified By':this.excel_checkins_from_api[i].status_update_by_name && this.excel_checkins_from_api[i].status_update_by_name!= '' && this.excel_checkins_from_api[i].          status_update_by_name!= null?this.excel_checkins_from_api[i].status_update_by_name:'--',

@@ -206,7 +206,7 @@ export class ActivityListComponent implements OnInit {
   //       this.excel_data.push({
   //         'Date':this.excel_checkins_from_api[i].activity_date,
   //         'Sales User':this.excel_checkins_from_api[i].exec_name,
-  //         'Type':this.excel_checkins_from_api[i].dr_type==3?'Retail Partner':(this.excel_checkins_from_api[i].dr_type==''?'other':'Channel Partner'),
+  //         'Type':this.excel_checkins_from_api[i].dr_type==3?'Dealer':(this.excel_checkins_from_api[i].dr_type==''?'other':'Distributor'),
   //         'Company Name':this.excel_checkins_from_api[i].other_name==''?this.excel_checkins_from_api[i].company_name:this.excel_checkins_from_api[i].other_name,
   //         'Contact Person':this.excel_checkins_from_api[i].contact_person && this.excel_checkins_from_api[i].contact_person!='' ? this.excel_checkins_from_api[i].contact_person : '--' ,
   //         'Contact No.':this.excel_checkins_from_api[i].dr_mobile && this.excel_checkins_from_api[i].dr_mobile!='' ? this.excel_checkins_from_api[i].dr_mobile : '--' ,

@@ -16,7 +16,8 @@
           <!-- <a *ngIf="lead_type_id=='3'" mat-button routerLink="/dealer-lead-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
           <a *ngIf="lead_type_id=='3'" mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
           <!-- <a *ngIf="lead_type_id=='10'" mat-button routerLink="/social-media-lead-list" routerLinkActive="active"><i class="material-icons">arrow_right_alt</i></a> -->
-          <a *ngIf="lead_type_id=='10'" mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+          <a *ngIf="lead_type_id=='5'" mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
+          <a *ngIf="lead_type_id=='7'" mat-button (click)="back()"><i class="material-icons">arrow_right_alt</i></a>
         </div>
         <h2>{{lead_detail.company_name}}</h2>
         <p class="light">{{lead_detail.dr_type}}</p>
@@ -227,7 +228,7 @@
 
                   <!--                <div class="cs-row">-->
                   <!--                  <div class="static-info" >-->
-                  <!--                    <p>Channel partner</p>-->
+                  <!--                    <p>Distributor</p>-->
                   <!--                    <p>{{lead_detail.dealer_channel_partner.company_name}}</p>-->
                   <!--                  </div>-->
                   <!--                </div>-->
@@ -236,7 +237,7 @@
                   <div class="sprate-box" *ngIf="lead_type_id!='10'">
                     <div class="territory-info">
                       <div class="head " [ngClass]="{'active':active.dealer}">
-                        <h2>Channel Partner</h2>
+                        <h2>Distributor</h2>
                         <!-- <a class="edit-item" (click)="active.dealer = true;"><i class="material-icons">create</i></a> -->
                       </div>
                       <div class="cs-checkbox">
@@ -494,7 +495,7 @@
         </div>
 
 
-        <div class="row" *ngIf="login_data.user_type != 'Inside Sales Team' && lead_type_id!='10'">
+        <!-- <div class="row" *ngIf="login_data.user_type != 'Inside Sales Team' && lead_type_id!='10'">
 
           <div class="col s8">
 
@@ -509,13 +510,11 @@
                     mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
                   <h2 class="mr10 ml20 pt12">Branding Detail</h2>
                   <div style="margin-left: 200px;display: flex;align-items: center;">
-                    <!-- <strong style="padding-left: 15px;color: red;font-size: 25px;">Scroll Right to Left </strong> -->
                     <i class="material-icons">keyboard_arrow_left</i>
                     <span>&nbsp;</span>
                     <i class="material-icons">keyboard_arrow_right</i>
                   </div>
                 </div>
-                <!-- <mat-divider class="left-right-15 mt10 mb10 "></mat-divider> -->
                 <div class="from-fields h400">
                   <div class="cs-table cs-table-scroll">
                     <div class="stickyTableHead" style="width: fit-content;">
@@ -604,16 +603,12 @@
                 </div>
               </div>
 
-              <!-- <div class="fix-btn">
-                  <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="download_excel()"><img src="assets/img/excel.svg"></a>
-              </div> -->
-
             </div>
 
           </div>
 
 
-        </div>
+        </div> -->
 
       </div>
 

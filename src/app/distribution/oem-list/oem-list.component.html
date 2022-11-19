@@ -3,12 +3,12 @@
     <div class="page-heading">
       <img src="assets/img/distribution_icon.svg" class="h-icon">
       <div class="heading-text">
-        <h2>Dealers</h2>
-        <p>Total Dealers: {{dr_count}}</p>
+        <h2>Oem</h2>
+        <p>Total Oem: {{dr_count}}</p>
       </div>
 
-
     </div>
+
     <div class="uppr-one m-right-data">
       <ul>
         <li class="refresh-area mr0 after-none">
@@ -40,11 +40,13 @@
 
   </div>
 
+
   <div *ngIf="exp_loader">
     <mat-spinner class="loader">
       <div><p>Loading....</p></div>
     </mat-spinner>
   </div>
+
 
   <div class="cs-table cs-table-scroll no-tab">
     <div class="stickyTableHead" style="width: fit-content;">
@@ -52,29 +54,30 @@
         <table>
           <tr>
             <th class="w40 text-center">&nbsp;</th>
-            <th class="w100">Dealer Id</th>
-            <th  class="w200">Company Name</th>
-            <th  class="w130">Mobile</th>
-            <th class="w100">Pin Code </th>
-            <th class="w150">City </th>
-            <th class="w100">State</th>
+            <th class="w80 text-center">ID</th>
+            <th class="w270">Company Name</th>
+            <th class="w120">Mobile No.</th>
+            <th class="w80">Pin Code </th>
+            <th class="w100">City </th>
+            <th class="w120">State</th>
             <th class="w100">District</th>
-            <th class="w80">Last Order</th>
-            <th class="w130">Created Date</th>
-            <th class="w180">Created By</th>
+            <th class="w110">Last Order</th>
+            <th class="w180">Primary Sale</th>
+            <th class="w180">Secondary Sale</th>
+            <th class="w110">Created Date</th>
+            <th class="w150">Created By</th>
             <th class="w150">Created By Type</th>
             <th class="w110">Converted On</th>
             <th class="w150">Converted By</th>
             <th class="w110">Last Visit Executive</th>
-            <th class="w130">Toatl Activity Count</th>
-            <th class="w110">Last Activity</th>
-            <th class="w110">Disposition Type</th>
-            <th class="w110"> Disposition Name </th>
+            <th class="w130">Total Activity Count</th>
+            <th class="w110">Last Activity </th>
+            <!-- <th class="w110">Disposition Type </th> -->
+            <!-- <th class="w110">Disposition Name</th> -->
             <th *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70 text-center" >Status</th>
-            <th class="w180" >Assigned Sales User</th>
-            <th class="w180" >Assigned Inside Sales User</th>
-            <th class="w130">Distributor</th>
-            <th class="w200">Comment</th>
+            <th class="w180">Assigned Sales User</th>
+            <th class="w180">Assigned Inside Sales User</th>
+            <!-- <th class="w200">Comment</th> -->
           </tr>
         </table>
       </div>
@@ -82,73 +85,62 @@
         <table class="sno-border">
           <tr>
             <th class="w40"></th>
-
-            <th class="w100">
+            <th class="w80">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder="Dealer Id. . ." type="text" name="party_id" (keyup.enter)="distributorList()" [(ngModel)]="search_val.party_id" >
+                  <input matInput placeholder="Party Id" name="party_id" (keyup.enter)="distributorList()" [(ngModel)]="search_val.party_id" >
                 </mat-form-field>
               </div>
             </th>
-
-            <th class="w200">
+            <th class="w270">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
                   <input matInput placeholder="Company Name" name="company_name" (keyup.enter)="distributorList()" [(ngModel)]="search_val.company_name" >
                 </mat-form-field>
               </div>
             </th>
-
-            <th class="w130">
+            <th class="w120">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder="Mobile Number/Landine Number" name="mobile" (keyup.enter)="distributorList()" [(ngModel)]="search_val.mobile" >
+                  <input matInput placeholder="MObile Number/Landine Number" name="mobile" (keyup.enter)="distributorList()" [(ngModel)]="search_val.mobile" >
                 </mat-form-field>
               </div>
             </th>
-
-            <th class="w100">
+            <th class="w80">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
                   <input matInput placeholder="Pin Code" name="pincode" (keyup.enter)="distributorList()" [(ngModel)]="search_val.pincode" >
                 </mat-form-field>
               </div>
             </th>
-
-            <th class="w150">
+            <th class="w100">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
                   <input matInput placeholder="City" name="city" (keyup.enter)="distributorList()" [(ngModel)]="search_val.city" >
                 </mat-form-field>
               </div>
             </th>
-
-            <th class="w100">
+            <th class="w120">
               <div class="th-search">
                 <select (change)="distributorList()" name="state" [(ngModel)]="search_val.state">
-                  <option value="">Select state</option>
+                  <option value="">Select an Option</option>
                   <option *ngFor="let val of state_values">{{val.state_name}}</option>
                 </select>
               </div>
             </th>
-
-            <th class="w100">
-              <div class="th-search-acmt">
-                <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder="District . ." type="text" name="district" (keyup.enter)="distributorList()" [(ngModel)]="search_val.district" >
-                </mat-form-field>
-              </div>
-            </th>
-
-            <th class="w80">
+            <th class="w100"></th>
+            <th class="w110">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
                   <input matInput placeholder="Days. ." type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="last_order_days_filter" (keyup.enter)="distributorList()" [(ngModel)]="search_val.last_order_days_filter" >
                 </mat-form-field>
               </div>
             </th>
-
-            <th class="w130">
+            <th class="w180">
+            </th>
+            <th class="w180">
+            </th>
+            <th class="w110">
               <div class="th-search-acmt">
                 <mat-form-field class="cs-input date-column infix-bodr">
                   <input matInput [matDatepicker]="picker" placeholder="Date" name="date_created" [(ngModel)]="search_val.date_created" (dateChange)="onDate($event)" >
@@ -157,58 +149,45 @@
                 </mat-form-field>
               </div>
             </th>
-
-            <th class="w180">
+            <th class="w150">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder="Created By. . ." type="text" name="created_by" (keyup.enter)="distributorList()" [(ngModel)]="search_val.created_by" >
+                  <input matInput placeholder="Created By. . ." type="text" name="created_by" [(ngModel)]="search_val.created_by" (keyup.enter)="distributorList()">
                 </mat-form-field>
               </div>
             </th>
-
             <th class="w150"></th>
-
             <th class="w110"></th>
-
             <th class="w150"></th>
-
             <th class="w110"></th>
             <th class="w130"></th>
-
             <th class="w110">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder="Days. ." type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57"  name="last_activity_days_filter" (keyup.enter)="distributorList()" [(ngModel)]="search_val.last_activity_days_filter" >
+                  <input matInput placeholder="Days. . ." type="text" onkeypress="return event.charCode >= 48 && event.charCode <= 57" (keyup.enter)="distributorList()" [(ngModel)]="search_val.last_activity_days_filter">
                 </mat-form-field>
               </div>
             </th>
-              <th class="w110"></th>
-              <th class="w110"></th>
+            <!-- <th class="w110"></th> -->
+            <!-- <th class="w110"></th> -->
             <th *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70">
-            </th>
 
+            </th>
             <th class="w180">
               <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder="Assigned Sales User. . ." name="assign_user" (keyup.enter)="distributorList()" [(ngModel)]="search_val.assign_user" >
+                  <input matInput placeholder="Assigned Sales User. . ." name="assign_user" (keyup.enter)="distributorList()" [(ngModel)]="search_val.assign_user">
                 </mat-form-field>
               </div>
             </th>
             <th class="w180">
               <!-- <div class="th-search-acmt">
                 <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder="Assigned Inside Sales User. . ." name="assign_inside_user" (keyup.enter)="distributorList()" [(ngModel)]="search_val.assign_inside_user" >
+                  <input matInput placeholder="Assigned Inside Sales User. . ." name="assign_inside_user" (keyup.enter)="distributorList()" [(ngModel)]="search_val.assign_inside_user">
                 </mat-form-field>
               </div> -->
             </th>
-            <th  class="w130">
-              <div class="th-search-acmt">
-                <mat-form-field class="example-full-width cs-input select-input">
-                  <input matInput placeholder=" Distributor"  (keyup.enter)="distributorList()" [(ngModel)]="search_val.chnlprtnr">
-                </mat-form-field>
-              </div>
-            </th>
-            <th class="w200"></th>
+            <!-- <th class="w200"></th> -->
           </tr>
         </table>
       </div>
@@ -219,47 +198,62 @@
         <table>
           <tr *ngFor="let list of distributor_list;let i=index">
             <td class="w40 text-center">{{start+i+1}}</td>
-            <td class="w100">{{list.id}}</td>
-            <td  class="w200"><a *ngIf="view_edit || login_data_2.user_type == 'Inside Sales Team'" class="link-btn" mat-button routerLink="/distribution-detail/{{list.id}}" routerLinkActive="active">{{list.company_name}}</a> {{!view_edit && login_data_2.user_type != 'Inside Sales Team'?list.company_name:''}}</td>
-            <td class="w130">{{list.mobile ? list.mobile : '--'}}</td>
-            <td class="w100">{{list.pincode ? list.pincode : '--'}}</td>
-            <td class="w150">{{list.city ? list.city : '--'}}</td>
-            <td class="w100">{{list.state ? list.state : '--'}}</td>
+            <td class="w80 text-center">{{list.id}}</td>
+            <td class="w270"><a *ngIf="view_edit || login_data_2.user_type == 'Inside Sales Team'" class="link-btn" mat-button routerLink="/distribution-detail/{{list.id}}" routerLinkActive="active">{{list.company_name}}</a> {{!view_edit && login_data_2.user_type != 'Inside Sales Team'?list.company_name:''}}</td>
+            <!-- <td class="w300"><a class="link-btn" mat-button  routerLinkActive="active">{{list.mobile}}</a></td> -->
+            <td class="w120">{{list.mobile ? list.mobile : '--'}}</td>
+            <td class="w80">{{list.pincode ? list.pincode : '--'}}</td>
+            <td class="w100">{{list.city ? list.city : '--'}}</td>
+            <td class="w120">{{list.state ? list.state : '--'}}</td>
             <td class="w100">{{list.district ? list.district : '--'}}</td>
-            <td class="w80">{{list.last_order_days ?list.last_order_days + ' days':'--'}}</td>
-            <td class="w130">{{list.date_created | date : 'MMMM d, y'}}</td>
-            <td *ngIf="!list.created_name" class="w180">Admin</td>
-            <td *ngIf="list.created_name" class="w180">{{list.created_name}}</td>
+            <td class="w110">{{list.last_order_days ?list.last_order_days + ' days':'--'}}</td>
+            <td class="w180">
+              <div class="one-line">
+                {{list.primary_sale.count}} | &#8377; {{list.primary_sale.sum}}
+              </div>
+            </td>
+            <td class="w180">
+              <div class="one-line">
+                {{list.secondary_sale.count}} | &#8377; {{list.secondary_sale.sum}}
+              </div>
+            </td>
+            <td class="w110">{{list.date_created | date : 'MMMM d, y'}}</td>
+            <td *ngIf="!list.created_name" class="w150">Admin</td>
+            <td *ngIf="list.created_name" class="w150">{{list.created_name}}</td>
             <td class="w150">{{list.created_by_type && list.created_by_type!=''?list.created_by_type:'--'}}</td>
-            <td class="w110">{{list.lead_converted_on && list.lead_converted_on!='' && list.lead_converted_on != '0000-00-00' ?(list.lead_converted_on | date : 'd MMM y'):'--' }}</td>
+            <td class="w110">{{list.lead_converted_on && list.lead_converted_on!='' && list.lead_converted_on!='0000-00-00' ?(list.lead_converted_on | date : 'd MMM y'):'--' }}</td>
             <td class="w150">{{list.lead_converted_by_name && list.lead_converted_by_name!='' ?list.lead_converted_by_name:'--' }}</td>
             <td class="w110">{{list.last_visit ? list.last_visit + ' days': '--'}}</td>
             <td class="w130">{{list.total_activity_count}}</td>
             <td class="w110">{{list.last_inside_activity_days ? list.last_inside_activity_days + ' days' : '--'}}</td>
-            <td class="w110">{{list.disposition_type}}</td>
-            <td class="w110">{{list.disposition_name}}</td>
+            <!-- <td class="w110">{{list.disposition_type}}</td> -->
+            <!-- <td class="w110">{{list.disposition_name}}</td> -->
             <td *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70">
-              <mat-slide-toggle [checked]="list.status == '0'?'false':'true'" (click)="update_status(list.id,list.status) ; distributorList('refresh')" (dragChange)="update_status(list.id,list.status) ; distributorList('refresh')" ></mat-slide-toggle>
+              <mat-slide-toggle [checked]="list.status == '0'?'false':'true'" (click)="update_status(list.id,list.status) ; distributorList('refresh')" 
+              (dragChange)="update_status(list.id,list.status) ; distributorList('refresh')"
+              ></mat-slide-toggle>
             </td>
+
             <td class="w180">{{list.assign_user}}
               <!-- <div class="action-btns">
                 <a *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" mat-button class="view" (click)="userDetail(list.id)"><i class="material-icons">remove_red_eye</i> View</a>
                 <button *ngIf="view_delete && login_data_2.user_type != 'Inside Sales Team'" mat-button class="delete" (click)="deleteUser(list.id)"><i class="material-icons">delete_sweep</i> Delete</button>
               </div> -->
             </td>
+
             <td class="w180">{{list.assign_inside_user}}
               <div class="action-btns">
                 <a *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" mat-button class="view" (click)="userDetail(list.id)"><i class="material-icons">remove_red_eye</i> View</a>
                 <button *ngIf="view_delete && login_data_2.user_type != 'Inside Sales Team'" mat-button class="delete" (click)="deleteUser(list.id)"><i class="material-icons">delete_sweep</i> Delete</button>
               </div>
             </td>
-            <td *ngIf="list.chnlprtnr" class="w130">{{list.chnlprtnr}}</td>
-            <td  class="w130">
-              <span *ngFor="let row of list.dealer_channel_partner">{{row.chnlprtnr}}</span>
-            </td>
-            <td class="w200">{{list.comment ? list.comment : 'N/A'}}</td>
-          </tr>
 
+            <!-- <td class="w200">{{list.comment ? list.comment : 'N/A'}}</td> -->
+
+
+
+
+          </tr>
           <ng-container *ngFor="let lead of skelton">
             <tr class="sk-loading sno-border"  *ngIf="loader">
               <td class="w40"><div>&nbsp;</div></td>
@@ -281,13 +275,12 @@
               <td class="w110"><div>&nbsp;</div></td>
               <td class="w130"><div>&nbsp;</div></td>
               <td class="w110"><div>&nbsp;</div></td>
-              <td class="w110"><div>&nbsp;</div></td>
-              <td class="w110"><div>&nbsp;</div></td>
+              <!-- <td class="w110"><div>&nbsp;</div></td> -->
+              <!-- <td class="w110"><div>&nbsp;</div></td> -->
               <td *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70"><div>&nbsp;</div></td>
               <td class="w180"><div>&nbsp;</div></td>
               <td class="w180"><div>&nbsp;</div></td>
-              <td class="w130"><div>&nbsp;</div></td>
-              <td class="w200"><div>&nbsp;</div></td>
+              <!-- <td class="w200"><div>&nbsp;</div></td> -->
             </tr>
           </ng-container>
 
@@ -306,7 +299,7 @@
 
             <div class="description">
               <div class="cs-heading">
-                <h2>Dealer List</h2>
+                <h2>Direct Dealer List</h2>
               </div>
               <div class="img">
                 <i class="material-icons">error_outline</i>
@@ -318,6 +311,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <div
@@ -333,23 +327,25 @@
 </div>
 
 
+
 <div class="fix-btn" *ngIf="login_data_2.user_type != 'Inside Sales Team'">
   <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" [matMenuTriggerFor]="download_excel" matTooltipPosition="above" mat-raised-button><img src="assets/img/excel.svg"></a>
 
   <mat-menu #download_excel="matMenu" class="drop-down-menu">
-    <button mat-menu-item (click)="download_billing_data()">
+    <!-- <button mat-menu-item (click)="download_billing_data()">
       <span>Download Billing data</span>
     </button>
     <button mat-menu-item (click)="download_all_branding()">
       <span>Download Branding Data</span>
-    </button>
+    </button> -->
     <button mat-menu-item (click)="exportAsXLSX()">
       <span>Download Full Data</span>
     </button>
   </mat-menu>
 
-  <a *ngIf="view_add || login_data_2.user_type == 'Inside Sales Team'" class="bottom-btn"  matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/add-distribution/3"><i class="material-icons">add</i></a>
-</div>
-</div>
 
+
+  <a *ngIf="view_add || login_data_2.user_type == 'Inside Sales Team'" class="bottom-btn" matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/add-distribution/7"><i class="material-icons">add</i></a>
+</div>
+</div>
 

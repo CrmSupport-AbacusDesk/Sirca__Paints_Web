@@ -484,7 +484,7 @@ export class OrderListComponent implements OnInit {
 
           this.excel_data.push({
             'Date':this.exp_data[i].date_created,
-            // 'Created By':this.exp_data[i].created_by_type == 'channel partner' ? this.exp_data[i].ord_created_by : this.exp_data[i].ord_user_created_by,
+            // 'Created By':this.exp_data[i].created_by_type == 'Distributor' ? this.exp_data[i].ord_created_by : this.exp_data[i].ord_user_created_by,
             'Created By':this.exp_data[i].created_by_type == 'Executive' ? this.exp_data[i].created_by_name : this.exp_data[i].ord_created_by,
 
             'Order Id':this.exp_data[i].order_no,

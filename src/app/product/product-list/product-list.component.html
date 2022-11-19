@@ -222,15 +222,20 @@
                         <td class="w170">{{p.sub_category}}</td>
                         <td><a *ngIf="view_edit" class="link-btn" mat-button routerLink="/product-detail/{{(p.id)}}" routerLinkActive="active">{{p.product_name}}</a> {{!view_edit?p.product_name:''}}</td>
                         <td class="w170">{{p.cat_no}}
+                          <!-- <div class="action-btns" *ngIf="tab_active=='all'">
+                            <a *ngIf="view_edit" mat-button class="view" (click)="detailProduct(p.id)"><i class="material-icons">remove_red_eye</i> View</a>
+                            <button *ngIf="view_delete" mat-button class="delete" (click)="deleteProduct(p.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                          </div> -->
+                        </td>
+                        <td class="w170">{{p.price}}</td>
+                        <td class="w170" [ngClass]="p.stock_status && p.stock_status == 'Out Of Stock' ? 'stock-alert' : 'stock-green'" >{{p.stock_status && p.stock_status == 'Out Of Stock' ? p.stock_status +', Available in '+ p.stock_incoming_days+' Days': 'In Stock'}}</td>
+                        <!--  <td class="w170" [ngClass]="p.stock_status && p.stock_status == 'Out Of Stock' ? 'stock-alert' : 'stock-green'" >{{p.stock_status && p.stock_status == 'Out Of Stock' ? p.stock_status +', Available in '+ data_dif(today_date,p.stock_incoming_days) +' Days': 'In Stock'}}</td> -->
+                        <td class="w170">{{p.stock_status_updated_on | date:'dd-MM-yyyy'}}
                           <div class="action-btns" *ngIf="tab_active=='all'">
                             <a *ngIf="view_edit" mat-button class="view" (click)="detailProduct(p.id)"><i class="material-icons">remove_red_eye</i> View</a>
                             <button *ngIf="view_delete" mat-button class="delete" (click)="deleteProduct(p.id)"><i class="material-icons">delete_sweep</i> Delete</button>
                           </div>
                         </td>
-                        <td class="w170">{{p.price}}</td>
-                        <td class="w170" [ngClass]="p.stock_status && p.stock_status == 'Out Of Stock' ? 'stock-alert' : 'stock-green'" >{{p.stock_status && p.stock_status == 'Out Of Stock' ? p.stock_status +', Available in '+ p.stock_incoming_days+' Days': 'In Stock'}}</td>
-                        <!--  <td class="w170" [ngClass]="p.stock_status && p.stock_status == 'Out Of Stock' ? 'stock-alert' : 'stock-green'" >{{p.stock_status && p.stock_status == 'Out Of Stock' ? p.stock_status +', Available in '+ data_dif(today_date,p.stock_incoming_days) +' Days': 'In Stock'}}</td> -->
-                        <td class="w170">{{p.stock_status_updated_on | date:'dd-MM-yyyy'}}</td>
 
                         <td class="w120" *ngIf="tab_active=='scheme'">{{p.scheme_value_points}}</td>
                         <td class="w120" *ngIf="tab_active=='scheme'">{{p.available_qrcode}}</td>

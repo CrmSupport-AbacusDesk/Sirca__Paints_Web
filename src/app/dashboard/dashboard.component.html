@@ -4,7 +4,7 @@
             <div class="row top-info">
                 <figure class="col s12 m3">
                     <div class="box">
-                        <h1>Channel Partner</h1>
+                        <h1>Distributor</h1>
                         <div class="bxe">
                             <div class="outer">
                                 <div class="inner">
@@ -104,7 +104,7 @@
                 <div class="col s12" style="display: none;">
                     <div class="dashboard-counter mt15">
                         <div class="ds-count" style="background: #fe0000;">
-                            <p> Retail Partner Leads</p>
+                            <p> Dealer Leads</p>
                             <ul>
                                 <li>{{count.dealer_lead}}</li>
                                 
@@ -129,7 +129,7 @@
                         </div>
                         
                         <div class="ds-count" style="background: #d6621e;">
-                            <p> Channel Partner Leads</p>
+                            <p> Distributor Leads</p>
                             <ul>
                                 <li>{{count.dr_lead}}</li>
                             </ul>
@@ -165,7 +165,7 @@
                         </div>
                         
                         <div class="ds-count" style="background: #fe0000;" >
-                            <p> Retail Partner</p>
+                            <p> Dealer</p>
                             <ul>
                                 <li>{{count.dealer}}</li>
                             </ul>
@@ -535,7 +535,7 @@
                                         <div class="alfa-digit">{{row.user_name.charAt(0).toUpperCase()}}</div>
                                         <div class="content">
                                             <p> {{row.user_name}}</p>
-                                            <p *ngIf="row.type == 3"> Retail Partner : {{row.dr_name}}</p>
+                                            <p *ngIf="row.type == 3"> Dealer : {{row.dr_name}}</p>
                                             <p *ngIf="row.type == 1"> Distributor : {{row.dr_name}}</p>
                                             <p *ngIf="row.type == 7"> Direct Dealer : {{row.dr_name}}</p>
                                             <a routerLink="/order-detail/{{row.id}}"  style="color: #2f00ec;">{{row.order_no}}</a>

@@ -339,6 +339,11 @@ export class InvoiceBillingComponent implements OnInit {
     
   }
 
+  openDispatchPage(id): void 
+  {
+      this.secondry_route.navigate(['/transferdata/'+id]);
+  }
+
   
   
 }

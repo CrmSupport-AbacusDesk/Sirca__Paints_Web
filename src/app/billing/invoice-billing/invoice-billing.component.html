@@ -87,6 +87,7 @@
                 <th *ngIf= "active_tab == 'Billing'" class="w100">Bill Amount</th>
                 <th class="w130" *ngIf="active_tab != 'Credit Note'">Payment Received</th>
                 <th *ngIf= "active_tab == 'Billing'" class="w120">Pending Amount</th>
+                <th *ngIf= "active_tab == 'Billing'" class="w120">Dispatch Status</th>
               </tr>
             </table>
           </div>
@@ -183,6 +184,7 @@
                 <th *ngIf="active_tab == 'Billing'" class="w100"> &#8377; {{overall_total_sum.overall_total_billing_amount}}</th>
                 <th class="w130" *ngIf="active_tab != 'Credit Note'">&#8377; {{active_tab == 'Billing' ? overall_total_sum.overall_billing_receive_amount : overall_total_payment_amount}}</th>
                 <th *ngIf="active_tab == 'Billing'" class="w120">&#8377; {{overall_total_sum.overall_pending_balance}}</th>
+                <th *ngIf="active_tab == 'Billing'" class="w120"></th>
               </tr>
             </table>
           </div>
@@ -231,7 +233,10 @@
                   </div>
                 </td>
                 <td  *ngIf="active_tab == 'Billing'" class="w120">&#8377; {{billing_data.pending_balance && billing_data.pending_balance != '' && billing_data.pending_balance != null ? billing_data.pending_balance : '--'}}
+                </td>
+                <td  *ngIf="active_tab == 'Billing'" class="w120">{{billing_data.dispatch_status ? billing_data.dispatch_status : '--'}}
                   <div class="action-btns">
+                    <a mat-button class="view" (click)="openDispatchPage(billing_data.id)"><i class="material-icons">edit</i> Dispatch</a>
                     <a mat-button class="view" (click)="go_to(billing_data.id,'Billing')"><i class="material-icons">remove_red_eye</i> View</a>
                    
                     <button  mat-button class="delete"*ngIf= "active_tab == 'Billing'" (click)="deletebilling(billing_data.id)"><i class="material-icons">delete_sweep</i> Delete</button>
@@ -263,6 +268,7 @@
                   <td *ngIf="active_tab == 'Billing'" class="w80"><div>&nbsp;</div></td>
                   <td *ngIf="active_tab == 'Billing'" class="w100"><div>&nbsp;</div></td>
                   <td class="w130" *ngIf="active_tab != 'Credit Note'"><div>&nbsp;</div></td>
+                  <td *ngIf="active_tab == 'Billing'" class="w120"><div>&nbsp;</div></td>
                   <td *ngIf="active_tab == 'Billing'" class="w120"><div>&nbsp;</div></td>
                 </tr>
               </ng-container>

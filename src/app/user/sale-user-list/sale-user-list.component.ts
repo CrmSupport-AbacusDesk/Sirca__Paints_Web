@@ -241,7 +241,7 @@ export class SaleUserListComponent implements OnInit {
         Mobile: this.userlist[i].contact_01,
         Designation: this.userlist[i].role_name,
         ReportingManager: this.userlist[i].assign_user,
-        'Channel Partner':this.userlist[i].channel_partner,
+        'Distributor':this.userlist[i].channel_partner,
         'Primary Sale Sum': this.userlist[i].primary_sale.sum,
         'Seconday Sale Sum': this.userlist[i].secondary_sale.sum,
         'Address ': this.userlist[i].street,

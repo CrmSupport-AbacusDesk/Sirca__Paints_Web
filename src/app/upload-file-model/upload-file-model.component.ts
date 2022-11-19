@@ -343,7 +343,7 @@ export class UploadFileModelComponent implements OnInit {
       "Payment Status":"-",
       "Order Amount":"-",
       "Dead Reason":"-",
-      "channel Partner":"-",
+      "Distributor":"-",
       "comment":"Ringing"
 
 

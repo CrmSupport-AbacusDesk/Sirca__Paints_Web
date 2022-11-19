@@ -142,7 +142,7 @@
             <div class="details-info">
               <div class="basic-details">
                 <div class="cs-heading">
-                  <h2>Channel Partner Detail</h2>
+                  <h2>Distributor Detail</h2>
                 </div>
                 <div class="cs-figure">
                   <ul>
@@ -153,7 +153,7 @@
                           <p>
                             {{order_detail.created_by_name}}                            
                             <span *ngIf = "order_detail.type == '1'" style="color: #a800ff;">( Distributor )</span>
-                            <span *ngIf = "order_detail.type == '3'" style="color: #a800ff;">( Retail Partner )</span>
+                            <span *ngIf = "order_detail.type == '3'" style="color: #a800ff;">( Dealer )</span>
                             <span *ngIf = "order_detail.type == '7'" style="color: #a800ff;">( Direct )</span>
                             
                           </p>

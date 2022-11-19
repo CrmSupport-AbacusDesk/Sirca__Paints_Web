@@ -908,7 +908,7 @@
                 <!-- <input matInput type="text" name="branding_item" #branding_item="ngModel"  [(ngModel)]="branding_data.branding_item" required>  -->
                 <mat-select name="dtype" #dtype="ngModel" [(ngModel)]="branding_data.dtype" required>
                   <!-- <mat-option disabled="">Select Item</mat-option> -->
-                  <mat-option value="retail" (click)="retail_partner_list()">Retail Partner</mat-option>
+                  <mat-option value="retail" (click)="retail_partner_list()">Dealer</mat-option>
                   <mat-option value="distributor">Distributor</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -918,7 +918,7 @@
           <div class="col s2" *ngIf="branding_data.dtype == 'retail' && type_retailer == '1'">
             <div class="control-field">
               <mat-form-field class="cs-input date-column infix-bodr">
-                <mat-label>Select Retail Partner</mat-label>
+                <mat-label>Select Dealer</mat-label>
                 <!-- <input matInput type="text" name="branding_item" #branding_item="ngModel"  [(ngModel)]="branding_data.branding_item" required>  -->
                 <mat-select name="retail_partner" #retail_partner="ngModel" [(ngModel)]="branding_data.retail_partner"
                   required>

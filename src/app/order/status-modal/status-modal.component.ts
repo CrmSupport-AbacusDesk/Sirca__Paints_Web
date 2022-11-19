@@ -588,7 +588,7 @@ export class StatusModalComponent implements OnInit {
   }
   
   retail_partner_list(){
-    console.log("retail partner method calls");
+    console.log("Dealer method calls");
     this.loader = true;
     this.serve.fetchData({'distributor_id':this.data.dr_id},'Distributors/assign_dealers_for_branding').subscribe((res)=>{
       console.log(res);

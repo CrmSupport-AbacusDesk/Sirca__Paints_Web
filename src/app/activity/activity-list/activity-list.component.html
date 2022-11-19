@@ -294,8 +294,8 @@
                     <td class="w150">{{list.created_by_name}}</td>
 
                     <td class="w200" *ngIf="list.dr_id != '0'">{{list.company_name}}
-                      (<span style="font-weight: 500;" *ngIf="list.type == '1'">Channel Partner</span>
-                      <span style="font-weight: 500;" *ngIf="list.type == '3'">Retail Partner</span>
+                      (<span style="font-weight: 500;" *ngIf="list.type == '1'">Distributor</span>
+                      <span style="font-weight: 500;" *ngIf="list.type == '3'">Dealer</span>
                       <span style="font-weight: 500;" *ngIf="list.type == '7'">Direct Dealer</span>
                       <span style="font-weight: 500;"
                         *ngIf="list.type != '7' && list.type != '1' && list.type != '3'">Other</span>)

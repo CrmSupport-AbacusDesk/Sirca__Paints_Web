@@ -97,7 +97,7 @@
                                             </div>
                                         </li>
                                         
-                                        <li *ngIf="order_detail.created_by_type != 'channel partner'">
+                                        <li *ngIf="order_detail.created_by_type != 'Distributor'">
                                             <div class="outer">
                                                 <div class="inner">
                                                     <span>Created By</span>
@@ -110,7 +110,7 @@
                                         <li *ngIf="order_detail.delivery_from!='Sirca'">
                                             <div class="outer">
                                                 <div class="inner">
-                                                    <span>Channel Partner</span>
+                                                    <span>Distributor</span>
                                                     <p>{{order_detail.distributor_name}}</p>
                                                     <a  class="one-edit" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(order_detail.created_by,'order_cp_edit')" *ngIf="login_data.access_level == '1'"><i class="material-icons">create</i></a>
                                                 </div>
@@ -237,7 +237,7 @@
                                         <table class="sno-border">
                                             <tr *ngFor="let k of order_detail.order_status_change_log; let i=index">
                                                 <td class="w20">{{i+1}}</td>
-                                                <td class="w30">{{k.changed_status == 'Pending' && order_detail.created_by_type=='channel partner' ? order_detail.dr_name : k.usr_name  }}</td>
+                                                <td class="w30">{{k.changed_status == 'Pending' && order_detail.created_by_type=='Distributor' ? order_detail.dr_name : k.usr_name  }}</td>
                                                 <td *ngIf="(k.changed_status == 'PDispatch')" class="w40">Partially Dispatched </td>
                                                 <td *ngIf="(k.changed_status == 'Reject')" class="w40">Refferd Back</td>
                                                 <td *ngIf="(k.changed_status == 'Dispatch')" class="w40">Dispatched</td>
@@ -264,8 +264,8 @@
                         <div class="details-info">
                             <div class="basic-details">
                                 <div class="cs-heading">
-                                    <h2 *ngIf="order_detail.delivery_from=='Sirca'">Channel Partner Detail</h2>
-                                    <h2 *ngIf="order_detail.delivery_from!='Sirca'">Retail Partner Detail</h2>
+                                    <h2 *ngIf="order_detail.delivery_from=='Sirca'">Distributor Detail</h2>
+                                    <h2 *ngIf="order_detail.delivery_from!='Sirca'">Dealer Detail</h2>
                                 </div>
                                 <div class="cs-figure">
                                     <ul>
@@ -275,9 +275,9 @@
                                                     <span>Company Name & type</span>
                                                     <p>
                                                         {{order_detail.dr_name}}
-                                                        ( <span style="color: #a800ff;" *ngIf="order_detail.type==1">Channel Partner</span>
+                                                        ( <span style="color: #a800ff;" *ngIf="order_detail.type==1">Distributor</span>
                                                         <span style="color: #a800ff;" *ngIf="order_detail.type==7">Direct Dealer</span>
-                                                        <span style="color: #a800ff;" *ngIf="order_detail.type==3">Retail Partner</span> )
+                                                        <span style="color: #a800ff;" *ngIf="order_detail.type==3">Dealer</span> )
                                                     </p>
                                                 </div>
                                             </div>
@@ -758,7 +758,7 @@
                         
                     </td>
                     <td style="vertical-align: top; padding: 5px;">
-                        <h2 style="font-size: 14px; line-height: 20px; margin: 0px 0px 10px 0px; text-decoration: underline;">Channel Partner Detail</h2>
+                        <h2 style="font-size: 14px; line-height: 20px; margin: 0px 0px 10px 0px; text-decoration: underline;">Distributor Detail</h2>
                         <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Company Name & Type:-</strong>  {{order_detail.dr_name}}</p>
                         <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>GST NO.:-</strong>{{order_detail.gst ? order_detail.gst : 'N/A'}}</p>
                         <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Address:-</strong>{{order_detail.address ? order_detail.address : 'N/A'}} {{order_detail.city ? ', '+  order_detail.city : ''}} {{order_detail.district ? ', '+order_detail.district : ''}} {{order_detail.state ? ', '+order_detail.state : ''}}</p>
@@ -920,7 +920,7 @@
                                 
                             </td>
                             <td style="vertical-align: top; padding: 5px;">
-                                <h2 style="font-size: 14px; line-height: 20px; margin: 0px 0px 10px 0px; text-decoration: underline;">Channel Partner Detail</h2>
+                                <h2 style="font-size: 14px; line-height: 20px; margin: 0px 0px 10px 0px; text-decoration: underline;">Distributor Detail</h2>
                                 <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Company Name & Type:-</strong>  {{order_detail.dr_name}}</p>
                                 <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>GST NO.:-</strong>{{order_detail.gst ? order_detail.gst : 'N/A'}}</p>
                                 <p style="font-size: 14px; line-height: 20px; margin: 0px;"><strong>Address:-</strong>{{order_detail.address ? order_detail.address : 'N/A'}} {{order_detail.city ? ', '+  order_detail.city : ''}} {{order_detail.district ? ', '+order_detail.district : ''}} {{order_detail.state ? ', '+order_detail.state : ''}}</p>

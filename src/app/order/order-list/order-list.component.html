@@ -231,11 +231,11 @@
               <td *ngIf="((view_tab=='all' && list.order_status != 'Pending') || (view_tab!='all' && view_tab!='Pending' && view_tab!='PDispatch' && view_tab != 'Approved') )" class="w120">{{list.date_created | date:' d MMM , y, hh:mm aa '}}</td>
               <td *ngIf="((view_tab=='PDispatch' || view_tab == 'Approved'))" class="w120" [ngClass]="today_date > incDate(list.approved_on) ? 'red-bgclr' : '' ">{{list.date_created | date:' d MMM , y, hh:mm aa '}}</td> 
               
-              <td class="w160">{{list.created_by_type == 'channel partner' ? list.ord_created_by : list.ord_user_created_by}}</td>
+              <td class="w160">{{list.created_by_type == 'Distributor' ? list.ord_created_by : list.ord_user_created_by}}</td>
               <td class="w120"><a *ngIf="view_edit" class="link-btn" mat-button routerLink="/order-detail/{{list.id}}" routerLinkActive="active">{{list.order_no}}</a> {{!view_edit?list.order_no:''}}</td>
               <td class="w130" *ngIf="list.type==7">Direct Dealer</td>
               <td class="w130" *ngIf="list.type==1">Distributor</td>
-              <td class="w130" *ngIf="list.type==3">Retail Partner</td>
+              <td class="w130" *ngIf="list.type==3">Dealer</td>
               <td class="w200">{{list.company_name}}</td>
               <td class="w90 text-center">{{list.order_item}}</td>
               <td class="w90 text-center">{{list.Tally_status}}</td>

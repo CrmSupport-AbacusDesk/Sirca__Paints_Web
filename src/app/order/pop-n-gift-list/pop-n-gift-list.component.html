@@ -135,8 +135,8 @@
                     <mat-label>Select Type</mat-label>
                     <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="search_val.type" (ngModelChange)="poporderList()">
                       <mat-option disabled="">Select Type</mat-option>
-                      <mat-option value="3">Retail Partner</mat-option>
-                      <mat-option value="1">Channel Partner</mat-option>
+                      <mat-option value="3">Dealer</mat-option>
+                      <mat-option value="1">Distributor</mat-option>
                       <mat-option value="7">Direct Dealer</mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -166,12 +166,12 @@
               <td  class="w150">{{list.date_created | date : 'd MMM ,y, hh:mm aa'}}</td> 
               <td>{{list.created_by_name}}</td>
               
-              <td class="w200" *ngIf="list.type == '1'">Channel Partner</td>
-              <td class="w200" *ngIf="list.type == '3'">Retail Partner</td>
+              <td class="w200" *ngIf="list.type == '1'">Distributor</td>
+              <td class="w200" *ngIf="list.type == '3'">Dealer</td>
               <td class="w200" *ngIf="list.type == '7'">Direct Dealer</td>
               
               <td class="w120"><a *ngIf="view_edit" class="link-btn" mat-button routerLink="/pop-n-gift-detail/{{list.id}}" routerLinkActive="active">{{list.order_no}}</a> {{!view_edit?list.order_no:''}}</td>
-              <!-- <td class="w130">Channel Partner</td> -->
+              <!-- <td class="w130">Distributor</td> -->
               <!-- <td class="w200">Gada Electronics</td> -->
               <td class="w90 text-center">{{list.order_total_item}}</td>
               <td  class="w90 text-center" *ngIf="view_tab=='all'">{{list.order_status && list.order_status!= ''? (list.order_status == 'PDispatch'? 'Partial Dispatch' : list.order_status) :'--' }}</td>

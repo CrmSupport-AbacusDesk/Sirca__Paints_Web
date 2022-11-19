@@ -136,8 +136,8 @@
                       <mat-form-field class="cs-input">
                         <mat-select name="type" placeholder="Type" #type="ngModel"  [(ngModel)]="data.type" [ngClass]="{'has-error' : type.invalid } " required>
                           <mat-option disabled="">Select Lead Type</mat-option>
-                          <mat-option value="3">Retail Partner</mat-option>
-                          <mat-option value="1">Channel Partner</mat-option>
+                          <mat-option value="3">Dealer</mat-option>
+                          <mat-option value="1">Distributor</mat-option>
                           
                         </mat-select>
                         <div class="alert alert-danger" *ngIf="!type.valid && f.submitted">

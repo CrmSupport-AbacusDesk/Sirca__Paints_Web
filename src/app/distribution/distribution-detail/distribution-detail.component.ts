@@ -994,7 +994,7 @@ export class DistributionDetailComponent implements OnInit {
                 this.retailerDetail();
                 // this.dealer_list();
                 this.loader = false;
-                this.toast.successToastr('Retail Partners Updated');
+                this.toast.successToastr('Dealers Updated');
             }
         }));
     }
