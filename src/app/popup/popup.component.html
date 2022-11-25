@@ -1,9 +1,7 @@
 
 <div class="edit-modal" *ngIf = "!data.comes_from">
 
-
-
-  <p class="heading">Add Primary Order</p>
+  <p class="heading">Convert Lead</p>
 
   <div mat-dialog-content>
 
@@ -22,9 +20,9 @@
           <div class="control-field">
             <mat-form-field class="cs-input">
               <mat-select placeholder="Lead Convert" name="lead_convert"  [(ngModel)]="lead_detail.lead_convert"  >
-                <mat-option value="1" ><small>Channel Partner</small></mat-option>
+                <mat-option value="1" ><small>Distributor</small></mat-option>
                 <mat-option value="7" ><small>Direct Dealers</small></mat-option>
-                <mat-option value="3" ><small>Retail Partner</small></mat-option>
+                <mat-option value="3" ><small>Dealer</small></mat-option>
               </mat-select>
 
             </mat-form-field>
@@ -36,7 +34,7 @@
           <div class="control-field col s12" >
             <mat-form-field class="cs-input" *ngIf="lead_detail.lead_convert==='3'">
 
-              <mat-select placeholder="Channel Partner List"  name="dr_id" [(ngModel)]="lead_detail.dr_id">
+              <mat-select placeholder="Distributor List"  name="dr_id" [(ngModel)]="lead_detail.dr_id">
                  <mat-option [value]="row1.id" *ngFor="let row1 of lead_detail.leaddata"><small> {{row1.company_name}}</small>
                  </mat-option>
               </mat-select>
@@ -50,7 +48,7 @@
         <!-- <th class="w200"> -->
           <!-- <div class="th-search"> -->
             <!-- <select (change)="distributorList()" name="state" [(ngModel)]="search_val.state"> -->
-              <!-- <option value="">Channel Partner List</option> -->
+              <!-- <option value="">Distributor List</option> -->
               <!-- <option *ngFor="let val of all_distributors">{{val.company_name}}</option> -->
             <!-- </select> -->
           <!-- </div> -->

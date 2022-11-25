@@ -5,9 +5,9 @@
                 <img src="assets/img/leads_icon.svg" class="h-icon">
                 <div class="heading-text">
                     <h2>Distribution network</h2>
-                    <p *ngIf="dr_type!=1 && dr_type ==3 && dr_type!=7">Add New Retail Partner</p>
+                    <p *ngIf="dr_type!=1 && dr_type ==3 && dr_type!=7">Add New Dealer</p>
                     <p *ngIf="dr_type!=1 && dr_type !=3 && dr_type==7">Add New Direct Dealer</p>
-                    <p *ngIf="dr_type==1 && dr_type !=3 && dr_type!=7">Add New Channel Partner</p>
+                    <p *ngIf="dr_type==1 && dr_type !=3 && dr_type!=7">Add New Distributor</p>
                 </div>
             </div>
         </div>
@@ -309,7 +309,7 @@
                                 
                                 
                                 <!-- brand assign start-->
-                                <div class="col s4" *ngIf="dr_type==1 || dr_type==7">
+                                <!-- <div class="col s4" *ngIf="dr_type==1 || dr_type==7">
                                     <div class="territory-info">
                                         <div class="head" [ngClass]="{'active':active.branch==true}">
                                             <h2>BRANDS</h2>
@@ -323,7 +323,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <!-- brand assign end-->
                             </div>
                         </div>

@@ -467,7 +467,7 @@ export class AddorderComponent implements OnInit {
       this.userDetail.dr_id =  this.search.company_name;
 
       if( !this.search.company_name ){
-        this.toast.errorToastr("Please Select Company Name of Channel partner / Direct Dealer");
+        this.toast.errorToastr("Please Select Company Name of Distributor / Direct Dealer");
         return;
       }
 

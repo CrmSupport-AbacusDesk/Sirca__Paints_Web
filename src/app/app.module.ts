@@ -176,6 +176,8 @@ import { QuotationDetailComponent } from './quotation-detail/quotation-detail.co
 import { TravelplanModalComponent } from './travelplan-modal/travelplan-modal.component';
 import { QuotationEmailModalComponent } from './quotation-email-modal/quotation-email-modal.component';
 import { TravelPlanEditModelComponent } from './travel-plan-edit-model/travel-plan-edit-model.component';
+import { TransferdataComponent } from './billing/transferdata/transferdata.component';
+import { OemListComponent } from './distribution/oem-list/oem-list.component';
 
 // import { ComplaintsChangeStatusComponent } from './complaints/complaints-change-status/complaints-change-status.component';
 // import { DatePikerFormat } from 'src/_Pipes/DatePikerFormat.pipe';
@@ -240,7 +242,7 @@ const routes: Routes = [
   // tslint:disable-next-line:max-line-length
   { path: 'livetrack-detail/:id/:date', component: LiveTrackDetailComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   { path: 'dealer-lead-list', component: DealerLeadListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
-  { path: 'consumer-lead-list', component: ConsumerLeadListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
+  { path: 'direct-dealer-lead-list', component: ConsumerLeadListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   { path: 'plumber-lead-list', component: PlumberLeadListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   { path: 'banner-banner-list', component: BannerListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   { path: 'banner-banner-add', component: BannerAddComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
@@ -298,17 +300,20 @@ const routes: Routes = [
   { path: 'production-plan-list', component: ProductionPlanListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   {path : 'stock-data' , component:StockDataComponent,canActivate:[AuthComponentGuard], data : {expectedRole : ['1']}},
   {path : 'stock-summary/:id', component:StockSummaryComponent,canActivate:[AuthComponentGuard],data:{expectedRole : ['1']}},
+  {path : 'transferdata/:id', component:TransferdataComponent,canActivate:[AuthComponentGuard],data:{expectedRole : ['1']}},
   {path : 'warehouse-to-warehouse-summary' , component:WarehouseToWarehouseSummaryComponent,canActivate:[AuthComponentGuard], data:{expectedRole :['1']}},
   {path : 'warehouse-to-warehouse-summary-detail', component:WarehouseToWarehouseSummaryDetailComponent,canActivate:[AuthComponentGuard],data:{expectedRole : ['1']}},
   {path : 'plumber-meet-report', component:PlumberMeetReportComponent,canActivate:[AuthComponentGuard],data:{expectedRole : ['1']}},
 
   { path: 'activity', component: ActivityListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   //aamir chnge
-  { path: 'social-media-lead-list', component: SocialMediaLeadListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
+  { path: 'Oem-lead-list', component: SocialMediaLeadListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   { path: 'social-media-lead-detail/:id', component: SocialMediaLeadDetailComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   //activity add aamir 
   { path: 'add-activity/:id/:type/:from', component: AddActivityComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
   { path: 'app-addorder', component: AddorderComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
+  { path: 'Oem-list', component: OemListComponent, canActivate: [AuthComponentGuard], data: { expectedRole: ['1']}},
+  
 
 
 
@@ -470,6 +475,9 @@ const routes: Routes = [
     TravelplanModalComponent,
     QuotationEmailModalComponent,
     TravelPlanEditModelComponent,
+    TransferdataComponent,
+    OemListComponent,
+    
 
   ],
   imports: [

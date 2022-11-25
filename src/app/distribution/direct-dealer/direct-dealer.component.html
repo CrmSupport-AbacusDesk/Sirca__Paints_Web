@@ -72,12 +72,12 @@
             <th class="w110">Last Visit Executive</th>
             <th class="w130">Total Activity Count</th>
             <th class="w110">Last Activity </th>
-            <th class="w110">Disposition Type </th>
-            <th class="w110">Disposition Name</th>
+            <!-- <th class="w110">Disposition Type </th> -->
+            <!-- <th class="w110">Disposition Name</th> -->
             <th *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70 text-center" >Status</th>
             <th class="w180">Assigned Sales User</th>
             <th class="w180">Assigned Inside Sales User</th>
-            <th class="w200">Comment</th>
+            <!-- <th class="w200">Comment</th> -->
           </tr>
         </table>
       </div>
@@ -168,8 +168,8 @@
                 </mat-form-field>
               </div>
             </th>
-            <th class="w110"></th>
-            <th class="w110"></th>
+            <!-- <th class="w110"></th> -->
+            <!-- <th class="w110"></th> -->
             <th *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70">
 
             </th>
@@ -187,7 +187,7 @@
                 </mat-form-field>
               </div> -->
             </th>
-            <th class="w200"></th>
+            <!-- <th class="w200"></th> -->
           </tr>
         </table>
       </div>
@@ -226,8 +226,8 @@
             <td class="w110">{{list.last_visit ? list.last_visit + ' days': '--'}}</td>
             <td class="w130">{{list.total_activity_count}}</td>
             <td class="w110">{{list.last_inside_activity_days ? list.last_inside_activity_days + ' days' : '--'}}</td>
-            <td class="w110">{{list.disposition_type}}</td>
-            <td class="w110">{{list.disposition_name}}</td>
+            <!-- <td class="w110">{{list.disposition_type}}</td> -->
+            <!-- <td class="w110">{{list.disposition_name}}</td> -->
             <td *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70">
               <mat-slide-toggle [checked]="list.status == '0'?'false':'true'" (click)="update_status(list.id,list.status) ; distributorList('refresh')" 
               (dragChange)="update_status(list.id,list.status) ; distributorList('refresh')"
@@ -248,7 +248,7 @@
               </div>
             </td>
 
-            <td class="w200">{{list.comment ? list.comment : 'N/A'}}</td>
+            <!-- <td class="w200">{{list.comment ? list.comment : 'N/A'}}</td> -->
 
 
 
@@ -275,18 +275,12 @@
               <td class="w110"><div>&nbsp;</div></td>
               <td class="w130"><div>&nbsp;</div></td>
               <td class="w110"><div>&nbsp;</div></td>
-              <td class="w110"><div>&nbsp;</div></td>
-              <td class="w110"><div>&nbsp;</div></td>
+              <!-- <td class="w110"><div>&nbsp;</div></td> -->
+              <!-- <td class="w110"><div>&nbsp;</div></td> -->
               <td *ngIf="view_edit && login_data_2.user_type != 'Inside Sales Team'" class="w70"><div>&nbsp;</div></td>
               <td class="w180"><div>&nbsp;</div></td>
               <td class="w180"><div>&nbsp;</div></td>
-              <td class="w200"><div>&nbsp;</div></td>
-
-
-
-
-
-
+              <!-- <td class="w200"><div>&nbsp;</div></td> -->
             </tr>
           </ng-container>
 

@@ -126,7 +126,7 @@
                     <div mat-dialog-content>
 
                         <mat-form-field class="example-full-width cs-input cs-field">
-                            <input matInput placeholder="Channel Partner Net Price" name="cn_net_price" #cn_net_price="ngModel" [(ngModel)]="data_category.cn_net_price"  required>
+                            <input matInput placeholder="Distributor Net Price" name="cn_net_price" #cn_net_price="ngModel" [(ngModel)]="data_category.cn_net_price"  required>
                             <div class="alert alert-danger" *ngIf="!cn_net_price.valid && cn_net_price.touched">
                                 field is required....
                             </div>
@@ -541,7 +541,7 @@
 
 </div>
 <div *ngIf="data.type=='DealerDiscountEdit'">
-    <p>Update Retail Partner Discount</p>
+    <p>Update Dealer Discount</p>
     <div mat-dialog-content>
 
         <mat-form-field class="cs-input">

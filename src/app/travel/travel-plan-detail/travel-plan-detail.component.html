@@ -196,7 +196,7 @@
                             <a *ngIf="channel_parner_data.lead_type != 'Dr' " class="link-btn" mat-button routerLink="/lead-detail/{{channel_parner_data.dr_id}}/{{channel_parner_data.dr_type}}" routerLinkActive="active">{{channel_parner_data.company_name}}</a>
 
                           </td>
-                          <td class="w140">{{channel_parner_data.dr_type && channel_parner_data.dr_type == '1'?'Channel Partner' : (channel_parner_data.dr_type == '7' ? 'Direct Dealer' : (channel_parner_data.dr_type == '3' ? 'Retail Partner' : '--'))}}</td>
+                          <td class="w140">{{channel_parner_data.dr_type && channel_parner_data.dr_type == '1'?'Distributor' : (channel_parner_data.dr_type == '7' ? 'Direct Dealer' : (channel_parner_data.dr_type == '3' ? 'Dealer' : '--'))}}</td>
                           <td class="w150">{{channel_parner_data.lead_type == 'Dr' ? 'Distributor Network' : 'Lead Network'}} </td>
                           <!-- <td class="w100" >
                             <span class="" [ngClass]="channel_parner_data.checkin_date && channel_parner_data.checkin_date != '' ? 'show-pointer-cursor':''" (click)="channel_parner_data.checkin_date && channel_parner_data.checkin_date != '' ? goTo('checkin_list',channel_parner_data.checkin_date,channel_parner_data.company_name,travel_plan_data.created_by_name):''">
@@ -254,7 +254,7 @@
                             <a *ngIf="channel_parner_data.lead_type != 'Dr' " class="link-btn" mat-button routerLink="/lead-detail/{{channel_parner_data.dr_id}}/{{channel_parner_data.dr_type}}" routerLinkActive="active">{{channel_parner_data.company_name}}</a>
 
                           </td>
-                          <td class="w140" >{{channel_parner_data.dr_type && channel_parner_data.dr_type == '1'?'Channel Partner' : (channel_parner_data.dr_type == '7' ? 'Direct Dealer' : (channel_parner_data.dr_type == '3' ? 'Retail Partner' : 'Other'))}}</td>
+                          <td class="w140" >{{channel_parner_data.dr_type && channel_parner_data.dr_type == '1'?'Distributor' : (channel_parner_data.dr_type == '7' ? 'Direct Dealer' : (channel_parner_data.dr_type == '3' ? 'Dealer' : 'Other'))}}</td>
 
 
                           <td class="w150">{{channel_parner_data.lead_type == 'Dr' ? 'Distributor Network' : 'Lead Network'}} </td>

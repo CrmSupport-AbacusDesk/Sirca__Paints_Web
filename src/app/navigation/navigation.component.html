@@ -13,21 +13,28 @@
                 <ul>
                     <li *ngIf="login_data.view_lead_channel_partner=='1' || login_data.user_type=='Inside Sales Team'">
                         <a routerLink="/lead-list" routerLinkActive="active">
-                            Channel Partner
+                           Distributors
                             <i class="material-icons"> arrow_right_alt </i>
                             <!-- <span class="nav-counter orange-count">{{count.dr_lead}}</span> -->
                         </a>
                     </li>
                     <li *ngIf="login_data.view_lead_dealer=='1' || login_data.user_type=='Inside Sales Team'">
-                        <a routerLink="/dealer-lead-list" routerLinkActive="active">
-                            Retail Partners
+                        <a routerLink="/direct-dealer-lead-list" routerLinkActive="active">
+                            Direct Dealers
                             <i class="material-icons"> arrow_right_alt </i>
                             <!-- <span class="nav-counter orange-count">{{count.dealer_lead}}</span> -->
                         </a>
                     </li>
                     <li *ngIf="login_data.view_lead_dealer=='1' || login_data.user_type=='Inside Sales Team'">
-                        <a routerLink="/social-media-lead-list" routerLinkActive="active">
-                            SOCIAL MEDIA
+                        <a routerLink="/dealer-lead-list" routerLinkActive="active">
+                            Dealers
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.dealer_lead}}</span> -->
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_lead_dealer=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/Oem-lead-list" routerLinkActive="active">
+                           Oem
                             <i class="material-icons"> arrow_right_alt </i>
                             <!-- <span class="nav-counter orange-count">{{count.dealer_lead}}</span> -->
                         </a>
@@ -43,7 +50,7 @@
                     <li
                         *ngIf="login_data.view_dist_n_w_channel_partner=='1' || login_data.user_type=='Inside Sales Team'">
                         <a routerLink="/distribution-list" routerLinkActive="active">
-                            Channel Partner
+                            Distributors
                             <i class="material-icons"> arrow_right_alt </i>
                             <!-- <span class="nav-counter orange-count">{{count.dist}}</span> -->
 
@@ -60,7 +67,15 @@
                     </li>
                     <li *ngIf="login_data.view_dist_n_w_dealer=='1' || login_data.user_type=='Inside Sales Team'">
                         <a routerLink="/dealer" routerLinkActive="active">
-                            Retail Partner
+                            Dealers
+                            <i class="material-icons"> arrow_right_alt </i>
+                            <!-- <span class="nav-counter orange-count">{{count.dealer}}</span> -->
+
+                        </a>
+                    </li>
+                    <li *ngIf="login_data.view_dist_n_w_dealer=='1' || login_data.user_type=='Inside Sales Team'">
+                        <a routerLink="/Oem-list" routerLinkActive="active">
+                            Oems
                             <i class="material-icons"> arrow_right_alt </i>
                             <!-- <span class="nav-counter orange-count">{{count.dealer}}</span> -->
 
@@ -82,7 +97,7 @@
                     </li>
                     <li *ngIf="login_data.view_orders_secondary=='1'">
                         <a routerLink="/secondary-order-list" routerLinkActive="active">
-                            Order To Channel Partner
+                            Order To Distributor
                             <i class="material-icons"> arrow_right_alt</i>
 
                         </a>
@@ -114,11 +129,11 @@
 
             </li>
 
-            <li *ngIf="login_data.access_level=='1' || login_data.user_type=='Inside Sales Team'">
+            <!-- <li *ngIf="login_data.access_level=='1' || login_data.user_type=='Inside Sales Team'">
                 <a routerLink="/activity" (click)="toggleDropdown(0)" routerLinkActive="active">Activity <img
                         src="assets/img/checkin_icon.svg" class="nav-icon h22"></a>
 
-            </li>
+            </li> -->
 
             <li *ngIf="login_data.view_followup=='1' || login_data.user_type=='Inside Sales Team'">
                 <a routerLink="/followup-list" (click)="toggleDropdown(0)" routerLinkActive="active">Follow Up <img
@@ -182,7 +197,7 @@
                         </a>
                     </li>
 
-                    <li *ngIf="true && login_data.user_type!='Inside Sales Team'">
+                    <!-- <li *ngIf="true && login_data.user_type!='Inside Sales Team'">
                         <a routerLink="/production-plan-list" routerLinkActive="active">
                             Production Plan
                             <i class="material-icons"> arrow_right_alt </i>
@@ -201,7 +216,7 @@
                             Warehouse To Warehouse Transfer
                             <i class="material-icons"> arrow_right_alt </i>
                         </a>
-                    </li>
+                    </li> -->
 
 
 
@@ -222,14 +237,13 @@
                         </a>
                     </li>
 
-                    <li *ngIf="login_data.view_discount=='1'">
+                    <!-- <li *ngIf="login_data.view_discount=='1'">
                         <a routerLink="/specialdiscount" routerLinkActive="active">
                             Special Loyality/ Extra Discount
                             <i class="material-icons"> arrow_right_alt </i>
-                            <!-- <span class="nav-counter orange-count">{{count.discount}}</span> -->
 
                         </a>
-                    </li>
+                    </li> -->
 
                     <li *ngIf="login_data.view_pop_master=='1'">
                         <a routerLink="/pop-n-gift-master" routerLinkActive="active">
@@ -238,12 +252,12 @@
                         </a>
                     </li>
 
-                    <li *ngIf="login_data.view_area_target=='1'">
+                    <!-- <li *ngIf="login_data.view_area_target=='1'">
                         <a routerLink="/area-target" routerLinkActive="active">
                             Area target
                             <i class="material-icons"> arrow_right_alt </i>
                         </a>
-                    </li>
+                    </li> -->
                     <!-- <li *ngIf="login_data.view_area_target=='1'">
                         <a routerLink="/target-survey" routerLinkActive="active">
                             Area target survey

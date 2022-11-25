@@ -204,7 +204,7 @@ export class DistriutorSalesReportComponent implements OnInit {
           this.excel_data = [];
           for(let i=0;i<this.product_data.length;i++)
           {      
-            this.excel_data.push({'SALES PERSON':this.product_data[i].Assigned_User_List,'STATE':this.product_data[i].state,'CITY':this.product_data[i].city,'COMPANY NAME':this.product_data[i].company_name,'OLD/NEW':this.product_data[i].new_dr && this.product_data[i].new_dr!=''?(this.product_data[i].new_dr=='No') ? 'OLD' : 'New':'N/A','COMPANY TYPE':this.product_data[i].type && this.product_data[i].type!= '' ?this.product_data[i].type == '1' ? 'Channel Partner' : this.product_data[i].type == '7' ? 'Direct Delaer' : 'Reatil Partner' :'N/A'});
+            this.excel_data.push({'SALES PERSON':this.product_data[i].Assigned_User_List,'STATE':this.product_data[i].state,'CITY':this.product_data[i].city,'COMPANY NAME':this.product_data[i].company_name,'OLD/NEW':this.product_data[i].new_dr && this.product_data[i].new_dr!=''?(this.product_data[i].new_dr=='No') ? 'OLD' : 'New':'N/A','COMPANY TYPE':this.product_data[i].type && this.product_data[i].type!= '' ?this.product_data[i].type == '1' ? 'Distributor' : this.product_data[i].type == '7' ? 'Direct Delaer' : 'Reatil Partner' :'N/A'});
             
           }
           

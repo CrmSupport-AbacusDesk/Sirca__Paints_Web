@@ -3,7 +3,7 @@
     <div class="page-heading">
       <img src="assets/img/leads_icon.svg" class="h-icon">
       <div class="heading-text">
-        <h2>Channel Partner Leads</h2>
+        <h2>Distributor Leads</h2>
         <p>Total Lead - {{lead_List.length}}</p>
       </div>
     </div>
@@ -69,13 +69,13 @@
                   <th class="w150">Contact Person</th>
                   <th class="w110">Contact No.</th>
                   <th class="w120">Assigned To</th>
-                  <th class="w120">Disposition Type</th>
-                  <th class="w120"> Disposition Name </th>
+                  <!-- <th class="w120">Disposition Type</th> -->
+                  <!-- <th class="w120"> Disposition Name </th> -->
                   <th class="w130">Total Activity Count</th>
 
                   <th class="w200">Address</th>
 
-                  <th class="w200">Comment</th>
+                  <!-- <th class="w200">Comment</th> -->
                 </tr>
               </table>
             </div>
@@ -123,12 +123,12 @@
                       </mat-form-field>
                     </div>
                   </th>
-                  <th class="w120"></th>
-                  <th class="w120"></th>
+                  <!-- <th class="w120"></th> -->
+                  <!-- <th class="w120"></th> -->
                   <th  class="w130"></th>
 
                   <th  class="w200"></th>
-                  <th  class="w200">&nbsp;</th>
+                  <!-- <th  class="w200">&nbsp;</th> -->
                 </tr>
               </table>
             </div>
@@ -156,8 +156,8 @@
 
 
                   <td class="w120">{{lead.assigned_to}}</td>
-                  <td class="w120">{{lead.disposition_type}}</td>
-                  <td class="w120">{{lead.disposition_name}}</td>
+                  <!-- <td class="w120">{{lead.disposition_type}}</td> -->
+                  <!-- <td class="w120">{{lead.disposition_name}}</td> -->
                   <td  class="w130">{{lead.total_activity_count}}</td>
 
                   <td class="w200" matTooltip="  {{lead.address}}, {{lead.city}}, {{lead.district}}, {{lead.state}}, {{lead.pincode}}" matTooltipPosition="above"  *ngIf="lead.address ||lead.city ||lead.district  ||lead.state ||lead.pincode">
@@ -180,7 +180,7 @@
                     </div>
                   </td>
 
-                  <td  class="w200">{{lead.comment}}</td>
+                  <!-- <td  class="w200">{{lead.comment}}</td> -->
 
                 </tr>
 
@@ -194,11 +194,11 @@
                     <td class="w150"><div>&nbsp;</div></td>
                     <td class="w110"><div>&nbsp;</div></td>
                     <td class="w120"><div>&nbsp;</div></td>
-                    <td class="w120"><div>&nbsp;</div></td>
-                    <td class="w120"><div>&nbsp;</div></td>
+                    <!-- <td class="w120"><div>&nbsp;</div></td> -->
+                    <!-- <td class="w120"><div>&nbsp;</div></td> -->
                     <td class="w130"><div>&nbsp;</div></td>
                     <td class="w200"><div>&nbsp;</div></td>
-                    <td class="w200"><div>&nbsp;</div></td>
+                    <!-- <td class="w200"><div>&nbsp;</div></td> -->
                   </tr>
                 </ng-container>
               </table>

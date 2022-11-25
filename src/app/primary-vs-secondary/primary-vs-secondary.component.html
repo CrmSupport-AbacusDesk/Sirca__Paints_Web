@@ -19,9 +19,9 @@
       <div class="from-fields cs-flex">
         <select class="select-filter" name="user_type" [(ngModel)]="data.user_type">
           <option  value="undefined" disabled hidden> Party Type</option>
-          <option value="1" >Channel Partner</option>
+          <option value="1" >Distributor</option>
           <option value="7" >Direct Dealer</option>
-          <option value="3" >Retail Partner</option>
+          <option value="3" >Dealer</option>
         </select>
         
         <select (change)="getDistrict()" class="select-filter" name="state" #state="ngModel"  [(ngModel)]="data.state">

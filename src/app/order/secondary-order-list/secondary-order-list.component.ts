@@ -56,7 +56,7 @@ export class SecondaryOrderListComponent implements OnInit {
     this.assign_login_data = this.assign_login_data.value;
     this.assign_login_data = this.assign_login_data.assignModule;
     console.log(this.assign_login_data);
-    const index = this.assign_login_data.findIndex(row => row.module_name == 'order to channel partner');
+    const index = this.assign_login_data.findIndex(row => row.module_name == 'order to Distributor');
     console.log(index);
     
     this.assign_login_data[index].add == 'true' ? this.view_add = true : this.view_add = false;
@@ -274,7 +274,7 @@ export class SecondaryOrderListComponent implements OnInit {
                 // 'Pending Quantity':this.new_excel_data[i].item_Details[j]['order_quantity']-this.new_excel_data[i].item_Details[j]['dispatch_qty'],
                 'Item Value':this.new_excel_data[i].item_Details[j]['price'],
                 'Order Value':this.new_excel_data[i].item_Details[j]['order_value'],
-                'Channel Partner':this.new_excel_data[i].Delivered_By,
+                'Distributor':this.new_excel_data[i].Delivered_By,
                 // 'Approved By':this.new_excel_data[i].approved_by,
                 'Order Status':this.new_excel_data[i].order_status,
                 // 'Dispatch value':this.new_excel_data[i].item_Details[j]['Dispatch_Value']  ? this.new_excel_data[i].item_Details[j]['Dispatch_Value']:0,
@@ -353,7 +353,7 @@ export class SecondaryOrderListComponent implements OnInit {
               // 'Pending Quantity':this.new_excel_data[i].item_Details[j]['order_quantity']-this.new_excel_data[i].item_Details[j]['dispatch_qty'],
               // 'Item Value':this.new_excel_data[i].item_Details[j]['price'],
               'Order Value':this.new_excel_data[i].Total_order_value,
-              'Channel Partner':this.new_excel_data[i].Delivered_By,
+              'Distributor':this.new_excel_data[i].Delivered_By,
               // 'Approved By':this.new_excel_data[i].approved_by,
               'Order Status':this.new_excel_data[i].order_status,
               // 'Dispatch value':this.new_excel_data[i].item_Details[j]['Dispatch_Value']  ? this.new_excel_data[i].item_Details[j]['Dispatch_Value']:0,
@@ -522,7 +522,7 @@ export class SecondaryOrderListComponent implements OnInit {
         
         for(let i=0;i<this.exp_data.length;i++)
         {
-          this.excel_data.push({'Date':this.exp_data[i].date_created,'Created By':this.exp_data[i].created_by_name,'Order Id':this.exp_data[i].id,'Company Name':this.exp_data[i].company_name,'Company Id':this.exp_data[i].dr_id,'Total Item':this.exp_data[i].order_item,'Dealer Order Value':this.exp_data[i].order_total,'Company Order Value':this.exp_data[i].sec_ord_background_amt,'Channel Partner':this.exp_data[i].distributor_name,'Status':this.exp_data[i].order_status});
+          this.excel_data.push({'Date':this.exp_data[i].date_created,'Created By':this.exp_data[i].created_by_name,'Order Id':this.exp_data[i].id,'Company Name':this.exp_data[i].company_name,'Company Id':this.exp_data[i].dr_id,'Total Item':this.exp_data[i].order_item,'Dealer Order Value':this.exp_data[i].order_total,'Company Order Value':this.exp_data[i].sec_ord_background_amt,'Distributor':this.exp_data[i].distributor_name,'Status':this.exp_data[i].order_status});
         }
         this.exp_loader = false;
         

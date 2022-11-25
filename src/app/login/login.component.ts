@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
 
       for(let i = 0 ;i<data['assignModule'].length ;i++){
 
-        if(data['assignModule'][i]['module_name'] == 'lead channel partner' && data['assignModule'][i]['view'] == 'true'){
+        if(data['assignModule'][i]['module_name'] == 'lead Distributor' && data['assignModule'][i]['view'] == 'true'){
           data['data']['view_leads'] = 1
           data['data']['view_lead_channel_partner'] = 1
         }
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
           data['data']['view_lead_dealer'] = 1
 
         }
-        else if(data['assignModule'][i]['module_name'] == 'distribution channel partner' && data['assignModule'][i]['view'] == 'true'){
+        else if(data['assignModule'][i]['module_name'] == 'distribution Distributor' && data['assignModule'][i]['view'] == 'true'){
           data['data']['view_distribution_n_w'] = 1
           data['data']['view_dist_n_w_channel_partner'] = 1
 
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
           data['data']['view_orders_primary'] = 1
 
         }
-        else if(data['assignModule'][i]['module_name'] == 'order to channel partner' && data['assignModule'][i]['view'] == 'true'){
+        else if(data['assignModule'][i]['module_name'] == 'order to Distributor' && data['assignModule'][i]['view'] == 'true'){
           data['data']['view_orders'] = 1
           data['data']['view_orders_secondary'] = 1
         }

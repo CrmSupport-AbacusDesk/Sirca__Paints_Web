@@ -212,7 +212,7 @@ export class PopNGiftListComponent implements OnInit {
         this.excel_data.push({
           'DATE':this.pop_order_list[i].date_created,
           'CREATED BY':this.pop_order_list[i].created_by_name,
-          'TYPE': this.pop_order_list[i].type=='1'?'Channel Partner':this.pop_order_list[i].type=='3'?'Retail Partner':this.pop_order_list[i].type=='7'?'Direct Dealer':'',
+          'TYPE': this.pop_order_list[i].type=='1'?'Distributor':this.pop_order_list[i].type=='3'?'Dealer':this.pop_order_list[i].type=='7'?'Direct Dealer':'',
           'ORDER ID':this.pop_order_list[i].order_no,
           'TOTAL ITEM':this.pop_order_list[i].order_total_item,
           'STATUS':this.pop_order_list[i].order_status && this.pop_order_list[i].order_status!= ''? (this.pop_order_list[i].order_status == 'PDispatch'? 'Partial Dispatch' : this.pop_order_list[i].order_status) :'--',

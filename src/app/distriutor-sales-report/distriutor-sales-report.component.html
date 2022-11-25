@@ -104,7 +104,7 @@
                     <td class="w100">{{list.state?list.state:'N/A'}}</td>
                     <td class="w100">{{list.city?list.city:'N/A'}}</td>
                     <td class="w200">{{list.company_name?list.company_name:'N/A'}}{{list.new_dr && list.new_dr!=''?(list.new_dr=='No') ? ' - OLD' : '- New':'N/A'}}</td>
-                    <td class="w200">{{list.type && list.type!= '' ?list.type == '1' ? 'Channel Partner' : list.type == '7' ? 'Direct Delaer' : 'Reatil Partner' :'N/A'}}</td>
+                    <td class="w200">{{list.type && list.type!= '' ?list.type == '1' ? 'Distributor' : list.type == '7' ? 'Direct Delaer' : 'Reatil Partner' :'N/A'}}</td>
 
                     <td class="w130" *ngFor="let data of allMonthsInPeriod">
                       <div *ngFor="let column of list | keyvalue "> 

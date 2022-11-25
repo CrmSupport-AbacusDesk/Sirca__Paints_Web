@@ -259,7 +259,7 @@ export class DealerComponent implements OnInit {
     this.exp_loader = true;
     // tslint:disable-next-line:max-line-length
     this.excel_data = [];
-    this.serve.FileData({ 'search': this.search_val, 'dealer id: -': this.search_val.id, 'type': this.type, 'channel partner': this.dealer_channel_partner }, 'Distributors/distributor')
+    this.serve.FileData({ 'search': this.search_val, 'dealer id: -': this.search_val.id, 'type': this.type, 'Distributor': this.dealer_channel_partner }, 'Distributors/distributor')
       .subscribe(resp => {
         console.log(resp);
         this.exp_data = resp['distributor']['distributor'];
@@ -273,7 +273,7 @@ export class DealerComponent implements OnInit {
 
           }
           this.excel_data.push({
-            'Retail Partner Id': this.exp_data[i].id,
+            'Dealer Id': this.exp_data[i].id,
             'Company Name': this.exp_data[i].company_name,
             Mobile: this.exp_data[i].mobile,
             'Pincode ': this.exp_data[i].pincode,
@@ -294,7 +294,7 @@ export class DealerComponent implements OnInit {
             'Status':this.exp_data[i].status == '1'?'Active':'InActive',
             'Assigned Sales User': this.exp_data[i].assign_user,
             'Assigned Inside Sales User': this.exp_data[i].assign_inside_user,
-            'channel partner': channelPartnerStr,
+            'Distributor': channelPartnerStr,
             'Contact Person': this.exp_data[i].name,
             'WhatsApp No.': this.exp_data[i].whatsapp_no,
             'Email': this.exp_data[i].email,
@@ -306,7 +306,7 @@ export class DealerComponent implements OnInit {
 
         this.exp_loader = false;
 
-        this.serve.exportAsExcelFile(this.excel_data, 'Retail Partner SHEET');
+        this.serve.exportAsExcelFile(this.excel_data, 'Dealer SHEET');
         this.excel_data = [];
         this.exp_data = [];
       });

@@ -53,7 +53,7 @@
                                         <th class="w150">Designation</th>
                                         <th class="w150">Created By</th>
                                         <th class="w100">Mobile No.</th>
-                                        <th class="w150">Channel Partner</th>
+                                        <th class="w150">Distributor</th>
                                         <th class="w150">Reporting Manager</th>
                                         <th class="w150">Primary Sale</th>
                                         <th class="w150">Secondary Sale</th>
@@ -104,7 +104,7 @@
                                         <th class="w150">
                                             <div class="th-search-acmt">
                                                 <mat-form-field>
-                                                    <input type="text"  matInput placeholder="Channel Partner" (keyup.enter)="getUserList(0,50,view_tab)" #search="ngModel" [(ngModel)]="value.distributor">
+                                                    <input type="text"  matInput placeholder="Distributor" (keyup.enter)="getUserList(0,50,view_tab)" #search="ngModel" [(ngModel)]="value.distributor">
                                                 </mat-form-field>
                                             </div>
                                         </th>
@@ -151,7 +151,7 @@
                                             </ng-container>
 
                                             <ng-container *ngIf="(u.user_type=='Market' || u.user_type=='MARKET') && u.created_type=='drLogin'">
-                                                Channel Partner Exec.
+                                                Distributor Exec.
                                             </ng-container>
 
                                             <ng-container *ngIf="(u.user_type=='OFFICE' || u.user_type=='Office')">

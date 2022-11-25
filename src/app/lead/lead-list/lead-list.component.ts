@@ -47,7 +47,7 @@ export class LeadListComponent implements OnInit {
 
       this.login_data = this.login_data.assignModule;
       console.log("login_data :",this.login_data);
-      const index = this.login_data.findIndex(row => row.module_name == 'lead channel partner');
+      const index = this.login_data.findIndex(row => row.module_name == 'lead Distributor');
       console.log(index);
 
       this.login_data[index].add == 'true' ? this.view_add = true : this.view_add = false;
@@ -61,7 +61,7 @@ export class LeadListComponent implements OnInit {
     }
     // this.login_data = this.login_data.assignModule;
     // console.log(this.login_data);
-    // const index = this.login_data.findIndex(row => row.module_name == 'lead channel partner');
+    // const index = this.login_data.findIndex(row => row.module_name == 'lead Distributor');
     // console.log(index);
 
     // this.login_data[index].add == 'true' ? this.view_add = true : this.view_add = false;
@@ -209,7 +209,7 @@ export class LeadListComponent implements OnInit {
       for(let i=0;i<this.lead_List.length;i++){
         this.excel_data.push({'Company Name':this.lead_List[i].company_name,'Contact Person':this.lead_List[i].name,'Mobile':this.lead_List[i].mobile,'WhatsApp No.':this.lead_List[i].whatsapp_no,Email:this.lead_List[i].email,  'Created By':this.lead_List[i].created_name,'Created By Type':this.lead_List[i].created_by_type,'Converted On':this.lead_List[i].lead_converted_on,'Investment Amount':this.lead_List[i].investment_amount,'name':this.lead_List[i].name,'Lead Type':this.lead_List[i].lead_type,'Total Activity Count':this.lead_List[i].total_activity_count,'Assigned To':this.lead_List[i].assigned_to, 'Address ':this.lead_List[i].address,'State ':this.lead_List[i].state,'District ':this.lead_List[i].district,'City ':this.lead_List[i].city,'Pincode ':this.lead_List[i].pincode,'Assigned Sales User':this.lead_List[i].assigned_to,'Comment':this.lead_List[i].comment});
       }
-      this.serve.exportAsExcelFile(this.excel_data, 'CHANNEL PARTNER LEAD SHEET');
+      this.serve.exportAsExcelFile(this.excel_data, 'Distributor LEAD SHEET');
     }
 
     download_all_branding(){

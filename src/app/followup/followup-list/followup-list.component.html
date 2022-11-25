@@ -75,9 +75,9 @@
                 <th class="w130">
                   <div class="th-search">
                     <select name="user_type" [(ngModel)]="search.dr_type" (ngModelChange)="followUpList(active_tab)">
-                      <option value="1" >Channel Partner</option>
+                      <option value="1" >Distributor</option>
                       <option value="7" >Direct Dealer</option>
-                      <option value="3" >Retail Partner</option>
+                      <option value="3" >Dealer</option>
                     </select>
                   </div>
                 </th>
@@ -125,8 +125,8 @@
 
                 <td class="w150">{{list.sales_user_name}}</td>
                 <td class="one-line w150" matTooltip="{{list.dr_name}}" matTooltipPosition="above">{{list.dr_name}}</td>
-                <td class="w130" *ngIf="list.type == '1'">Channel Partner</td>
-                <td class="w130" *ngIf="list.type == '3'">Retail Partner</td>
+                <td class="w130" *ngIf="list.type == '1'">Distributor</td>
+                <td class="w130" *ngIf="list.type == '3'">Dealer</td>
                 <td class="w130" *ngIf="list.type == '7'">Direct Dealer</td>
                 <td class="w130" *ngIf="list.type == '10'">Social Media Lead</td>
                 <td class="w100" style="word-break:break-all;"> {{ list.dr_city && list.dr_city!=''?list.dr_city:'--'}}</td>
@@ -162,6 +162,30 @@
                 </tr>
               </ng-container>
             </table>
+
+            <div class="data-not-available"  *ngIf="data_not_found==true">
+              <div class="outer">
+                <div class="iinear">
+                  <div class="figure" matRipple>
+                    <div class="header">
+                      <img src="assets/img/data-not-available-header.svg" alt="">
+                    </div>
+          
+                    <div class="description">
+                      <div class="cs-heading">
+                        <h2>Follow Up</h2>
+                      </div>
+                      <div class="img">
+                        <i class="material-icons">error_outline</i>
+                      </div>
+                      <div class="psc">
+                        <p>Data Not Available</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="search-results" data-infinite-scroll debounce [infiniteScrollDistance]="1" [infiniteScrollUpDistance]="2"  [infiniteScrollThrottle]="10" (scrolled)="followUpList()"
             >
           </div>
@@ -174,29 +198,7 @@
     </div>
   </div>
 
-  <div class="data-not-available"  *ngIf="data_not_found==true">
-    <div class="outer">
-      <div class="iinear">
-        <div class="figure" matRipple>
-          <div class="header">
-            <img src="assets/img/data-not-available-header.svg" alt="">
-          </div>
 
-          <div class="description">
-            <div class="cs-heading">
-              <h2>Follow Up</h2>
-            </div>
-            <div class="img">
-              <i class="material-icons">error_outline</i>
-            </div>
-            <div class="psc">
-              <p>Data Not Available</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
 </div>
 

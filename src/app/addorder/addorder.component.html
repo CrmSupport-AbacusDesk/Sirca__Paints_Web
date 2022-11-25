@@ -35,8 +35,8 @@
                   <mat-select name="dr_type" #dr_type="ngModel" [(ngModel)]="search.dr_type" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'"
                     (ngModelChange)="get_distributor_list(search.dr_type); quotationData = []; data = {}; totalQty = 0; sub_total = 0; dis_amt = 0; net_total=0; grand_total = 0; ">
                     <mat-option disabled="">Select Type</mat-option>
-                    <mat-option value="1">Channel Partner</mat-option>
-                    <mat-option value="3">Retail Partner</mat-option>
+                    <mat-option value="1">Distributor</mat-option>
+                    <mat-option value="3">Dealer</mat-option>
                     <mat-option value="7">Direct Dealer</mat-option>
 
 
@@ -47,8 +47,8 @@
                   <mat-select name="dr_type" #dr_type="ngModel" [(ngModel)]="search.dr_type" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'"
                     (ngModelChange)="get_distributor_list(search.dr_type) ; search.company_name='' ;quotationData=[];data = {}; totalQty = 0; sub_total = 0; dis_amt = 0; net_total=0; grand_total = 0; ">
                     <mat-option disabled="">Select Type</mat-option>
-                    <mat-option value="1">Channel Partner</mat-option>
-                    <mat-option value="3">Retail Partner</mat-option>
+                    <mat-option value="1">Distributor</mat-option>
+                    <mat-option value="3">Dealer</mat-option>
                     <mat-option value="7">Direct Dealer</mat-option>
 
 
@@ -62,8 +62,8 @@
               <div class="control-field">
                 <mat-form-field class="cs-input">
                   <mat-label *ngIf="!search.dr_type">Company Name</mat-label>
-                  <mat-label *ngIf="search.dr_type == '1'">Channel Partner</mat-label>
-                  <mat-label *ngIf="search.dr_type == '3'">Retail Partner</mat-label>
+                  <mat-label *ngIf="search.dr_type == '1'">Distributor</mat-label>
+                  <mat-label *ngIf="search.dr_type == '3'">Dealer</mat-label>
 
                   <mat-label *ngIf="search.dr_type == '7'">Direct Dealer</mat-label>
                   <ng-container *ngIf="search.dr_type != '3'">
@@ -112,7 +112,7 @@
               <div class="control-field">
                 <mat-form-field class="cs-input">
 
-                  <mat-label>Select Channel Partner</mat-label>
+                  <mat-label>Select Distributor</mat-label>
                   <mat-select name="distributor_id" #distributor_id="ngModel" [(ngModel)]="data.distributor_id" [disabled]="route.queryParams['_value'].comes_from == 'order_detail_page'">
                     <div class="search-block">
                       <input type="text" name="channel_partner" placeholder="Search.."

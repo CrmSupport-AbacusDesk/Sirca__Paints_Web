@@ -147,7 +147,7 @@
           <div class="col s4">
             <div class="control-field">
               <mat-form-field class="cs-input">
-                <textarea matInput placeholder=" Retail Partner Name"  name="dealer_name" #dealer_name="ngModel" value={{data.dealer_name}} [(ngModel)]="data.dealer_name" ></textarea>
+                <textarea matInput placeholder=" Dealer Name"  name="dealer_name" #dealer_name="ngModel" value={{data.dealer_name}} [(ngModel)]="data.dealer_name" ></textarea>
               </mat-form-field>
               <!-- <div class="alert alert-danger" *ngIf="!dealer_name.valid && update_basic.submitted">
                 Name is required...
@@ -157,7 +157,7 @@
           <div class="col s4">
             <div class="control-field">
               <mat-form-field class="cs-input">
-                <input type="tel"  minlength="10" maxlength="10" matInput placeholder=" Retail Partner Mobile No." name="dealer_mobile" #dealer_mobile="ngModel" value={{data.dealer_mobile}} [(ngModel)]="data.dealer_mobile" (keypress)="MobileNumber($event)" [ngClass]="{'has-error' : dealer_mobile.invalid } ">
+                <input type="tel"  minlength="10" maxlength="10" matInput placeholder=" Dealer Mobile No." name="dealer_mobile" #dealer_mobile="ngModel" value={{data.dealer_mobile}} [(ngModel)]="data.dealer_mobile" (keypress)="MobileNumber($event)" [ngClass]="{'has-error' : dealer_mobile.invalid } ">
               </mat-form-field>
               <div class="alert alert-danger" *ngIf="!dealer_mobile.valid && update_basic.submitted">
                 Mobile No. is must be 10 digits...

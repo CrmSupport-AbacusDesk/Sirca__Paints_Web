@@ -42,13 +42,11 @@
         <div class="left-auto">
             <div class="click-btn"
                 *ngIf="login_data.access_level=='1' && login_data.type=='' && login_data.user_type != 'Inside Sales Team'">
-                <button mat-button *ngIf="dr_detail?.type=='7'" (click)="convert_dr(1)">Convert To Channel
-                    Partner</button>
-                    <button mat-button *ngIf="dr_detail?.type=='7'" (click)="convert_dr(3)">Convert To Retail Partner</button>
+                <button mat-button *ngIf="dr_detail?.type=='7'" (click)="convert_dr(1)">Convert To Distributor</button>
+                    <button mat-button *ngIf="dr_detail?.type=='7'" (click)="convert_dr(3)">Convert To Dealers</button>
                 <button mat-button *ngIf="dr_detail?.type=='1'" (click)="convert_dr(7)">Convert To Direct
                     Dealer</button>
-                <button mat-button *ngIf="dr_detail?.type=='3'" (click)="convert_dr(3)">Convert To Channel
-                    Partner</button>
+                <button mat-button *ngIf="dr_detail?.type=='3'" (click)="convert_dr(3)">Convert To Distributor</button>
                 <button mat-button *ngIf="dr_detail?.type=='3'" (click)="convert_dr(7)" style="margin: 2px;">Convert To
                     Direct Dealer</button>
 
@@ -77,7 +75,7 @@
                         (click)="getExecutivesData();related_tabs('Executives')">My Executives</a></li>
                 <li *ngIf="dr_detail?.type=='1' && login_data.user_type != 'Inside Sales Team'"><a class="pr50"
                         [ngClass]="{'active': view_tab=='Dealers'}"
-                        (click)="getDealersData();related_tabs('Dealers')">Retail Partners <span
+                        (click)="getDealersData();related_tabs('Dealers')">Dealers <span
                             class="counter">{{dealersCount}}</span></a></li>
                 <li *ngIf="dr_detail?.type!='3' && login_data.user_type != 'Inside Sales Team'"><a
                         [ngClass]="{'active': view_tab=='area_target'}"
@@ -304,7 +302,7 @@
                             </div>
                         </div>
 
-                        <div class="sprate-box padding0 mt15" *ngIf="login_data.user_type != 'Inside Sales Team'">
+                        <!-- <div class="sprate-box padding0 mt15" *ngIf="login_data.user_type != 'Inside Sales Team'">
                            
                             
                                 
@@ -321,7 +319,6 @@
                                         (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
                                     <h2 class="mr10 ml20 pt12">Branding Detail</h2>
                                     <div style="margin-left: 200px;display: flex;align-items: center;">
-                                        <!-- <strong style="padding-left: 15px;color: red;font-size: 25px;">Scroll Right to Left </strong> -->
                                         <i class="material-icons">keyboard_arrow_left</i>
                                         <span>&nbsp;</span>
                                         <i class="material-icons">keyboard_arrow_right</i>
@@ -333,11 +330,10 @@
                                       <ul>
                                           
                                         <li><a [ngClass]="show_tab_branding_detail && show_tab_branding_detail=='Distributor' ? 'active':''" (click)="show_tab_branding_detail='Distributor';get_branding_data()">Distributor</a></li>
-                                        <li><a [ngClass]="show_tab_branding_detail && show_tab_branding_detail=='Retailer' ? 'active' : ''" (click)="show_tab_branding_detail='Retailer'; get_branding_data();">Retail Partner</a></li>
+                                        <li><a [ngClass]="show_tab_branding_detail && show_tab_branding_detail=='Retailer' ? 'active' : ''" (click)="show_tab_branding_detail='Retailer'; get_branding_data();">Dealers</a></li>
                                       </ul>
                                     </div>
                                   </div>
-                                <!-- <mat-divider class="left-right-15 mt10 mb10 "></mat-divider> -->
                                 <div class="from-fields h400" >
                                     <div class="cs-table cs-table-scroll">
                                         <div class="stickyTableHead" style="width: fit-content;">
@@ -347,7 +343,6 @@
                                                         <th class="w50 text-center">S No</th>
                                                         <th class="w100">Date Created</th>
                                                         <th class="w150" >Created By</th>
-                                                        <!-- <th class="w150" *ngIf="dr_detail_type != '3'">Created For</th> -->
                                                         <th class="w150">Company Name</th>
                                                         <th class="w100">Branding Date</th>
                                                         <th class="w150 text-center">Branding Created by</th>
@@ -370,7 +365,6 @@
                                                             <td class="w100">{{branding_data.date_created | date : 'd
                                                                 MMM, y'}}</td>
                                                             <td class="w150">{{branding_data.created_by_name}}</td>
-                                                            <!-- <td class="w150" *ngIf="dr_detail_type != '3'">{{branding_data.created_for}}</td> -->
                                                             <td class="w150" >
                                                                 {{branding_data.company_name ?
                                                                 branding_data.company_name : '--' }}</td>
@@ -444,11 +438,8 @@
                                
                             </div>
 
-                            <!-- <div class="fix-btn">
-                                <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="download_excel()"><img src="assets/img/excel.svg"></a>
-                            </div> -->
 
-                        </div>
+                        </div> -->
 
 
                     </div>
@@ -598,7 +589,7 @@
                             <div class="sprate-box mb15">
                                 <div class="territory-info">
                                     <div class="head " [ngClass]="{'active':active.dealer}">
-                                        <h2>Channel Partner</h2>
+                                        <h2>Distributor</h2>
                                         <!-- <a class="edit-item" (click)="active.dealer = true;"><i class="material-icons">create</i></a> -->
                                     </div>
                                     <div class="cs-checkbox">
@@ -651,7 +642,7 @@
                             <div class="sprate-box">
                                 <div class="territory-info" *ngIf="!active.dealer">
                                     <div class="head " [ngClass]="{'active':active.dealer}">
-                                        <h2>Retail Partner</h2>
+                                        <h2>Dealers</h2>
                                         <a class="edit-item" (click)="active.dealer = true;"><i
                                                 class="material-icons">create</i></a>
                                     </div>
@@ -679,7 +670,7 @@
                                 </div>
                                 <div class="territory-info" *ngIf="active.dealer">
                                     <div class="head" [ngClass]="{'active':active.dealer}">
-                                        <h2>Retail Partner List</h2>
+                                        <h2>Dealers List</h2>
                                         <i class="material-icons search-icon right20"
                                             (click)="toggleterritory('dealer','open')" matRipple>search</i>
                                         <input type="text" placeholder="search..." class="fix-search" #search="ngModel"
@@ -724,7 +715,7 @@
                             <div class="row top-info">
                                 <figure class="col s2" style="width: 20%" (click)="related_tabs('Dealers')">
                                     <div class="box">
-                                        <h1>My Retail Partners</h1>
+                                        <h1>My Dealers</h1>
                                         <div class="bxe">
                                             <div class="outer">
                                                 <div class="inner">
@@ -799,7 +790,7 @@
 
                                 <figure class="col s2" style="width: 20%" (click)="related_tabs('sOrder')">
                                     <div class="box">
-                                        <h1>Order From Retail Partner </h1>
+                                        <h1>Order From Dealers </h1>
                                         <div class="bxe">
                                             <div class="outer">
                                                 <div class="inner">
@@ -886,7 +877,7 @@
                                 <div class="col s4">
                                     <div class="ds-box green">
                                         <div class="ds-head">
-                                            Latest Order From Retail Partner
+                                            Latest Order From Dealers
                                         </div>
                                         <div class="ds-body">
                                             <div class="cs-information">
@@ -909,7 +900,7 @@
                                                             {{row.user_name.charAt(0).toUpperCase()}}</div>
                                                         <div class="content">
                                                             <p> {{row.user_name}}</p>
-                                                            <p *ngIf="row.type == 3"> Retail Partner : {{row.dr_name}}
+                                                            <p *ngIf="row.type == 3"> Dealers : {{row.dr_name}}
                                                             </p>
                                                             <p *ngIf="row.type == 1"> Distributor : {{row.dr_name}}</p>
                                                             <p *ngIf="row.type == 7"> Direct Dealer : {{row.dr_name}}
@@ -1113,7 +1104,7 @@
                                             <th class="w30">&nbsp;</th>
                                             <th class="w100">Date</th>
                                             <th class="w220">Created By</th>
-                                            <th *ngIf="view_tab=='sOrder'" class="w200">Retail Partner</th>
+                                            <th *ngIf="view_tab=='sOrder'" class="w200">Dealers</th>
                                             <th class="w120">Order No</th>
                                             <th class="w100 text-center">Total Item</th>
                                             <th class="w130 text-right">Order Value</th>
@@ -1172,9 +1163,9 @@
                                             <td class="w30">{{i+1}}</td>
                                             <td class="w100">{{list.date_created | date : 'd MMM, y'}}</td>
                                             <td *ngIf="view_tab=='pOrder'" class="w220">{{list.created_by_type ==
-                                                'channel partner' ? list.ord_create_by : list.created_by_name}}</td>
+                                                'Distributor' ? list.ord_create_by : list.created_by_name}}</td>
                                             <td *ngIf="view_tab=='sOrder'" class="w220">{{list.created_by_type ==
-                                                'channel partner' ? list.created_by_name2 : list.created_by_name}}</td>
+                                                'Distributor' ? list.created_by_name2 : list.created_by_name}}</td>
 
                                             <td *ngIf="view_tab=='sOrder'" class="w200">{{list.company_name}}</td>
                                             <td class="w120"><a
