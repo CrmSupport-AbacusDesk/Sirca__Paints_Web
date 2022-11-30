@@ -95,7 +95,6 @@
             <table>
               <tr>
                 <th class="w60"></th>
-                <!-- <th class="w120" *ngIf="active_tab == 'Credit Note'" ></th> -->
                 
                 <th class="w150">
                   <div class="th-search-acmt">
@@ -122,7 +121,6 @@
                   </div>
                 </th>
                 
-                <!-- <th class="w150" *ngIf="active_tab != 'Billing'"></th> -->
                 
                 <th  *ngIf="active_tab != 'Billing' && active_tab != 'Credit Note'" class="w150">
                   <div class="th-search-acmt">
@@ -234,12 +232,13 @@
                 </td>
                 <td  *ngIf="active_tab == 'Billing'" class="w120">&#8377; {{billing_data.pending_balance && billing_data.pending_balance != '' && billing_data.pending_balance != null ? billing_data.pending_balance : '--'}}
                 </td>
-                <td  *ngIf="active_tab == 'Billing'" class="w120">{{billing_data.dispatch_status ? billing_data.dispatch_status : '--'}}
+                <td  *ngIf="active_tab == 'Billing'" class="w120" [ngClass]="{'yellow-clr':billing_data.dispatch_status=='Pending','green-clr':billing_data.dispatch_status=='Completed'} ">
+                  {{billing_data.dispatch_status ? billing_data.dispatch_status : '--'}}
                   <div class="action-btns">
-                    <a mat-button class="view" (click)="openDispatchPage(billing_data.id)"><i class="material-icons">edit</i> Dispatch</a>
+                    <a mat-button class="view" *ngIf="billing_data.dispatch_status=='Pending'" (click)="openDispatchPage(billing_data.id)"><i class="material-icons">edit</i> Dispatch</a>
                     <a mat-button class="view" (click)="go_to(billing_data.id,'Billing')"><i class="material-icons">remove_red_eye</i> View</a>
                    
-                    <button  mat-button class="delete"*ngIf= "active_tab == 'Billing'" (click)="deletebilling(billing_data.id)"><i class="material-icons">delete_sweep</i> Delete</button>
+                    <button  mat-button class="delete"*ngIf="active_tab == 'Billing' && billing_data.dispatch_status=='Pending' " (click)="deletebilling(billing_data.id)"><i class="material-icons">delete_sweep</i> Delete</button>
                     
                   </div>
                 </td>

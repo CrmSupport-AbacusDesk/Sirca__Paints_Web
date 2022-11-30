@@ -154,10 +154,10 @@
             
             <div class="table-container">
               <div class="table-content">
-                <table class="sno-border">
-                  <tr *ngFor="let item_data of invoice_bill_item; let i=index">
+                <table class="sno-border" >
+                  <tr *ngFor="let item_data of invoice_bill_item; let i=index" [ngClass]="{'stock-alert':item_data.sale_qty!=item_data.barcode_list.length,'stock-green':item_data.sale_qty==item_data.barcode_list.length}">
                     <td class="w60 text-center">{{i+1}}</td>
-                    <td>{{item_data.material_description && item_data.material_description != '' ? (item_data.material_description | titlecase) : '--' }}</td>
+                    <td >{{item_data.material_description && item_data.material_description != '' ? (item_data.material_description | titlecase) : '--' }}</td>
                     <td class="w110">{{item_data.material_code && item_data.material_code != '' ? (item_data.material_code | uppercase) : '--' }}</td>
                     <td class="w80">{{item_data.sale_qty && item_data.sale_qty != '' ? item_data.sale_qty : '--'}}</td>                  
                     <td class="w90">{{item_data.barcode_list.length}}</td>
